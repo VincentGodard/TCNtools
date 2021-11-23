@@ -1,0 +1,53 @@
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - scaling
+  - concentration_solver
+  - two_nuclides_plots
+  - depth_profiles
+home :
+  links:
+  - text: Source code at
+    href: https://gitlab.osupytheas.fr/vgodard/TCNtools
+reference:
+- title: "Scaling"
+  desc: "Functions to compute scaling coefficients according to various schemes"
+- contents:
+  -  atm_pressure
+  -  get_vdm
+  -  vdm2rc
+  -  rc_ndp
+  -  scaling_st
+  -  scaling_lm
+  -  solar_modulation
+  -  scaling_lsd
+- title: "Solvers"
+  desc: "Functions to compute concentrations or erosion rates"
+- contents:
+  - solv_conc_eul
+  - solv_conc_lag
+  - solv_ss_eros_eul
+- title: "Miscelaneous"
+  desc: "Various utility functions"
+- contents:
+  - tnp_ellipse
+  - tnp_curves
+- title: "Muons production profiles"
+  desc: "Functions to compute muon production at depth"
+- contents:
+  - mu_model1a
+  - mu_model1b
+- title: "Fluxes"
+  desc: "Functions to particule fluxes"
+- contents:
+  - sato_muons
+  - sato_neutrons
+  - sato_neutrons_low
+  - sato_protons
+- title: "Data"
+  desc: "Datasets included in the package"
+- contents:
+  - prm
+  - Lambda
+
