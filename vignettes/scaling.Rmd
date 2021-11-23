@@ -1,0 +1,203 @@
+---
+title: 'Scaling '
+date: "`r Sys.Date()`"
+author: 'Vincent Godard'
+bibliography: '`r system.file("tcntools.bib",package = "TCNtools") `'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: yes
+    df_print: paged
+    code_folding: show
+    code_download: true
+---
+
+```{r include=FALSE}
+library(DT)
+```
+
+
+# Introduction 
+
+## How to use this document?
+
+This html page is derived from an [R Markdown](http://rmarkdown.rstudio.com) Notebook. 
+You can copy/paste the various lines of code into your own R script and run it in any R session.
+
+
+## Objectives
+
+
+Our goal is to describe the variations of these scaling factors with latitude and elevation, which are the main parameters controlling the production rates of cosmogenic nuclides at the Earth surface.
+
+The first thing we have to do is to load the `TCNtools` library (once it has been installed).
+
+```{r}
+library("TCNtools")
+```
+
+# Time-independent scaling
+
+We are going to present the most widely used and simplest scaling scheme known as Lal-Stone and often abbreviated as **st**.
+The main equations are presented in the reference article by @stone2000air .
+
+## Site characteristics
+
+We first need to define some parameters concerning the site of interest :
+
+- latitude `lat` in degrees
+- altitude `z` in meters (can be a vector or a scalar)
+- longitude `lon` in degrees, this is not used for *st* scaling (@stone2000air), just in case we want to compute atmospheric pressure according to ERA40 (@uppala2005era40).
+
+```{r}
+lat = 30 # latitude
+lon = 30 # longitude
+z = seq(0,3000,by=100) # vector from 0 to 3000 m by 100 m increments
+```
+
+Now we can compute the atmospheric pressure, with the function `atm_pressure` according to the two models available, and then plot for comparison.
+Here `z` is a vector to see the variations over a range of elevations.
+
+To get information about the usage of the function used here (for example what are the different models) type `?atm_pressure` in the R console.
+
+```{r}
+P1=atm_pressure(alt=z,model="stone2000") 
+P2=atm_pressure(alt=z,lat=lat,lon=lon,model="era40")
+plot(P1,z,type="l",xlab="Pressure (hPa)",ylab="Altitude (m)")
+lines(P2,z,lty=2)
+legend("topright",c("Stone 2000","ERA40"),lty=c(1,2))
+```
+
+## Computation of scaling factors
+
+We can now compute the scaling factors according to @stone2000air. 
+Same as above, to get some information about the function (parameters definition) type `?st_scaling` in the R console.
+
+```{r}
+st = scaling_st(P1,lat) # here we use the pressure according to Stone 2000 model
+datatable(st)%>%  formatRound(c('Nneutrons','Nmuons'), 2) 
+```
+
+The result is stored in `st` as a dataframe with as many rows as there are elements in the input pressure vector (`P1`) and two columns named `Nneutrons` and `Nmuons`, for the spallogenic and muogenic contributions, respectively.  
+
+We can plot the evolution with elevation, wich illustrates the major influence of altitude of the sampling site in controlling the local production rate. 
+
+```{r}
+plot(st$Nneutrons,z,type="l",
+     xlab="Spallogenic st scaling factor (Stone 2000)",ylab="Altitude (m)",
+     main=paste("Latitude ",lat,"°",sep=""))
+```
+
+## Global variations
+
+In order to get a better idea of the variations with both latitude (from 0 to 90°) and elevation (from sea level to 3000 m) we can try the following plot.
+
+```{r}
+P=atm_pressure(alt=0,model="stone2000") # compute pressure
+lat = seq(0,90,by=1) # latitude vector
+n = length(lat) # size of vector
+st = scaling_st(P,lat) # compute scaling
+plot(lat,st$Nneutrons,type="l",ylim=c(0.5,12),
+     xlab="Latitude (°)",ylab="Spallogenic st scaling factor (Stone 2000)")
+grid()
+text(lat[n],st$Nneutrons[n],"0 km",cex=0.5,adj=0) # put label at the end of curve
+for (z in seq(500,3000,by=500)){ # loop on elevations : same as above for a range of elevations
+  P=atm_pressure(alt=z,model="stone2000") 
+  st = scaling_st(P,lat) 
+  lines(lat,st$Nneutrons)
+  text(lat[n],st$Nneutrons[n],z/1000,cex=0.5,adj=0)
+}
+```
+
+This dependance of the scaling factor on latitude is a direct consequence of the dipole nature structure of the Earth magnetic field, with a higher cosmic rays flux at high latitude.
+
+
+
+# Time-dependent scalings
+
+## Definition of paleomagnetic variations
+
+Time-dependent scaling factors allow to take into account the variations through time of the Earth magnetic field, which modulates the incoming cosmic ray flux.
+
+### Virtual Dipole Moment
+
+We need to first define a time series for the Virtual Dipole Moment (VDM) variation, using the `get_vdm` function. 
+
+Several paleomagnetic database can be used. 
+The three options correspond to databases defined in [Crep](https://crep.otelo.univ-lorraine.fr).
+We plot the three of them on the same graph.
+
+```{r}
+time = seq(0,5e4,length.out = 1000) # time vector from 0 to 50 ka BP, with 1000 regularly spaced elements
+#
+plot(NA,xlim=range(time),ylim=c(0,16),xlab="Time (a BP)",ylab="VDM (10^22 A.m^2)")
+grid()
+# - Glopis
+col1="coral1"
+vdm1=get_vdm(time,model="glopis")
+lines(time,vdm1/1e22,col=col1)
+# 2 - Musch
+col2 = "chartreuse"
+vdm2=get_vdm(time,model="musch")
+lines(time,vdm2/1e22,col=col2)
+# 3 - lsd
+col3 = "cornflowerblue"
+vdm3=get_vdm(time,model="lsd")
+lines(time,vdm3/1e22,col=col3)
+legend("topright",c("glopis","musch","lsd"),col=c(col1,col2,col3),lty=1)
+
+
+```
+
+### Cutoff Rigidity
+
+Now we need to convert that into cutoff rigidity using `vdm2rc` function. Such can be done using the following expression (@martin2017crep):
+$$R_c = 14.3 \frac{M}{M_0}\cos^4 \lambda,$$
+where $M$ is the moment of the Earth dipole field, $M_0$ the 2010 reference value for $M$ and $\lambda$ the latitude.
+This corresponds to the default `model=elsasser54` in the `vdm2rc` function arguments.
+A more complex formula proposed by @lifton2014scaling can be used with `model=lifton14`.
+
+```{r}
+lat = 40
+rc1a = vdm2rc(vdm1,lat)
+rc1b = vdm2rc(vdm1,lat,model="lifton14")
+rc2a = vdm2rc(vdm2,lat)
+rc2b = vdm2rc(vdm2,lat,model="lifton14")
+rc3a = vdm2rc(vdm3,lat)
+rc3b = vdm2rc(vdm3,lat,model="lifton14")
+#
+plot(NA,xlim=range(time),ylim=range(rc1a,rc2a,na.omit(rc3a)),xlab="Time (a BP)",ylab="Rc (GV)")
+grid()
+lines(time,rc1a,col=col1)
+lines(time,rc1b,col=col1,lty=2)
+lines(time,rc2a,col=col2)
+lines(time,rc2b,col=col2,lty=2)
+lines(time,rc3a,col=col3)
+lines(time,rc3b,col=col3,lty=2)
+legend("bottomleft",c("glopis","musch","lsd","elsasser54","lifton14"),col=c(col1,col2,col3,"black","black"),lty=c(1,1,1,1,2),cex=0.5)
+
+```
+
+
+## Lal/Stone modified scaling (*lm*) 
+
+Once we have a $R_c$ time series we can compute the *lm* scaling factors using the `scaling_lm` function. 
+For that we will only use one elevation (*z=0*), so we recompute the atmospheric pressure.
+We plot the corresponding time series, as well as the value of *st* scaling factor for reference.
+```{r}
+P = atm_pressure(alt=0,model="stone2000")
+lm = scaling_lm(P,rc1a)
+plot(time,lm,type="l",xlab="Time (a BP)",ylab="Spallogenic lm scaling factor")
+abline(h=scaling_st(P,lat)$Nneutrons,lty=2)
+```
+
+## LSD scaling (*sa* and *sf*)
+
+
+
+
+
+
+
+# References
