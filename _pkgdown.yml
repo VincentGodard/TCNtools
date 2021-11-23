@@ -9,7 +9,7 @@ articles:
 home :
   links:
   - text: Source code at
-    href: https://gitlab.osupytheas.fr/vgodard/TCNtools
+    href: https://github.com/VincentGodard/TCNtools
 reference:
 - title: "Scaling"
   desc: "Functions to compute scaling coefficients according to various schemes"

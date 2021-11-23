@@ -5,7 +5,7 @@ A set of utilities for the analysis of Terrestrial Cosmogenic Nuclides (TCN) con
 ## Installation
 The simplest way to install the package is using `devtools` :
 
-devtools::install_git(url = "https://gitlab.osupytheas.fr/vgodard/tcntools")
+devtools::install_git(url = "https://github.com/VincentGodard/TCNtools")
 
 ## Package web site
 
