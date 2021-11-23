@@ -9,4 +9,4 @@ devtools::install_git(url = "https://github.com/VincentGodard/TCNtools")
 
 ## Package web site
 
-The package web site, including some tutorials, can be found [here]( ).
+The package web site, including some tutorials, can be found [here](https://vincentgodard.github.io/TCNtools/).
