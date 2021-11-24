@@ -1,5 +1,5 @@
   <!-- badges: start -->
-  [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/VincentGodard/TCNtools/master?urlpath=rstudio)
+  [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/VincentGodard/TCNtools/test_holepunch?urlpath=rstudio)
   <!-- badges: end -->
 
 # TCNtools
