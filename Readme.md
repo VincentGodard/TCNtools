@@ -1,4 +1,3 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/VincentGodard/TCNtools/main?urlpath=rstudio)
 
 # TCNtools
 
