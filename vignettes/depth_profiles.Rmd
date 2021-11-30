@@ -13,9 +13,6 @@ output:
     code_download: true
 ---
 
-```{r include=FALSE}
-library(DT)
-```
 
 # Introduction 
 

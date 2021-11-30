@@ -13,9 +13,6 @@ output:
     code_download: true
 ---
 
-```{r include=FALSE}
-library(DT)
-```
 
 
 # Introduction 
@@ -76,7 +73,6 @@ Same as above, to get some information about the function (parameters definition
 
 ```{r}
 st = scaling_st(P1,lat) # here we use the pressure according to Stone 2000 model
-datatable(st)%>%  formatRound(c('Nneutrons','Nmuons'), 2) 
 ```
 
 The result is stored in `st` as a dataframe with as many rows as there are elements in the input pressure vector (`P1`) and two columns named `Nneutrons` and `Nmuons`, for the spallogenic and muogenic contributions, respectively.  
