@@ -79,17 +79,13 @@
       
 
       </header><script src="scaling_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="scaling_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="scaling_files/anchor-sections-1.0/anchor-sections.js"></script><script src="scaling_files/htmlwidgets-1.5.2/htmlwidgets.js"></script><script src="scaling_files/jquery-1.12.4/jquery.min.js"></script><link href="scaling_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="scaling_files/datatables-binding-0.16/datatables.js"></script><link href="scaling_files/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="scaling_files/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="scaling_files/dt-core-1.10.20/js/jquery.dataTables.min.js"></script><link href="scaling_files/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
-<script src="scaling_files/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><div class="row">
+<script src="scaling_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Scaling</h1>
                         <h4 class="author">Vincent Godard</h4>
             
-            <h4 class="date">2021-11-23</h4>
+            <h4 class="date">2021-12-01</h4>
       
       
       <div class="hidden name"><code>scaling.Rmd</code></div>
@@ -140,23 +136,21 @@
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">P1</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,xlab<span class="op">=</span><span class="st">"Pressure (hPa)"</span>,ylab<span class="op">=</span><span class="st">"Altitude (m)"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">P2</span>,<span class="va">z</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Stone 2000"</span>,<span class="st">"ERA40"</span><span class="op">)</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="scaling_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="scaling_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div id="computation-of-scaling-factors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#computation-of-scaling-factors" class="anchor"></a>Computation of scaling factors</h2>
 <p>We can now compute the scaling factors according to <span class="citation">Stone (2000)</span>. Same as above, to get some information about the function (parameters definition) type <code>?st_scaling</code> in the R console.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P1</span>,<span class="va">lat</span><span class="op">)</span> <span class="co"># here we use the pressure according to Stone 2000 model</span>
-<span class="fu">datatable</span><span class="op">(</span><span class="va">st</span><span class="op">)</span><span class="op">%&gt;%</span>  <span class="fu">formatRound</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Nneutrons'</span>,<span class="st">'Nmuons'</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span> </code></pre></div>
-<div id="htmlwidget-911d40867fbd0dd29894" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-911d40867fbd0dd29894">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"],[0.83002237518145,0.902663149798947,0.978925824271485,1.05939949796289,1.14466100034036,1.23527587399699,1.33179932556559,1.43477714410543,1.54474658652637,1.66223722960371,1.78777178812609,1.92186689871549,2.06503386885612,2.21777939067287,2.38060621900552,2.5540138133379,2.73849894315501,2.93455625632059,3.14267881009151,3.36335856441319,3.59708683717042,3.84435472110477,4.10565346214795,4.38147479896499,4.67231126354524,4.97865644273122,5.30100520062744,5.63985386188833,5.99570035594136,6.36904432226684,6.76038717691515],[0.833,0.875195062083143,0.919092388980515,0.96473813096996,1.01217867724989,1.06146061322436,1.11263067653776,1.16573571191731,1.22082262488411,1.27793833439806,1.33712972450392,1.39844359504968,1.46192661155102,1.52762525427848,1.59558576664618,1.66585410298368,1.73847587577491,1.81349630244896,1.89096015181083,1.97091169020061,2.05339462747122,2.13845206287619,2.22612643095926,2.31645944753905,2.40949205588144,2.50526437315328,2.60381563725065,2.70518415409464,2.80940724548694,2.91652119761732,3.0265612103133]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Nneutrons<\/th>\n      <th>Nmuons<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script><p>The result is stored in <code>st</code> as a dataframe with as many rows as there are elements in the input pressure vector (<code>P1</code>) and two columns named <code>Nneutrons</code> and <code>Nmuons</code>, for the spallogenic and muogenic contributions, respectively.</p>
+<code class="sourceCode R"><span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P1</span>,<span class="va">lat</span><span class="op">)</span> <span class="co"># here we use the pressure according to Stone 2000 model</span></code></pre></div>
+<p>The result is stored in <code>st</code> as a dataframe with as many rows as there are elements in the input pressure vector (<code>P1</code>) and two columns named <code>Nneutrons</code> and <code>Nmuons</code>, for the spallogenic and muogenic contributions, respectively.</p>
 <p>We can plot the evolution with elevation, wich illustrates the major influence of altitude of the sampling site in controlling the local production rate.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,
      xlab<span class="op">=</span><span class="st">"Spallogenic st scaling factor (Stone 2000)"</span>,ylab<span class="op">=</span><span class="st">"Altitude (m)"</span>,
      main<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Latitude "</span>,<span class="va">lat</span>,<span class="st">"°"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="scaling_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="scaling_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="global-variations" class="section level2">
 <h2 class="hasAnchor">
@@ -177,7 +171,7 @@
   <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">lat</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">lat</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">z</span><span class="op">/</span><span class="fl">1000</span>,cex<span class="op">=</span><span class="fl">0.5</span>,adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<p><img src="scaling_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="scaling_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>This dependance of the scaling factor on latitude is a direct consequence of the dipole nature structure of the Earth magnetic field, with a higher cosmic rays flux at high latitude.</p>
 </div>
 </div>
@@ -211,7 +205,7 @@
 <span class="va">vdm3</span><span class="op">=</span><span class="fu"><a href="../reference/get_vdm.html">get_vdm</a></span><span class="op">(</span><span class="va">time</span>,model<span class="op">=</span><span class="st">"lsd"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">vdm3</span><span class="op">/</span><span class="fl">1e22</span>,col<span class="op">=</span><span class="va">col3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"glopis"</span>,<span class="st">"musch"</span>,<span class="st">"lsd"</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">col1</span>,<span class="va">col2</span>,<span class="va">col3</span><span class="op">)</span>,lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
-<p><img src="scaling_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="scaling_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div id="cutoff-rigidity" class="section level3">
 <h3 class="hasAnchor">
@@ -235,7 +229,7 @@
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc3a</span>,col<span class="op">=</span><span class="va">col3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc3b</span>,col<span class="op">=</span><span class="va">col3</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"glopis"</span>,<span class="st">"musch"</span>,<span class="st">"lsd"</span>,<span class="st">"elsasser54"</span>,<span class="st">"lifton14"</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">col1</span>,<span class="va">col2</span>,<span class="va">col3</span>,<span class="st">"black"</span>,<span class="st">"black"</span><span class="op">)</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><img src="scaling_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="scaling_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
 <div id="lalstone-modified-scaling-lm" class="section level2">
@@ -247,7 +241,7 @@
 <span class="va">lm</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_lm.html">scaling_lm</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">rc1a</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">lm</span>,type<span class="op">=</span><span class="st">"l"</span>,xlab<span class="op">=</span><span class="st">"Time (a BP)"</span>,ylab<span class="op">=</span><span class="st">"Spallogenic lm scaling factor"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">lat</span><span class="op">)</span><span class="op">$</span><span class="va">Nneutrons</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
-<p><img src="scaling_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="scaling_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div id="lsd-scaling-sa-and-sf" class="section level2">
 <h2 class="hasAnchor">
