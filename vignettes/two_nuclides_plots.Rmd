@@ -2,7 +2,7 @@
 title: '2-nuclides plots'
 date: "`r Sys.Date()`"
 author: 'Vincent Godard'
-bibliography: '`r system.file("tcntools.bib",package = "TCNtools") `'
+bibliography: '`r system.file("TCNtools.bib",package = "TCNtools") `'
 output:
  html_document:
     toc: true
