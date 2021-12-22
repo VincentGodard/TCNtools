@@ -26,14 +26,10 @@ depth_averaged_prod <- function(h,p,L,S){
   p = as.numeric(p)
   L = as.numeric(L)
   S = as.numeric(S)
-  if (h==0){
-    P = 0
-  } else {
-#    P = sum((p[1:3]*c(S[1],S[2],S[2])*L)/(h)*(1 - exp(-1*h/L)))
     P = p[1]*S[1]*L[1]/h*(1 - exp(-1*h/L[1])) +
         p[2]*S[2]*L[2]/h*(1 - exp(-1*h/L[2])) +
         p[3]*S[2]*L[3]/h*(1 - exp(-1*h/L[3]))
-  }
+  P[h<=0]<-NA
   return(P)
 }
 

@@ -17,6 +17,7 @@ S = as.numeric(S)
 # test average production
 h = 100*rhos
 P1 = sum((p[1:3]*c(S[1],S[2],S[2])*L)/(h)*(1 - exp(-1*h/L)))
+h = seq(0,100,length.out = 10)*rhos
 P2 = depth_averaged_prod(h,p,L,S)
 
 
