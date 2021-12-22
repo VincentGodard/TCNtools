@@ -15,24 +15,55 @@ conc_soil_mixing(h, E, rhos, rhob, p, L, S)
 
 \item{rhob}{bedrock density (g/cm3)}
 
-\item{p}{production and decay parameters (4 elements vector)
-p[1] -> unscaled spallation production rate (at/g/a)
-p[2] -> unscaled stopped muons production rate (at/g/a)
-p[3] -> unscaled fast muons production rate (at/g/a)
-p[4] -> decay constant (1/a)}
+\item{p}{production and decay parameters for the first nuclide (4 elements vector)
+\itemize{
+ \item p[1] unscaled spallation production rate (at/g/a)
+ \item p[2] unscaled stopped muons production rate (at/g/a)
+ \item p[3] unscaled fast muons production rate (at/g/a)
+ \item p[4] decay constant (1/a)
+}}
 
-\item{L}{attenuation lengths (3 elements vector)
-L[1] -> neutrons
-L[2] -> stopped muons
-L[3] -> fast muons}
+\item{L}{Attenuation length (3 elements vector in g/cm2)
+\itemize{
+\item L[1]  neutrons
+\item L[2]  stopped muons
+\item L[3]  fast muons
+}}
 
 \item{S}{scaling factors (2 elements vector)
-S[1] -> scaling factor for spallation
-S[2] -> scaling factor for muons}
+\itemize{
+\item S[1]  scaling factor for spallation
+\item S[2]  scaling factor for muons
+}}
 }
 \value{
-Concentration in at/g
+Nuclide concentration in soil (at/g)
 }
 \description{
 Compute nuclide concentration in a vertically-mixed steady-state soil, using the approach of Foster et al. (2015)
+}
+\examples{
+#' data("prm") # production and decay data
+p = prm
+data("Lambda") # attenuation length data
+L = Lambda
+altitude = 1000 # site elevation in m
+latitude = 20 # site latitude in degrees
+P = atm_pressure(alt=altitude,model="stone2000") # atmospheric pressure at site
+S = scaling_st(P,latitude) # Stone 2000 scaling parameters
+rhob = 2.65 # bedrock density (g/cm3)
+rhos = rhob/2 # soil density  (g/cm3)
+E = 10^seq(log10(0.1),log10(100),length.out = 100) # denudaton rate (m/Ma)
+plot(NA,xlim=range(E),ylim=c(0.02,6),log="xy",
+    xlab="Denudation rate (m/Ma)",ylab="Concentration (10^6 at/g)")
+h = 100 # soil depth (cm)
+C = conc_soil_mixing(h,E,rhos,rhob,p[,1],L,S)
+lines(E,C/1e6)
+h = 200 # soil depth (cm)
+C = conc_soil_mixing(h,E,rhos,rhob,p[,1],L,S)
+lines(E,C/1e6,col="red")
+h = 1000 # soil depth (cm)
+C = conc_soil_mixing(h,E,rhos,rhob,p[,1],L,S)
+lines(E,C/1e6,col="green")
+legend("topright",c("1 m","2 m","10 m"),lty=1,col=c("black","red","green"),title="Mixing depth")
 }

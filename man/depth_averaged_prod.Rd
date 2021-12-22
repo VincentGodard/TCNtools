@@ -9,24 +9,47 @@ depth_averaged_prod(h, p, L, S)
 \arguments{
 \item{h}{soil thickness (in g/cm2)}
 
-\item{p}{production and decay parameters (4 elements vector)
-p[1] -> unscaled spallation production rate (at/g/a)
-p[2] -> unscaled stopped muons production rate (at/g/a)
-p[3] -> unscaled fast muons production rate (at/g/a)
-p[4] -> decay constant (1/a)}
+\item{p}{production and decay parameters for the first nuclide (4 elements vector)
+\itemize{
+ \item p[1] unscaled spallation production rate (at/g/a)
+ \item p[2] unscaled stopped muons production rate (at/g/a)
+ \item p[3] unscaled fast muons production rate (at/g/a)
+ \item p[4] decay constant (1/a)
+}}
 
-\item{L}{attenuation lengths (3 elements vector)
-L[1] -> neutrons
-L[2] -> stopped muons
-L[3] -> fast muons}
+\item{L}{Attenuation length (3 elements vector in g/cm2)
+\itemize{
+\item L[1]  neutrons
+\item L[2]  stopped muons
+\item L[3]  fast muons
+}}
 
 \item{S}{scaling factors (2 elements vector)
-S[1] -> scaling factor for spallation
-S[2] -> scaling factor for muons}
+\itemize{
+\item S[1]  scaling factor for spallation
+\item S[2]  scaling factor for muons
+}}
 }
 \value{
 
 }
 \description{
 Compute average nuclide production rates for vertically mixed soil column
+}
+\examples{
+#' #' data("prm") # production and decay data
+p = prm
+data("Lambda") # attenuation length data
+L = Lambda
+altitude = 1000 # site elevation in m
+latitude = 20 # site latitude in degrees
+P = atm_pressure(alt=altitude,model="stone2000") # atmospheric pressure at site
+S = scaling_st(P,latitude) # Stone 2000 scaling parameters
+rhob = 2.65 # bedrock density (g/cm3)
+rhos = rhob/2 # soil density (g/cm3)
+h = seq(0,300,length.out = 100)
+plot(NA,xlim=range(h)/100,ylim=c(2,6),
+     xlab="Mixing depth (m)",ylab="Production rate (at/g/a)")
+prod_soil = depth_averaged_prod(h*rhos,p[,1],L,S)
+lines(h/100,prod_soil,lwd=3)
 }

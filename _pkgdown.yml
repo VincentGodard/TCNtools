@@ -28,13 +28,19 @@ reference:
   - solv_conc_eul
   - solv_conc_lag
   - solv_ss_eros_eul
-- title: "Miscelaneous"
-  desc: "Various utility functions"
+- title: "Two nuclides plots"
+  desc: "Various utility functions for two-nuclides plots"
 - contents:
   - tnp_ellipse
   - tnp_curves
+- title: "Soil mixing"
+  desc: "Functions to compute concentrations and production rates in mixed soils"
+- contents:
+  - depth_averaged_prod
+  - conc_soil_mixing
+  - tnp_soil_mixing
 - title: "Muons production profiles"
-  desc: "Functions to compute muon production at depth"
+  desc: "Functions to compute muon production at depth (non exponential profiles)"
 - contents:
   - mu_model1a
   - mu_model1b
