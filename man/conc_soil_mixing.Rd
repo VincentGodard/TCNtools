@@ -4,7 +4,7 @@
 \alias{conc_soil_mixing}
 \title{Nuclide concentration in a vertically mixed soil}
 \usage{
-conc_soil_mixing(h, E, rhos, rhob, p, L, S)
+conc_soil_mixing(h, E, rhos, rhob, p, L, S, fqz = 1)
 }
 \arguments{
 \item{h}{soil thickness (cm)}
@@ -35,6 +35,8 @@ conc_soil_mixing(h, E, rhos, rhob, p, L, S)
 \item S[1]  scaling factor for spallation
 \item S[2]  scaling factor for muons
 }}
+
+\item{fqz}{quartz enrichment factor (default 1)}
 }
 \value{
 Nuclide concentration in soil (at/g)

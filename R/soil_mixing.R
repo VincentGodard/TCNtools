@@ -81,6 +81,7 @@ depth_averaged_prod <- function(h,p,L,S){
 #' \item S[1]  scaling factor for spallation
 #' \item S[2]  scaling factor for muons
 #' }
+#'@param fqz quartz enrichment factor (default 1)
 #'
 #' @return Nuclide concentration in soil (at/g)
 #'
@@ -111,7 +112,7 @@ depth_averaged_prod <- function(h,p,L,S){
 #' C = conc_soil_mixing(h,E,rhos,rhob,p[,1],L,S)
 #' lines(E,C/1e6,col="green")
 #' legend("topright",c("1 m","2 m","10 m"),lty=1,col=c("black","red","green"),title="Mixing depth")
-conc_soil_mixing <- function(h,E,rhos,rhob,p,L,S){
+conc_soil_mixing <- function(h,E,rhos,rhob,p,L,S,fqz=1){
   if((length(h)>1)&(length(E)>1)){stop("h and E can not be both vectors")}
   p = as.numeric(p)
   L = as.numeric(L)
@@ -133,7 +134,7 @@ conc_soil_mixing <- function(h,E,rhos,rhob,p,L,S){
 
   # Foster et al. (2015)
   h = h/rhos # back to h in cm
-  C = ( (Ps*h/E/beta) + Cb ) / (1 + p[4]*h/E/beta)
+  C = ( (Ps*h/E/beta) + Cb*fqz ) / (1 + p[4]*h/E/beta)
 
   C[E<0]<-NA
   C[h<=0]<-NA
