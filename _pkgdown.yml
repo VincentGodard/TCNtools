@@ -39,6 +39,7 @@ reference:
   - depth_averaged_prod
   - conc_soil_mixing
   - tnp_soil_mixing
+  - soil_mixing_depth
 - title: "Muons production profiles"
   desc: "Functions to compute muon production at depth (non exponential profiles)"
 - contents:
