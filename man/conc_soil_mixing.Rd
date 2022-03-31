@@ -15,7 +15,7 @@ conc_soil_mixing(h, E, rhos, rhob, p, L, S, fqz = 1)
 
 \item{rhob}{bedrock density (g/cm3)}
 
-\item{p}{production and decay parameters for the first nuclide (4 elements vector)
+\item{p}{production and decay parameters for the nuclide (4 elements vector)
 \itemize{
  \item p[1] unscaled spallation production rate (at/g/a)
  \item p[2] unscaled stopped muons production rate (at/g/a)

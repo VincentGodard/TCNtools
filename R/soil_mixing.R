@@ -63,7 +63,7 @@ depth_averaged_prod <- function(h,p,L,S){
 #' @param E erosion rate (m/Ma)
 #' @param rhos soil density (g/cm3)
 #' @param rhob bedrock density (g/cm3)
-#' @param p production and decay parameters for the first nuclide (4 elements vector)
+#' @param p production and decay parameters for the nuclide (4 elements vector)
 #' \itemize{
 #'  \item p[1] unscaled spallation production rate (at/g/a)
 #'  \item p[2] unscaled stopped muons production rate (at/g/a)
@@ -221,4 +221,79 @@ tnp_soil_mixing <-function(h,E,rhos,rhob,p1,p2,L,S,n=100){
   names(res)<-c("cst_depth","cst_denudation")
   return(res)
 }
+
+
+# function to be optimized by soil_mixing_depth
+fun_opt_mixing_depth<-function(p,rhos,rho,prm1,prm2,Lambda,Sn,Sm,C1_obs,C1_obs_e,C2_obs,C2_obs_e){
+  H = p[1]*100
+  E = p[2]
+  C1 = conc_soil_mixing(H,E,rhos,rho,prm1,Lambda,c(Sn,Sm))
+  C2 = conc_soil_mixing(H,E,rhos,rho,prm2,Lambda,c(Sn,Sm))
+  chi2 = (C1-C1_obs)^2/C1_obs_e^2 +
+    (C2-C2_obs)^2/C2_obs_e^2
+  ll =   (log(1/(sqrt(2*pi)*C1_obs_e)) + 1/(sqrt(2*pi)*C2_obs_e)) - chi2/2
+  return(ll)
+}
+
+#' Steady state soil mixing depth
+#'
+#' Compute steady-state soil mixing depth and erosion rate using two nuclides cocnentrations
+#'
+#' @param C1 First nuclide concentration (at/g)
+#' @param C1_e First nuclide concentration uncertainty (at/g)
+#' @param C2 Second nuclide concentration (at/g)
+#' @param C2_e Second nuclide concentration uncertainty (at/g)
+#' @param p1 production and decay parameters for first nuclide (4 elements vector)
+#' \itemize{
+#'  \item p1[1] unscaled spallation production rate (at/g/a)
+#'  \item p1[2] unscaled stopped muons production rate (at/g/a)
+#'  \item p1[3] unscaled fast muons production rate (at/g/a)
+#'  \item p1[4] decay constant (1/a)
+#' }
+#' @param p2 production and decay parameters for second nuclide (4 elements vector)
+#' \itemize{
+#'  \item p2[1] unscaled spallation production rate (at/g/a)
+#'  \item p2[2] unscaled stopped muons production rate (at/g/a)
+#'  \item p2[3] unscaled fast muons production rate (at/g/a)
+#'  \item p2[4] decay constant (1/a)
+#' }
+#' @param L Attenuation lengths (3 elements vector in g/cm2)
+#' \itemize{
+#' \item L[1]  neutrons
+#' \item L[2]  stopped muons
+#' \item L[3]  fast muons
+#' }
+#' @param S scaling factors (2 elements vector)
+#' \itemize{
+#' \item S[1]  scaling factor for spallation
+#' \item S[2]  scaling factor for muons
+#' }
+#'
+#' @return A 1 row data frame with the following columns
+#' \itemize{
+#' \item Soil depth (m)
+#' \item Uncertainty in soil depth (m)
+#' \item Erosion rate (m/Ma)
+#' \item Uncertainty on erosion rate (m/Ma)
+#' \item Covariance
+#' }
+#' @export
+#'
+#' @examples
+soil_mixing_depth<-function(C1,C1_e,C2,C2_e,p1,p2,Lambda,S,rhos,rhob){
+  res = optim(c(0.1,1),fn=fun_opt_mixing_depth,gr = NULL,
+              rhos,rhob,p1,p2,Lambda,S[1],S[2],
+              C1,C1_e,C2,C2_e,
+              control = list(fnscale = -1,reltol=1e-12),hessian=T)
+  fisher_info<-solve(-res$hessian)
+  std<-sqrt(diag(fisher_info))
+  covariance = fisher_info[1,2]
+  out = data.frame(H=res$par[1],H_e=std[1],E=res$par[2],E_e=std[2],cov=covariance)
+  return(out)
+}
+
+
+
+
+
 
