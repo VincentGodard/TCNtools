@@ -12,6 +12,3 @@ d2r(a)
 \description{
 Degrees to radians conversion
 }
-\examples{
-
-}

@@ -13,9 +13,6 @@ vdm2rc(vdm, lat, model = "elsasser54")
 
 \item{model}{Model used to compute Rc from the virtual dipole moment value (one of "elsasser54" or "lifton14")}
 }
-\value{
-
-}
 \description{
 calculate cutoff rigidity from Virtual Dipole Moment time series
 }

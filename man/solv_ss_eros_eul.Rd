@@ -26,9 +26,6 @@ L[3] -> fast muons}
 
 \item{method}{One of single (default), MC, MCMC}
 }
-\value{
-
-}
 \description{
 Eulerian formulation
 }

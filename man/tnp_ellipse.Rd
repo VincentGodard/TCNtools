@@ -17,9 +17,6 @@ tnp_ellipse(Ca, Ca_e, Cb, Cb_e, confidence = 0.98)
 
 \item{confidence}{confidence level (default 0.98)}
 }
-\value{
-
-}
 \description{
 Two nuclides A and B plotted as B/A on the Y-axis and A on the X-axis
 Return a list with given confidence level ellipses coordinates for each pair of concentrations

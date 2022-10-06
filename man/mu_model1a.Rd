@@ -29,6 +29,3 @@ cst$Natoms -  atom number density of the target atom (atoms/g)
 cst$k_neg - summary cross-section for negative muon capture (atoms/muon)
 cst$sigma190 - 190 GeV x-section for fast muon production (cm2)
 }
-\examples{
-
-}

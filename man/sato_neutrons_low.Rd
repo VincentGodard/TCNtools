@@ -25,6 +25,3 @@ Lifton, N., Sato, T., & Dunai, T. J. (\strong{2014}). Scaling in situ cosmogenic
 \emph{Earth and Planetary Science Letters}, 386, 149–160.
 https://doi.org/10.1016/j.epsl.2013.10.052
 }
-\examples{
-
-}

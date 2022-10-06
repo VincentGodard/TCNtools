@@ -13,9 +13,6 @@ rc_ndp(time, lat, lon)
 
 \item{lon}{Longitude (deg)}
 }
-\value{
-
-}
 \description{
 calculate cutoff rigidity from non-dipolar gridded model
 }

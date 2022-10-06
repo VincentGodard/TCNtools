@@ -30,9 +30,6 @@ depth_averaged_prod(h, p, L, S)
 \item S[2]  scaling factor for muons
 }}
 }
-\value{
-
-}
 \description{
 Compute average nuclide production rates for vertically mixed soil column
 }

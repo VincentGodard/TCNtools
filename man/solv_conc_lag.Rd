@@ -23,9 +23,6 @@ solv_conc_lag(t, z, C0, Psp0, Pmu0, lambda, S, final = FALSE)
 
 \item{final}{if TRUE only compute the final concentration (default=FALSE)}
 }
-\value{
-
-}
 \description{
 Lagrangian formulation
 }

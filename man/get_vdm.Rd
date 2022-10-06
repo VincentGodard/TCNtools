@@ -11,9 +11,6 @@ get_vdm(time, model)
 
 \item{model}{model to be used (one of musch, glopis or lsd)}
 }
-\value{
-
-}
 \description{
 Original data from Crep calculator (See Martin et al., 2017)
 }

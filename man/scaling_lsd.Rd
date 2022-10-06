@@ -15,9 +15,6 @@ scaling_lsd(h, Rc, SPhi, w)
 
 \item{w}{fractional water content of ground (nondimensional)}
 }
-\value{
-
-}
 \description{
 Implements the Lifton-Sato-Dunai scaling scheme from Lifton et al. (2014)
 }

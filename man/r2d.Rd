@@ -12,6 +12,3 @@ r2d(a)
 \description{
 Radians to degrees conversion
 }
-\examples{
-
-}

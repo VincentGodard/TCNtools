@@ -18,6 +18,3 @@ angdist(lat1, lon1, lat2, lon2)
 \description{
 Calculates angular distance theta between points on a sphere specified by latitude and longitude
 }
-\examples{
-
-}
