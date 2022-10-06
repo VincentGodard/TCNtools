@@ -12,3 +12,4 @@ fun_solv_ss_eros_eul(ero, Cobs, p, S, L)
 \description{
 Function to be solved by solv_ss_eros_eul when method="single"
 }
+\keyword{internal}

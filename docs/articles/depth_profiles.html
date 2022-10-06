@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TCNtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -78,14 +74,14 @@
 
       
 
-      </header><script src="depth_profiles_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="depth_profiles_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="depth_profiles_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Depth profiles</h1>
-                        <h4 class="author">Vincent Godard</h4>
+                        <h4 data-toc-skip class="author">Vincent
+Godard</h4>
             
-            <h4 class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2022-10-06</h4>
       
       
       <div class="hidden name"><code>depth_profiles.Rmd</code></div>
@@ -94,167 +90,218 @@
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<div id="how-to-use-this-document" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-to-use-this-document" class="anchor"></a>How to use this document?</h2>
-<p>This html page is derived from an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. You can copy/paste the various lines of code into your own R script and run it in any R session.</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<div class="section level3">
+<h3 id="how-to-use-this-document">How to use this document?<a class="anchor" aria-label="anchor" href="#how-to-use-this-document"></a>
+</h3>
+<p>This html page is derived from an <a href="http://rmarkdown.rstudio.com" class="external-link">R Markdown</a> Notebook. You can
+copy/paste the various lines of code into your own R script and run it
+in any R session.</p>
 </div>
-<div id="objectives" class="section level2">
-<h2 class="hasAnchor">
-<a href="#objectives" class="anchor"></a>Objectives</h2>
-<p>The objective of this notbook is to illustrate simple computations on depth profiles.</p>
+<div class="section level3">
+<h3 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
+</h3>
+<p>The objective of this notbook is to illustrate simple computations on
+depth profiles.</p>
 </div>
-<div id="setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h2>
-<p>The first thing we have to do is to load the <code>TCNtools</code> library (once it has been installed)</p>
+<div class="section level3">
+<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h3>
+<p>The first thing we have to do is to load the <code>TCNtools</code>
+library (once it has been installed)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"TCNtools"</span><span class="op">)</span></code></pre></div>
-<p>We will need some parameters concerning production rates, attenuation length, etc …</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"TCNtools"</span><span class="op">)</span></span></code></pre></div>
+<p>We will need some parameters concerning production rates, attenuation
+length, etc …</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Lambda</span><span class="op">)</span> <span class="co"># we load a vector containing the attenuation length into the environment (g/cm2)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">prm</span><span class="op">)</span> <span class="co"># we load a matrix containing the production/decay parameters into the environment</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Lambda</span><span class="op">)</span> <span class="co"># we load a vector containing the attenuation length into the environment (g/cm2)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">prm</span><span class="op">)</span> <span class="co"># we load a matrix containing the production/decay parameters into the environment</span></span></code></pre></div>
 </div>
 </div>
-<div id="loading-a-dataset" class="section level1">
-<h1 class="hasAnchor">
-<a href="#loading-a-dataset" class="anchor"></a>Loading a dataset</h1>
-<p>The package <code>TCNtools</code> includes a selection of depth profiles data from the literature. We will use the profile from <span class="citation">(<span class="citeproc-not-found" data-reference-id="laloy2017bayesian"><strong>???</strong></span>)</span>.</p>
+<div class="section level2">
+<h2 id="loading-a-dataset">Loading a dataset<a class="anchor" aria-label="anchor" href="#loading-a-dataset"></a>
+</h2>
+<p>The package <code>TCNtools</code> includes a selection of depth
+profiles data from the literature. We will use the profile from <span class="citation">Laloy et al. (2017)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"tcn_depth_profiles"</span><span class="op">)</span> <span class="co"># import the data set</span>
-<span class="va">data</span> <span class="op">=</span> <span class="va">tcn_depth_profiles</span><span class="op">[</span><span class="va">tcn_depth_profiles</span><span class="op">$</span><span class="va">study</span><span class="op">==</span><span class="st">"laloy2017bayesian"</span>,<span class="op">]</span> <span class="co"># selecting a particular study</span></code></pre></div>
-<p>We can then compute the scaling for this study site. Note that each site characteristics are only reported for the first sample (<code>label</code>=1).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"tcn_depth_profiles"</span><span class="op">)</span> <span class="co"># import the data set</span></span>
+<span><span class="va">data</span> <span class="op">=</span> <span class="va">tcn_depth_profiles</span><span class="op">[</span><span class="va">tcn_depth_profiles</span><span class="op">$</span><span class="va">study</span><span class="op">==</span><span class="st">"laloy2017bayesian"</span>,<span class="op">]</span> <span class="co"># selecting a particular study</span></span></code></pre></div>
+<p>We can then compute the scaling for this study site. Note that each
+site characteristics are only reported for the first sample
+(<code>label</code>=1).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">altitude</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">altitude</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="co"># elevation in m</span>
-<span class="va">latitude</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">latitude</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="co"># latitude in degrees</span>
-<span class="va">P</span> <span class="op">=</span> <span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">altitude</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> <span class="co"># compute atmospheric pressure at site</span>
-<span class="va">S</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">latitude</span><span class="op">)</span> <span class="co"># compute the scaling parameters according to Stone (2000)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">altitude</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">altitude</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="co"># elevation in m</span></span>
+<span><span class="va">latitude</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">latitude</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="co"># latitude in degrees</span></span>
+<span><span class="va">P</span> <span class="op">=</span> <span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">altitude</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> <span class="co"># compute atmospheric pressure at site</span></span>
+<span><span class="va">S</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">latitude</span><span class="op">)</span> <span class="co"># compute the scaling parameters according to Stone (2000)</span></span></code></pre></div>
 <p>We can plot the data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="fl">50e3</span>,<span class="fl">200e3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span><span class="op">)</span>,
-     xlab<span class="op">=</span><span class="st">"10Be concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth below surface (cm)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">-</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">+</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,length <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,pch<span class="op">=</span><span class="fl">21</span>,cex<span class="op">=</span><span class="fl">2</span>,bg<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">label</span>,cex<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="fl">50e3</span>,<span class="fl">200e3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"10Be concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth below surface (cm)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html" class="external-link">arrows</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">-</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">+</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,length <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,pch<span class="op">=</span><span class="fl">21</span>,cex<span class="op">=</span><span class="fl">2</span>,bg<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">label</span>,cex<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span></code></pre></div>
 <p><img src="depth_profiles_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>Then we can compute a theoretical profile for a guess of the value for the parameters</p>
+<p>Then we can compute a theoretical profile for a guess of the value
+for the parameters</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rho</span> <span class="op">=</span> <span class="fl">1.7</span> <span class="co">#  density (g/cm3)</span>
-<span class="va">ero</span> <span class="op">=</span> <span class="fl">40</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span>  <span class="co"># m/Ma -&gt; g/cm2/a</span>
-<span class="va">age</span> <span class="op">=</span> <span class="fl">0.4e6</span> <span class="co"># a</span>
-<span class="va">C0</span> <span class="op">=</span> <span class="fl">80e3</span> <span class="co"># inheritance (at/g)</span>
-<span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">40</span><span class="op">)</span><span class="op">*</span><span class="va">rho</span> <span class="co"># calculation depth (g/cm2)</span>
-<span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration´</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">rho</span> <span class="op">=</span> <span class="fl">1.7</span> <span class="co">#  density (g/cm3)</span></span>
+<span><span class="va">ero</span> <span class="op">=</span> <span class="fl">40</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span>  <span class="co"># m/Ma -&gt; g/cm2/a</span></span>
+<span><span class="va">age</span> <span class="op">=</span> <span class="fl">0.4e6</span> <span class="co"># a</span></span>
+<span><span class="va">C0</span> <span class="op">=</span> <span class="fl">80e3</span> <span class="co"># inheritance (at/g)</span></span>
+<span><span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">40</span><span class="op">)</span><span class="op">*</span><span class="va">rho</span> <span class="co"># calculation depth (g/cm2)</span></span>
+<span><span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration´</span></span></code></pre></div>
 <p>We now plot the results.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="fl">50e3</span>,<span class="fl">200e3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span><span class="op">)</span>,
-     xlab<span class="op">=</span><span class="st">"10Be concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth below surface (cm)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">C</span>,<span class="va">z</span>,lwd<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="co"># plotting the modelled profile</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">-</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">+</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,length <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,pch<span class="op">=</span><span class="fl">21</span>,cex<span class="op">=</span><span class="fl">2</span>,bg<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">label</span>,cex<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="fl">50e3</span>,<span class="fl">200e3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"10Be concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth below surface (cm)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">C</span>,<span class="va">z</span>,lwd<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="co"># plotting the modelled profile</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html" class="external-link">arrows</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">-</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">+</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,length <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,pch<span class="op">=</span><span class="fl">21</span>,cex<span class="op">=</span><span class="fl">2</span>,bg<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">label</span>,cex<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span></code></pre></div>
 <p><img src="depth_profiles_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
-<div id="exploring-the-parameters-space" class="section level1">
-<h1 class="hasAnchor">
-<a href="#exploring-the-parameters-space" class="anchor"></a>Exploring the parameters space</h1>
-<div id="preliminary-exploration" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preliminary-exploration" class="anchor"></a>Preliminary exploration</h2>
-<p>We could change the parameters incrementally one by one to explore the effects on the modeled profile and attempt to converge toward a best-looking solution. It is obviously much more efficient and robust to do this automatically by going through a large number of parameters sets, compute the predicted concentrations (<span class="math inline">\(C_{mod}\)</span>) and evaluate how well they match the observed concentrations (<span class="math inline">\(C_{obs}\)</span> with uncertainty <span class="math inline">\(\sigma\)</span>). We can use the <span class="math inline">\(\chi^2\)</span> to quantify the difference between the model and observations.</p>
+<div class="section level2">
+<h2 id="exploring-the-parameters-space">Exploring the parameters space<a class="anchor" aria-label="anchor" href="#exploring-the-parameters-space"></a>
+</h2>
+<div class="section level3">
+<h3 id="preliminary-exploration">Preliminary exploration<a class="anchor" aria-label="anchor" href="#preliminary-exploration"></a>
+</h3>
+<p>We could change the parameters incrementally one by one to explore
+the effects on the modeled profile and attempt to converge toward a
+best-looking solution. It is obviously much more efficient and robust to
+do this automatically by going through a large number of parameters
+sets, compute the predicted concentrations (<span class="math inline">\(C_{mod}\)</span>) and evaluate how well they match
+the observed concentrations (<span class="math inline">\(C_{obs}\)</span> with uncertainty <span class="math inline">\(\sigma\)</span>). We can use the <span class="math inline">\(\chi^2\)</span> to quantify the difference between
+the model and observations.</p>
 <p><span class="math display">\[\begin{equation}
-\chi^2 = \sum_{i=1}^n \left( \frac{C_{obs,i} - C_{mod,i} }{\sigma_i} \right)^2
+\chi^2 = \sum_{i=1}^n \left( \frac{C_{obs,i} - C_{mod,i} }{\sigma_i}
+\right)^2
 \end{equation}\]</span></p>
-<p>The function <code>depth_profile_mc</code> will allow us to generate a large number of models over the parameter space defined by :</p>
+<p>The function <code>depth_profile_mc</code> will allow us to generate
+a large number of models over the parameter space defined by :</p>
 <ul>
 <li>the age of the formation (<code>age</code> in a)</li>
 <li>the surface denudation rate (<code>ero</code> in m/Ma)</li>
 <li>the inherited concentration (<code>inh</code> in at/g)</li>
 <li>the density (<code>rho</code> in g/cm2)</li>
 </ul>
-<p>There two additional parameters <code>n1</code> and <code>n2</code>, which control how many models we are going to sample from this paramters space</p>
+<p>There two additional parameters <code>n1</code> and <code>n2</code>,
+which control how many models we are going to sample from this paramters
+space</p>
 <ul>
 <li>
-<code>n1</code> is the number of model which are randomly drawn (Monte Carlo)</li>
+<code>n1</code> is the number of model which are randomly drawn
+(Monte Carlo)</li>
 <li>
-<code>n2</code> is the number of regularly sampled points for each parameter (si if all 4 parameters are varying the number of models is <code>n2</code><span class="math inline">\(^4\)</span>)</li>
+<code>n2</code> is the number of regularly sampled points for each
+parameter (si if all 4 parameters are varying the number of models is
+<code>n2</code><span class="math inline">\(^4\)</span>)</li>
 </ul>
-<p>We can choose to carry out an exploration of the parameters space which completely random (<code>n2=0</code>) or following a regular grid (<code>n1=0</code>), or a combination of both.</p>
+<p>We can choose to carry out an exploration of the parameters space
+which completely random (<code>n2=0</code>) or following a regular grid
+(<code>n1=0</code>), or a combination of both.</p>
 <p>This first attempt is a crude exploration of the parameter space.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/depth_profile_mc.html">depth_profile_mc</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">Lambda</span>,<span class="va">S</span>,
-                       age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span><span class="op">*</span><span class="fl">1000</span>,
-                       ero<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">50</span><span class="op">)</span>,
-                       inh<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">1e5</span>,
-                       rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">2.5</span><span class="op">)</span>,
-                       n1<span class="op">=</span><span class="fl">2000</span>,n2<span class="op">=</span><span class="fl">15</span><span class="op">)</span></code></pre></div>
-<p>Note that in <code>depth_profile_mc</code> we could choose to fix a parameter by passing a single value as argument, instead of a two elements vector, which corresponds to the bounds of the explored interval.</p>
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/depth_profile_mc.html">depth_profile_mc</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">Lambda</span>,<span class="va">S</span>,</span>
+<span>                       age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span><span class="op">*</span><span class="fl">1000</span>,</span>
+<span>                       ero<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">50</span><span class="op">)</span>,</span>
+<span>                       inh<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">1e5</span>,</span>
+<span>                       rho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">2.5</span><span class="op">)</span>,</span>
+<span>                       n1<span class="op">=</span><span class="fl">2000</span>,n2<span class="op">=</span><span class="fl">15</span><span class="op">)</span></span></code></pre></div>
+<p>Note that in <code>depth_profile_mc</code> we could choose to fix a
+parameter by passing a single value as argument, instead of a two
+elements vector, which corresponds to the bounds of the explored
+interval.</p>
 <p>We can have a look at the result table.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></code></pre></div>
-<pre><code>##       age              ero             inh              rho       
-##  Min.   :     0   Min.   : 0.00   Min.   :     0   Min.   :1.500  
-##  1st Qu.: 21429   1st Qu.:10.71   1st Qu.: 21429   1st Qu.:1.714  
-##  Median : 50000   Median :25.00   Median : 50000   Median :2.000  
-##  Mean   : 50009   Mean   :25.01   Mean   : 50041   Mean   :2.000  
-##  3rd Qu.: 78571   3rd Qu.:39.29   3rd Qu.: 78571   3rd Qu.:2.286  
-##  Max.   :100000   Max.   :50.00   Max.   :100000   Max.   :2.500  
-##       chi2        
-##  Min.   :  13.07  
-##  1st Qu.: 102.06  
-##  Median : 331.64  
-##  Mean   : 495.47  
-##  3rd Qu.: 761.11  
-##  Max.   :2848.55</code></pre>
-<p>Based on the <span class="math inline">\(\chi2\)</span> value we can now try to have a look at a subset of our model, which correspond to the best fitting values for this metric. We can start to do that very coarsely by looking at a quantile, for example the best 1%.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##       age              ero             inh              rho       </span></span>
+<span><span class="co">##  Min.   :     0   Min.   : 0.00   Min.   :     0   Min.   :1.500  </span></span>
+<span><span class="co">##  1st Qu.: 21429   1st Qu.:10.71   1st Qu.: 21429   1st Qu.:1.714  </span></span>
+<span><span class="co">##  Median : 50000   Median :25.00   Median : 50000   Median :2.000  </span></span>
+<span><span class="co">##  Mean   : 50050   Mean   :25.00   Mean   : 50021   Mean   :2.000  </span></span>
+<span><span class="co">##  3rd Qu.: 78571   3rd Qu.:39.29   3rd Qu.: 78571   3rd Qu.:2.286  </span></span>
+<span><span class="co">##  Max.   :100000   Max.   :50.00   Max.   :100000   Max.   :2.500  </span></span>
+<span><span class="co">##       chi2        </span></span>
+<span><span class="co">##  Min.   :  13.07  </span></span>
+<span><span class="co">##  1st Qu.: 102.12  </span></span>
+<span><span class="co">##  Median : 331.36  </span></span>
+<span><span class="co">##  Mean   : 495.53  </span></span>
+<span><span class="co">##  3rd Qu.: 761.88  </span></span>
+<span><span class="co">##  Max.   :2848.55</span></span></code></pre>
+<p>Based on the <span class="math inline">\(\chi2\)</span> value we can
+now try to have a look at a subset of our model, which correspond to the
+best fitting values for this metric. We can start to do that very
+coarsely by looking at a quantile, for example the best 1%.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cutoff</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span>,<span class="fl">0.01</span><span class="op">)</span>
-<span class="va">best</span> <span class="op">=</span> <span class="va">res</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">&lt;</span><span class="va">cutoff</span>,<span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">best</span><span class="op">[</span>,<span class="op">-</span><span class="fl">5</span><span class="op">]</span>,pch<span class="op">=</span><span class="fl">16</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="fl">0.2</span><span class="op">)</span><span class="op">)</span> <span class="co"># we remove the last column (5) which correspond to the chi2</span></code></pre></div>
-<p><img src="depth_profiles_files/figure-html/unnamed-chunk-10-1.png" width="700"> We see numerous tradeoffs between parameters, notably between age and denudation rate.</p>
+<code class="sourceCode R"><span><span class="va">cutoff</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span>,<span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="va">best</span> <span class="op">=</span> <span class="va">res</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">&lt;</span><span class="va">cutoff</span>,<span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">best</span><span class="op">[</span>,<span class="op">-</span><span class="fl">5</span><span class="op">]</span>,pch<span class="op">=</span><span class="fl">16</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html" class="external-link">adjustcolor</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="fl">0.2</span><span class="op">)</span><span class="op">)</span> <span class="co"># we remove the last column (5) which correspond to the chi2</span></span></code></pre></div>
+<p><img src="depth_profiles_files/figure-html/unnamed-chunk-10-1.png" width="700">
+We see numerous tradeoffs between parameters, notably between age and
+denudation rate.</p>
 <p>We can also select and plot the best model</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">imin</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">)</span> <span class="co"># position of the lowest chi2 in the dataframe</span>
-<span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="co"># calculation depth (g/cm2)</span>
-<span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span><span class="op">*</span><span class="va">res</span><span class="op">$</span><span class="va">rho</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">res</span><span class="op">$</span><span class="va">rho</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">res</span><span class="op">$</span><span class="va">inh</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span>
-<span class="co">#</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="fl">50e3</span>,<span class="fl">200e3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span><span class="op">)</span>,
-     xlab<span class="op">=</span><span class="st">"10Be concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth below surface (cm)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">C</span>,<span class="va">z</span>,lwd<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="co"># plotting the modeled profile</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">-</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">+</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,length <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,pch<span class="op">=</span><span class="fl">21</span>,cex<span class="op">=</span><span class="fl">2</span>,bg<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">label</span>,cex<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">imin</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">)</span> <span class="co"># position of the lowest chi2 in the dataframe</span></span>
+<span><span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="co"># calculation depth (g/cm2)</span></span>
+<span><span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span><span class="op">*</span><span class="va">res</span><span class="op">$</span><span class="va">rho</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">res</span><span class="op">$</span><span class="va">rho</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">res</span><span class="op">$</span><span class="va">inh</span><span class="op">[</span><span class="va">imin</span><span class="op">]</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span></span>
+<span><span class="co">#</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="fl">50e3</span>,<span class="fl">200e3</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">depth</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"10Be concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth below surface (cm)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">C</span>,<span class="va">z</span>,lwd<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="co"># plotting the modeled profile</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html" class="external-link">arrows</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">-</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">C</span><span class="op">+</span><span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,length <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,pch<span class="op">=</span><span class="fl">21</span>,cex<span class="op">=</span><span class="fl">2</span>,bg<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">data</span><span class="op">$</span><span class="va">label</span>,cex<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span></code></pre></div>
 <p><img src="depth_profiles_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
-<p>In many situation we have some knowledge about the value or plausible ranges of some parameters. For example the density can be measured at teh sampling site, and inheritance can be estimated from the shape of the profile, in our case it seems reasonable to consider that it is close to 90<span class="math inline">\(\times10^3\)</span> at/g. We can restrict the range of variation or even fix these parameters, which what we do next, by letting only the age and denudation rate as free parameters. In this case the results will be much easier to visualize through the construction of a <span class="math inline">\(\chi^2\)</span> surface.</p>
+<p>In many situation we have some knowledge about the value or plausible
+ranges of some parameters. For example the density can be measured at
+teh sampling site, and inheritance can be estimated from the shape of
+the profile, in our case it seems reasonable to consider that it is
+close to 90<span class="math inline">\(\times10^3\)</span> at/g. We can
+restrict the range of variation or even fix these parameters, which what
+we do next, by letting only the age and denudation rate as free
+parameters. In this case the results will be much easier to visualize
+through the construction of a <span class="math inline">\(\chi^2\)</span> surface.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/depth_profile_mc.html">depth_profile_mc</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">Lambda</span>,<span class="va">S</span>,
-                       age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span><span class="op">*</span><span class="fl">1000</span>,
-                       ero<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">50</span><span class="op">)</span>,
-                       inh<span class="op">=</span><span class="fl">90</span><span class="op">*</span><span class="fl">1e3</span>,
-                       rho<span class="op">=</span><span class="fl">2</span>,
-                       n1<span class="op">=</span><span class="fl">20000</span>,n2<span class="op">=</span><span class="fl">20</span><span class="op">)</span>
-<span class="va">cutoff</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span>,<span class="fl">0.01</span><span class="op">)</span>
-<span class="va">best</span> <span class="op">=</span> <span class="va">res</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">&lt;</span><span class="va">cutoff</span>,<span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">best</span><span class="op">$</span><span class="va">ero</span>,<span class="va">best</span><span class="op">$</span><span class="va">age</span><span class="op">/</span><span class="fl">1000</span>,pch<span class="op">=</span><span class="fl">16</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="fl">0.2</span><span class="op">)</span>,
-     xlab<span class="op">=</span><span class="st">"Denudation rate (m/Ma)"</span>,ylab<span class="op">=</span><span class="st">"Age (ka)"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/depth_profile_mc.html">depth_profile_mc</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">C</span>,<span class="va">data</span><span class="op">$</span><span class="va">C_e</span>,<span class="va">data</span><span class="op">$</span><span class="va">depth</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">Lambda</span>,<span class="va">S</span>,</span>
+<span>                       age<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span><span class="op">*</span><span class="fl">1000</span>,</span>
+<span>                       ero<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">50</span><span class="op">)</span>,</span>
+<span>                       inh<span class="op">=</span><span class="fl">90</span><span class="op">*</span><span class="fl">1e3</span>,</span>
+<span>                       rho<span class="op">=</span><span class="fl">2</span>,</span>
+<span>                       n1<span class="op">=</span><span class="fl">20000</span>,n2<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">cutoff</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span>,<span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="va">best</span> <span class="op">=</span> <span class="va">res</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">&lt;</span><span class="va">cutoff</span>,<span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">best</span><span class="op">$</span><span class="va">ero</span>,<span class="va">best</span><span class="op">$</span><span class="va">age</span><span class="op">/</span><span class="fl">1000</span>,pch<span class="op">=</span><span class="fl">16</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html" class="external-link">adjustcolor</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"Denudation rate (m/Ma)"</span>,ylab<span class="op">=</span><span class="st">"Age (ka)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="depth_profiles_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
-<p>Alternatively we can represent the results as a continuous <span class="math inline">\(\chi^2\)</span> surface. We use the library <code>akima</code>s to grid the results, note that .</p>
+<p>Alternatively we can represent the results as a continuous <span class="math inline">\(\chi^2\)</span> surface. We use the library
+<code>akima</code>s to grid the results, note that .</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"akima"</span><span class="op">)</span>
-<span class="va">spline</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/akima/man/interp.html">interp</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">)</span>,<span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">)</span>,duplicate<span class="op">=</span><span class="st">"mean"</span>,nx<span class="op">=</span><span class="fl">200</span>,ny<span class="op">=</span><span class="fl">200</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/contour.html">contour</a></span><span class="op">(</span><span class="va">spline</span><span class="op">$</span><span class="va">x</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">)</span>,<span class="va">spline</span><span class="op">$</span><span class="va">y</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">)</span><span class="op">/</span><span class="fl">1e3</span>,<span class="va">spline</span><span class="op">$</span><span class="va">z</span>,col<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"akima"</span><span class="op">)</span></span>
+<span><span class="va">spline</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/akima/man/interp.html" class="external-link">interp</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">)</span>,<span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">chi2</span><span class="op">)</span>,duplicate<span class="op">=</span><span class="st">"mean"</span>,nx<span class="op">=</span><span class="fl">200</span>,ny<span class="op">=</span><span class="fl">200</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/contour.html" class="external-link">contour</a></span><span class="op">(</span><span class="va">spline</span><span class="op">$</span><span class="va">x</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">ero</span><span class="op">)</span>,<span class="va">spline</span><span class="op">$</span><span class="va">y</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">age</span><span class="op">)</span><span class="op">/</span><span class="fl">1e3</span>,<span class="va">spline</span><span class="op">$</span><span class="va">z</span>,col<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="depth_profiles_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 </div>
-<div id="references" class="section level1">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-laloy2017bayesian" class="csl-entry">
+Laloy, Eric, Koen Beerten, Veerle Vanacker, Marcus Christl, Bart
+Rogiers, and Laurent Wouters. 2017. <span>“Bayesian Inversion of a
+<span>CRN</span> Depth Profile to Infer <span>Quaternary</span> Erosion
+of the Northwestern <span>Campine</span> <span>Plateau</span>
+(<span>NE</span> <span>Belgium</span>).”</span> <em>Earth Surface
+Dynamics</em> 5 (3): 331–45. <a href="https://doi.org/gcc5fn" class="external-link">https://doi.org/gcc5fn</a>.
+</div>
+</div>
 </div>
   </div>
 
@@ -269,11 +316,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Vincent Godard.</p>
+  <p></p>
+<p>Developed by Vincent Godard.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -281,6 +330,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -8,7 +8,7 @@
 #' @param lon1 longitude of point 1 (degrees)
 #' @param lat2 latitude of point 2 (degrees)
 #' @param lon2 longitude of point 2 (degrees)
-#' @keywords
+#' @keywords internal
 #' @examples
 #'
 angdist<-function(lat1,lon1,lat2,lon2){
@@ -27,7 +27,7 @@ angdist<-function(lat1,lon1,lat2,lon2){
 #'
 #'
 #' @param a angle (degrees)
-#' @keywords
+#' @keywords internal
 #' @examples
 #'
 d2r<-function(a){
@@ -41,7 +41,7 @@ d2r<-function(a){
 #'
 #'
 #' @param a angle (radians)
-#' @keywords
+#' @keywords internal
 #' @examples
 #'
 r2d<-function(a){

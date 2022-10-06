@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TCNtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -78,14 +74,14 @@
 
       
 
-      </header><script src="concentration_solver_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="concentration_solver_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="concentration_solver_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Concentration calculations</h1>
-                        <h4 class="author">Vincent Godard</h4>
+                        <h4 data-toc-skip class="author">Vincent
+Godard</h4>
             
-            <h4 class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2022-10-06</h4>
       
       
       <div class="hidden name"><code>concentration_solver.Rmd</code></div>
@@ -94,58 +90,86 @@
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<div id="how-to-use-this-document" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-to-use-this-document" class="anchor"></a>How to use this document?</h2>
-<p>This html page is derived from an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. You can copy/paste the various lines of code into your own R script and run it in any R session.</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<div class="section level3">
+<h3 id="how-to-use-this-document">How to use this document?<a class="anchor" aria-label="anchor" href="#how-to-use-this-document"></a>
+</h3>
+<p>This html page is derived from an <a href="http://rmarkdown.rstudio.com" class="external-link">R Markdown</a> Notebook. You can
+copy/paste the various lines of code into your own R script and run it
+in any R session.</p>
 </div>
-<div id="objectives" class="section level2">
-<h2 class="hasAnchor">
-<a href="#objectives" class="anchor"></a>Objectives</h2>
-<p>The objective of this notbook is to illustrate simple computations of concentration.</p>
-<p>The first thing we have to do is to load the <code>TCNtools</code> library (once it has been installed)</p>
+<div class="section level3">
+<h3 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
+</h3>
+<p>The objective of this notbook is to illustrate simple computations of
+concentration.</p>
+<p>The first thing we have to do is to load the <code>TCNtools</code>
+library (once it has been installed)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"TCNtools"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"TCNtools"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="simple-calcutions-with-the-eulerian-approach" class="section level1">
-<h1 class="hasAnchor">
-<a href="#simple-calcutions-with-the-eulerian-approach" class="anchor"></a>Simple calcutions with the Eulerian approach</h1>
-<p>We are going to consider simple computations of concentration under various conditions in terms of erosion, depth or age. This will be done using an Eulerian point of view, which is the most straightforward and fastest way to perform such computation. In this case the quantity of interest (concentration) is computed at fixed depths below the surface, while the exhumed material is moving through this reference frame during its trajectory toward the surface. More details on the differences between Eulerian and Lagrangian approaches, and their application to complex exposition/denudation histories, will be studied later.</p>
-<div id="background" class="section level2">
-<h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
+<div class="section level2">
+<h2 id="simple-calcutions-with-the-eulerian-approach">Simple calcutions with the Eulerian approach<a class="anchor" aria-label="anchor" href="#simple-calcutions-with-the-eulerian-approach"></a>
+</h2>
+<p>We are going to consider simple computations of concentration under
+various conditions in terms of erosion, depth or age. This will be done
+using an Eulerian point of view, which is the most straightforward and
+fastest way to perform such computation. In this case the quantity of
+interest (concentration) is computed at fixed depths below the surface,
+while the exhumed material is moving through this reference frame during
+its trajectory toward the surface. More details on the differences
+between Eulerian and Lagrangian approaches, and their application to
+complex exposition/denudation histories, will be studied later.</p>
+<div class="section level3">
+<h3 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h3>
 <p>The relevant equation is the following,</p>
 <p><span class="math display">\[
-C=C_0e^{-\lambda t} + \sum_i \frac{P_i}{\frac{\rho \varepsilon}{\Lambda_i}+\lambda}e^{\frac{-\rho z}{\Lambda_i}}(1-e^{-(\frac{\rho \varepsilon}{\Lambda_i}+\lambda)t})
+C=C_0e^{-\lambda t} + \sum_i \frac{P_i}{\frac{\rho
+\varepsilon}{\Lambda_i}+\lambda}e^{\frac{-\rho
+z}{\Lambda_i}}(1-e^{-(\frac{\rho \varepsilon}{\Lambda_i}+\lambda)t})
 \]</span> with the following variables and parameters,</p>
 <ul>
 <li>
-<span class="math inline">\(C\)</span> the concentration (as a function of time <span class="math inline">\(t\)</span> and depth <span class="math inline">\(z\)</span>)</li>
+<span class="math inline">\(C\)</span> the concentration (as a
+function of time <span class="math inline">\(t\)</span> and depth <span class="math inline">\(z\)</span>)</li>
 <li>
-<span class="math inline">\(C_0\)</span> the inherited concentration</li>
+<span class="math inline">\(C_0\)</span> the inherited
+concentration</li>
 <li>
-<span class="math inline">\(\lambda\)</span> the decay constant for the considered nuclide</li>
+<span class="math inline">\(\lambda\)</span> the decay constant for
+the considered nuclide</li>
 <li>
-<span class="math inline">\(P_i\)</span> the scaled surface production rate for the nuclide of interest and the <span class="math inline">\(i\)</span>-th production pathway (spallation, stopped muons, fast muons)</li>
+<span class="math inline">\(P_i\)</span> the scaled surface
+production rate for the nuclide of interest and the <span class="math inline">\(i\)</span>-th production pathway (spallation,
+stopped muons, fast muons)</li>
 <li>
-<span class="math inline">\(\rho\)</span> the density of the medium</li>
+<span class="math inline">\(\rho\)</span> the density of the
+medium</li>
 <li>
-<span class="math inline">\(\Lambda_i\)</span> the attenuation length for the particules of the <span class="math inline">\(i\)</span>-th production pathway</li>
+<span class="math inline">\(\Lambda_i\)</span> the attenuation
+length for the particules of the <span class="math inline">\(i\)</span>-th production pathway</li>
 <li>
-<span class="math inline">\(\varepsilon\)</span> surface denudation</li>
+<span class="math inline">\(\varepsilon\)</span> surface
+denudation</li>
 </ul>
-<p>In order to stick with usual conventions in the following time will be measured in years (a), the unit of length will be cm and the depths will be expressed in g/cm<span class="math inline">\(^2\)</span> (i.e. actual depth <span class="math inline">\(\times \rho\)</span>).</p>
+<p>In order to stick with usual conventions in the following time will
+be measured in years (a), the unit of length will be cm and the depths
+will be expressed in g/cm<span class="math inline">\(^2\)</span>
+(i.e. actual depth <span class="math inline">\(\times
+\rho\)</span>).</p>
 </div>
-<div id="set-up-of-the-calculations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#set-up-of-the-calculations" class="anchor"></a>Set up of the calculations</h2>
-<p>We should the define the basic parameters we are going to use for the computation, which are two vectors :</p>
+<div class="section level3">
+<h3 id="set-up-of-the-calculations">Set up of the calculations<a class="anchor" aria-label="anchor" href="#set-up-of-the-calculations"></a>
+</h3>
+<p>We should the define the basic parameters we are going to use for the
+computation, which are two vectors :</p>
 <ul>
-<li>a vector with the attenuation lengths for different particules (in g/cm<span class="math inline">\(^2\)</span>)
+<li>a vector with the attenuation lengths for different particules (in
+g/cm<span class="math inline">\(^2\)</span>)
 <ul>
 <li>neutrons for spallation reactions <span class="math inline">\(\Lambda_{spal}\)</span>
 </li>
@@ -155,192 +179,258 @@ C=C_0e^{-\lambda t} + \sum_i \frac{P_i}{\frac{\rho \varepsilon}{\Lambda_i}+\lamb
 </li>
 </ul>
 </li>
-<li>a vector (or matrix) with the SLHL production rates (in at/g/a), in this case for the <em>st</em> scaling scheme (<span class="citation">Stone (2000)</span>), and decay constant <span class="math inline">\(\lambda\)</span> (in 1/a) for the nuclide(s) of interest.</li>
+<li>a vector (or matrix) with the SLHL production rates (in at/g/a), in
+this case for the <em>st</em> scaling scheme (<span class="citation">Stone (2000)</span>), and decay constant <span class="math inline">\(\lambda\)</span> (in 1/a) for the nuclide(s) of
+interest.</li>
 </ul>
-<p>For easy reference a set of data for these parameters is included in the <code>TCNtools</code> package, including Sea-Level High-Latitude production rates for the <code>st</code> scaling scheme.</p>
-<p>We can first load the attenuation length data (g/cm<span class="math inline">\(^2\)</span>). Documentation of this dataset is accessible with <code><a href="../reference/Lambda.html">?Lambda</a></code>.</p>
+<p>For easy reference a set of data for these parameters is included in
+the <code>TCNtools</code> package, including Sea-Level High-Latitude
+production rates for the <code>st</code> scaling scheme.</p>
+<p>We can first load the attenuation length data (g/cm<span class="math inline">\(^2\)</span>). Documentation of this dataset is
+accessible with <code><a href="../reference/Lambda.html">?Lambda</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Lambda</span><span class="op">)</span> <span class="co"># we load a vector containing the attenuation length into the environment</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">Lambda</span><span class="op">)</span></code></pre></div>
-<pre><code>## Lspal Lstop Lfast 
-##   160  1500  4320</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Lambda</span><span class="op">)</span> <span class="co"># we load a vector containing the attenuation length into the environment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Lambda</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Lspal Lstop Lfast </span></span>
+<span><span class="co">##   160  1500  4320</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rho</span> <span class="op">=</span> <span class="fl">2.7</span> <span class="co"># we also define the density (g/cm3)</span></code></pre></div>
-<p>The the production and decay parameters. Documentation of this dataset is accessible with <code><a href="../reference/prm.html">?prm</a></code>.</p>
+<code class="sourceCode R"><span><span class="va">rho</span> <span class="op">=</span> <span class="fl">2.7</span> <span class="co"># we also define the density (g/cm3)</span></span></code></pre></div>
+<p>The the production and decay parameters. Documentation of this
+dataset is accessible with <code><a href="../reference/prm.html">?prm</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">prm</span><span class="op">)</span> <span class="co"># we load a matrix containing the production/decay parameters into the environment</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">prm</span><span class="op">)</span></code></pre></div>
-<pre><code>##               Be10         Al26          C14
-## Pspal  4.01000e+00 2.793000e+01 1.224000e+01
-## Pstop  1.20000e-02 8.400000e-01 3.310000e+00
-## Pfast  3.90000e-02 8.100000e-02 0.000000e+00
-## lambda 5.09667e-07 9.667325e-07 1.209681e-04</code></pre>
-<p>We also need to define the properties of our site of interest and compute the relevant scaling parameters.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">prm</span><span class="op">)</span> <span class="co"># we load a matrix containing the production/decay parameters into the environment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">prm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##               Be10         Al26          C14</span></span>
+<span><span class="co">## Pspal  4.01000e+00 2.793000e+01 1.224000e+01</span></span>
+<span><span class="co">## Pstop  1.20000e-02 8.400000e-01 3.310000e+00</span></span>
+<span><span class="co">## Pfast  3.90000e-02 8.100000e-02 0.000000e+00</span></span>
+<span><span class="co">## lambda 5.09667e-07 9.667325e-07 1.209681e-04</span></span></code></pre>
+<p>We also need to define the properties of our site of interest and
+compute the relevant scaling parameters.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">altitude</span> <span class="op">=</span> <span class="fl">1000</span> <span class="co"># elevation in m</span>
-<span class="va">latitude</span> <span class="op">=</span> <span class="fl">45</span> <span class="co"># latitude in degrees</span>
-<span class="va">P</span> <span class="op">=</span> <span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">altitude</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> <span class="co"># compute atmospheric pressure at site</span>
-<span class="va">S</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">latitude</span><span class="op">)</span> <span class="co"># compute the scaling parameters according to Stone (2000)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">altitude</span> <span class="op">=</span> <span class="fl">1000</span> <span class="co"># elevation in m</span></span>
+<span><span class="va">latitude</span> <span class="op">=</span> <span class="fl">45</span> <span class="co"># latitude in degrees</span></span>
+<span><span class="va">P</span> <span class="op">=</span> <span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">altitude</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> <span class="co"># compute atmospheric pressure at site</span></span>
+<span><span class="va">S</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">latitude</span><span class="op">)</span> <span class="co"># compute the scaling parameters according to Stone (2000)</span></span></code></pre></div>
 </div>
-<div id="concentration-along-a-profile" class="section level2">
-<h2 class="hasAnchor">
-<a href="#concentration-along-a-profile" class="anchor"></a>Concentration along a profile</h2>
-<p>We first compute the changes in concentration with depth <span class="math inline">\(z\)</span> along a profile. We are going to use the <code>solv_conc_eul</code> function. As always the notice of the function, including its various arguments, can be obtained by typing <code><a href="../reference/solv_conc_eul.html">?solv_conc_eul</a></code> in the R console. We consider no inheritance (<span class="math inline">\(C_0\)</span>=0), so the evolution is starting from a profile with homogeneous zero concentration.</p>
+<div class="section level3">
+<h3 id="concentration-along-a-profile">Concentration along a profile<a class="anchor" aria-label="anchor" href="#concentration-along-a-profile"></a>
+</h3>
+<p>We first compute the changes in concentration with depth <span class="math inline">\(z\)</span> along a profile. We are going to use
+the <code>solv_conc_eul</code> function. As always the notice of the
+function, including its various arguments, can be obtained by typing
+<code><a href="../reference/solv_conc_eul.html">?solv_conc_eul</a></code> in the R console. We consider no inheritance
+(<span class="math inline">\(C_0\)</span>=0), so the evolution is
+starting from a profile with homogeneous zero concentration.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">500</span>,by<span class="op">=</span><span class="fl">10</span><span class="op">)</span> <span class="op">*</span> <span class="va">rho</span> <span class="co"># a vector containing depth from 0 to 500 cm by 10 cm increments,  and then converted into g/cm2</span>
-<span class="va">C0</span> <span class="op">=</span> <span class="fl">0</span> <span class="co"># inherited concentration</span>
-<span class="va">age</span> <span class="op">=</span> <span class="fl">10000</span> <span class="co"># the time in a</span>
-<span class="va">ero</span> <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span> <span class="co"># denudation rate expressed in m/Ma and converted in g/cm2/a</span>
-<span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">C</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">3</span>,col<span class="op">=</span><span class="st">"coral"</span>,xlab<span class="op">=</span><span class="st">"Concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth (g/cm2)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">500</span>,by<span class="op">=</span><span class="fl">10</span><span class="op">)</span> <span class="op">*</span> <span class="va">rho</span> <span class="co"># a vector containing depth from 0 to 500 cm by 10 cm increments,  and then converted into g/cm2</span></span>
+<span><span class="va">C0</span> <span class="op">=</span> <span class="fl">0</span> <span class="co"># inherited concentration</span></span>
+<span><span class="va">age</span> <span class="op">=</span> <span class="fl">10000</span> <span class="co"># the time in a</span></span>
+<span><span class="va">ero</span> <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span> <span class="co"># denudation rate expressed in m/Ma and converted in g/cm2/a</span></span>
+<span><span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">C</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">3</span>,col<span class="op">=</span><span class="st">"coral"</span>,xlab<span class="op">=</span><span class="st">"Concentration (at/g)"</span>,ylab<span class="op">=</span><span class="st">"Depth (g/cm2)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="concentration_solver_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>Try to modify the <code>age</code> and <code>ero</code> (always keeping it in g/cm<span class="math inline">\(^2\)</span>/a) parameters above, to see their influence on the profile.</p>
+<p>Try to modify the <code>age</code> and <code>ero</code> (always
+keeping it in g/cm<span class="math inline">\(^2\)</span>/a) parameters
+above, to see their influence on the profile.</p>
 </div>
-<div id="evolution-of-concentration-with-time" class="section level2">
-<h2 class="hasAnchor">
-<a href="#evolution-of-concentration-with-time" class="anchor"></a>Evolution of concentration with time</h2>
-<p>Now we are going to consider the evolution of concentration with time <span class="math inline">\(t\)</span>. The computation will be carried out at the surface (<span class="math inline">\(z=0\)</span>), but this could be done at any arbitrary depth.</p>
+<div class="section level3">
+<h3 id="evolution-of-concentration-with-time">Evolution of concentration with time<a class="anchor" aria-label="anchor" href="#evolution-of-concentration-with-time"></a>
+</h3>
+<p>Now we are going to consider the evolution of concentration with time
+<span class="math inline">\(t\)</span>. The computation will be carried
+out at the surface (<span class="math inline">\(z=0\)</span>), but this
+could be done at any arbitrary depth.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">age</span> <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100e3</span>,by<span class="op">=</span><span class="fl">100</span><span class="op">)</span> <span class="co"># a vector containing time from 0 to 100 ka by 100 a steps</span>
-<span class="va">z</span> <span class="op">=</span> <span class="fl">0</span> <span class="op">*</span> <span class="va">rho</span> <span class="co"># depth at which we are going to perform the calculation (cm converted to g/cm2)</span>
-<span class="va">C0</span> <span class="op">=</span> <span class="fl">0</span> <span class="co"># inherited concentration</span>
-<span class="va">ero</span> <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span> <span class="co"># denudation rate expressed in m/Ma and converted in g/cm2/a</span>
-<span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">age</span><span class="op">/</span><span class="fl">1000</span>,<span class="va">C</span>,type<span class="op">=</span><span class="st">"l"</span>,col<span class="op">=</span><span class="st">"cornflowerblue"</span>,lwd<span class="op">=</span><span class="fl">3</span>,ylab<span class="op">=</span><span class="st">"Concentration (at/g)"</span>,xlab<span class="op">=</span><span class="st">"Time (ka)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">age</span> <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100e3</span>,by<span class="op">=</span><span class="fl">100</span><span class="op">)</span> <span class="co"># a vector containing time from 0 to 100 ka by 100 a steps</span></span>
+<span><span class="va">z</span> <span class="op">=</span> <span class="fl">0</span> <span class="op">*</span> <span class="va">rho</span> <span class="co"># depth at which we are going to perform the calculation (cm converted to g/cm2)</span></span>
+<span><span class="va">C0</span> <span class="op">=</span> <span class="fl">0</span> <span class="co"># inherited concentration</span></span>
+<span><span class="va">ero</span> <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span> <span class="co"># denudation rate expressed in m/Ma and converted in g/cm2/a</span></span>
+<span><span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">age</span><span class="op">/</span><span class="fl">1000</span>,<span class="va">C</span>,type<span class="op">=</span><span class="st">"l"</span>,col<span class="op">=</span><span class="st">"cornflowerblue"</span>,lwd<span class="op">=</span><span class="fl">3</span>,ylab<span class="op">=</span><span class="st">"Concentration (at/g)"</span>,xlab<span class="op">=</span><span class="st">"Time (ka)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="concentration_solver_files/figure-html/ck_5-1.png" width="700"></p>
-<p>We see here the progressive build-up of concentration though time and the establishment of balance between gains (production) and losses (denudation and decay) leading to the concentration plateau at steady state.</p>
-<p>Try to modify the <code>ero</code> (always keeping it in g/cm<span class="math inline">\(^2\)</span>/a) parameter above, to see its influence on time needed to reach steady state and the final concentration.</p>
+<p>We see here the progressive build-up of concentration though time and
+the establishment of balance between gains (production) and losses
+(denudation and decay) leading to the concentration plateau at steady
+state.</p>
+<p>Try to modify the <code>ero</code> (always keeping it in g/cm<span class="math inline">\(^2\)</span>/a) parameter above, to see its
+influence on time needed to reach steady state and the final
+concentration.</p>
 </div>
-<div id="evolution-of-concentration-with-denudation-rate" class="section level2">
-<h2 class="hasAnchor">
-<a href="#evolution-of-concentration-with-denudation-rate" class="anchor"></a>Evolution of concentration with denudation rate</h2>
-<p>Now we are going to consider the evolution of concentration with denudation rate <span class="math inline">\(\varepsilon\)</span>. The computation will be carried out at the surface (<span class="math inline">\(z=0\)</span>), but this could be done at any arbitrary depth. We will consider that <span class="math inline">\(t=+\infty\)</span> and that we have reached the plateau concentration.</p>
+<div class="section level3">
+<h3 id="evolution-of-concentration-with-denudation-rate">Evolution of concentration with denudation rate<a class="anchor" aria-label="anchor" href="#evolution-of-concentration-with-denudation-rate"></a>
+</h3>
+<p>Now we are going to consider the evolution of concentration with
+denudation rate <span class="math inline">\(\varepsilon\)</span>. The
+computation will be carried out at the surface (<span class="math inline">\(z=0\)</span>), but this could be done at any
+arbitrary depth. We will consider that <span class="math inline">\(t=+\infty\)</span> and that we have reached the
+plateau concentration.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ero</span> <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span> <span class="co"># a log-spaced vector for denudation rate expressed in m/Ma and converted in g/cm2/a</span>
-<span class="va">age</span> <span class="op">=</span>  <span class="cn">Inf</span> <span class="co"># infinite age</span>
-<span class="va">z</span> <span class="op">=</span> <span class="fl">0</span> <span class="op">*</span> <span class="va">rho</span> <span class="co"># depth at which we are going to perform the calculation (cm converted to g/cm2)</span>
-<span class="va">C0</span> <span class="op">=</span> <span class="fl">0</span> <span class="co"># inherited concentration</span>
-<span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">ero</span><span class="op">/</span><span class="fl">100</span><span class="op">*</span><span class="fl">1e6</span><span class="op">/</span><span class="va">rho</span>,<span class="va">C</span>,col<span class="op">=</span><span class="st">"lawngreen"</span>,log<span class="op">=</span><span class="st">"xy"</span>,type<span class="op">=</span><span class="st">"l"</span>,lwd<span class="op">=</span><span class="fl">3</span>,ylab<span class="op">=</span><span class="st">"Concentration (at/g)"</span>,xlab<span class="op">=</span><span class="st">"Denudation rate (m/Ma)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ero</span> <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">/</span><span class="fl">1e6</span><span class="op">*</span><span class="va">rho</span> <span class="co"># a log-spaced vector for denudation rate expressed in m/Ma and converted in g/cm2/a</span></span>
+<span><span class="va">age</span> <span class="op">=</span>  <span class="cn">Inf</span> <span class="co"># infinite age</span></span>
+<span><span class="va">z</span> <span class="op">=</span> <span class="fl">0</span> <span class="op">*</span> <span class="va">rho</span> <span class="co"># depth at which we are going to perform the calculation (cm converted to g/cm2)</span></span>
+<span><span class="va">C0</span> <span class="op">=</span> <span class="fl">0</span> <span class="co"># inherited concentration</span></span>
+<span><span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="va">z</span>,<span class="va">ero</span>,<span class="va">age</span>,<span class="va">C0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># compute concentration</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ero</span><span class="op">/</span><span class="fl">100</span><span class="op">*</span><span class="fl">1e6</span><span class="op">/</span><span class="va">rho</span>,<span class="va">C</span>,col<span class="op">=</span><span class="st">"lawngreen"</span>,log<span class="op">=</span><span class="st">"xy"</span>,type<span class="op">=</span><span class="st">"l"</span>,lwd<span class="op">=</span><span class="fl">3</span>,ylab<span class="op">=</span><span class="st">"Concentration (at/g)"</span>,xlab<span class="op">=</span><span class="st">"Denudation rate (m/Ma)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="concentration_solver_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<p>This figure (log-scales on both axes) highlights the strong inverse relationship, at steady-state, between denudation rate (<span class="math inline">\(\varepsilon\)</span>) and concentration (<span class="math inline">\(C\)</span>), which is the foundation of many geomorphological studies trying to establish landscape evolution rates. Note the change in the relationship at very low denudation rates, which corresponds to the situation where the effects of radioactive decay become predominant.</p>
+<p>This figure (log-scales on both axes) highlights the strong inverse
+relationship, at steady-state, between denudation rate (<span class="math inline">\(\varepsilon\)</span>) and concentration (<span class="math inline">\(C\)</span>), which is the foundation of many
+geomorphological studies trying to establish landscape evolution rates.
+Note the change in the relationship at very low denudation rates, which
+corresponds to the situation where the effects of radioactive decay
+become predominant.</p>
 </div>
-<div id="dealing-with-inheritance" class="section level2">
-<h2 class="hasAnchor">
-<a href="#dealing-with-inheritance" class="anchor"></a>Dealing with inheritance</h2>
+<div class="section level3">
+<h3 id="dealing-with-inheritance">Dealing with inheritance<a class="anchor" aria-label="anchor" href="#dealing-with-inheritance"></a>
+</h3>
 </div>
 </div>
-<div id="comparing-the-eulerian-and-lagrangian-descriptions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#comparing-the-eulerian-and-lagrangian-descriptions" class="anchor"></a>Comparing the Eulerian and Lagrangian descriptions</h1>
-<p>This section presents a simple comparison of the Eulerian and Lagrangian approaches for the computation of cosmogenic nuclides concentration evolution in complex denudation and exposure scenarios. A nice presentation of this distinction is provided in <span class="citation">Knudsen, Egholm, and Jansen (2019)</span>.</p>
-<div id="definition-of-the-denudation-scenario" class="section level2">
-<h2 class="hasAnchor">
-<a href="#definition-of-the-denudation-scenario" class="anchor"></a>Definition of the denudation scenario</h2>
-<p>We will start from a steady state situation under constant denudation, and then apply a change in the denudation rate for a given period of time.</p>
+<div class="section level2">
+<h2 id="comparing-the-eulerian-and-lagrangian-descriptions">Comparing the Eulerian and Lagrangian descriptions<a class="anchor" aria-label="anchor" href="#comparing-the-eulerian-and-lagrangian-descriptions"></a>
+</h2>
+<p>This section presents a simple comparison of the Eulerian and
+Lagrangian approaches for the computation of cosmogenic nuclides
+concentration evolution in complex denudation and exposure scenarios. A
+nice presentation of this distinction is provided in <span class="citation">(<strong>knudsen2019time?</strong>)</span>.</p>
+<div class="section level3">
+<h3 id="definition-of-the-denudation-scenario">Definition of the denudation scenario<a class="anchor" aria-label="anchor" href="#definition-of-the-denudation-scenario"></a>
+</h3>
+<p>We will start from a steady state situation under constant
+denudation, and then apply a change in the denudation rate for a given
+period of time.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tmax</span> <span class="op">=</span> <span class="fl">2e6</span> <span class="co"># duration in a </span>
-<span class="va">ero</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1.e6</span><span class="op">*</span><span class="fl">100</span><span class="op">*</span><span class="va">rho</span> <span class="co"># denudation rate conversion en m/Ma -&gt; g/cm2/a</span>
-<span class="va">fact</span> <span class="op">=</span> <span class="fl">5</span> <span class="co"># change factor</span></code></pre></div>
-<p>Here the duration of the simulation will be 2 Ma, the initial denudation rate will be 1 m/Ma, which will changed by a factor 5 at the beginning of the simulation.</p>
+<code class="sourceCode R"><span><span class="va">tmax</span> <span class="op">=</span> <span class="fl">2e6</span> <span class="co"># duration in a </span></span>
+<span><span class="va">ero</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1.e6</span><span class="op">*</span><span class="fl">100</span><span class="op">*</span><span class="va">rho</span> <span class="co"># denudation rate conversion en m/Ma -&gt; g/cm2/a</span></span>
+<span><span class="va">fact</span> <span class="op">=</span> <span class="fl">5</span> <span class="co"># change factor</span></span></code></pre></div>
+<p>Here the duration of the simulation will be 2 Ma, the initial
+denudation rate will be 1 m/Ma, which will changed by a factor 5 at the
+beginning of the simulation.</p>
 </div>
-<div id="computation-of-concentrations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#computation-of-concentrations" class="anchor"></a>Computation of concentrations</h2>
-<div id="eulerian-reference-frame" class="section level3">
-<h3 class="hasAnchor">
-<a href="#eulerian-reference-frame" class="anchor"></a>Eulerian reference frame</h3>
-<p>We compute the evolution of concentrations at the surface (<span class="math inline">\(z=0\)</span>) using an Eulerian point of view. The calculation is very straightforward thanks to the <code>solv_conc_eul</code> function.</p>
+<div class="section level3">
+<h3 id="computation-of-concentrations">Computation of concentrations<a class="anchor" aria-label="anchor" href="#computation-of-concentrations"></a>
+</h3>
+<div class="section level4">
+<h4 id="eulerian-reference-frame">Eulerian reference frame<a class="anchor" aria-label="anchor" href="#eulerian-reference-frame"></a>
+</h4>
+<p>We compute the evolution of concentrations at the surface (<span class="math inline">\(z=0\)</span>) using an Eulerian point of view. The
+calculation is very straightforward thanks to the
+<code>solv_conc_eul</code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df_e</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>t<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tmax</span>,length.out <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span> <span class="co"># data frame to store results</span>
-<span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">=</span><span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">ero</span><span class="op">*</span><span class="va">fact</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">t</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span>,in_ero<span class="op">=</span><span class="va">ero</span><span class="op">)</span>
-<span class="va">df_e</span><span class="op">$</span><span class="va">C26</span><span class="op">=</span><span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">ero</span><span class="op">*</span><span class="va">fact</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">t</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Al26"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span>,in_ero<span class="op">=</span><span class="va">ero</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df_e</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>t<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tmax</span>,length.out <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span> <span class="co"># data frame to store results</span></span>
+<span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">=</span><span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">ero</span><span class="op">*</span><span class="va">fact</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">t</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Be10"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span>,in_ero<span class="op">=</span><span class="va">ero</span><span class="op">)</span></span>
+<span><span class="va">df_e</span><span class="op">$</span><span class="va">C26</span><span class="op">=</span><span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">ero</span><span class="op">*</span><span class="va">fact</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">t</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">"Al26"</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span>,in_ero<span class="op">=</span><span class="va">ero</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="lagrangian-reference-frame" class="section level3">
-<h3 class="hasAnchor">
-<a href="#lagrangian-reference-frame" class="anchor"></a>Lagrangian reference frame</h3>
-<p>Now we do the same calculation using a Lagrangian point of view, i.e. with a reference frame attached to a rock particle during its journey toward the surface as a response to denudation. It is slightly more complicated than in the Eulerian case and is done using the <code>solv_conc_lag</code> function.</p>
-<p>We first initiate a dataframe (<code>df_l</code>) and compute the evolution in depth <code>z</code> of the particle through time when it is exhumed from its initial depth (here 10 m) to the surface at a rate 5 m/Ma.</p>
+<div class="section level4">
+<h4 id="lagrangian-reference-frame">Lagrangian reference frame<a class="anchor" aria-label="anchor" href="#lagrangian-reference-frame"></a>
+</h4>
+<p>Now we do the same calculation using a Lagrangian point of view,
+i.e. with a reference frame attached to a rock particle during its
+journey toward the surface as a response to denudation. It is slightly
+more complicated than in the Eulerian case and is done using the
+<code>solv_conc_lag</code> function.</p>
+<p>We first initiate a dataframe (<code>df_l</code>) and compute the
+evolution in depth <code>z</code> of the particle through time when it
+is exhumed from its initial depth (here 10 m) to the surface at a rate 5
+m/Ma.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df_l</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>t<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tmax</span>,length.out <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span> <span class="co"># data frame to store results</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">z</span> <span class="op">=</span> <span class="va">ero</span><span class="op">*</span><span class="va">fact</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span> <span class="co"># cumulative erosion trough time (g/cm2)</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">)</span> <span class="op">-</span> <span class="va">df_l</span><span class="op">$</span><span class="va">z</span> <span class="co"># convert into depth</span></code></pre></div>
-<p>We compute the steady state concentration at starting depth, using the Eulerian solver.</p>
+<code class="sourceCode R"><span><span class="va">df_l</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>t<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tmax</span>,length.out <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span> <span class="co"># data frame to store results</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span> <span class="op">=</span> <span class="va">ero</span><span class="op">*</span><span class="va">fact</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span> <span class="co"># cumulative erosion trough time (g/cm2)</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">)</span> <span class="op">-</span> <span class="va">df_l</span><span class="op">$</span><span class="va">z</span> <span class="co"># convert into depth</span></span></code></pre></div>
+<p>We compute the steady state concentration at starting depth, using
+the Eulerian solver.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">C10_0</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">)</span>,<span class="va">ero</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># starting 10Be concentration</span>
-<span class="va">C26_0</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">)</span>,<span class="va">ero</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># starting 26Al concentration</span></code></pre></div>
-<p>We then define another column in the data frame with the evolution of scaling parameters through time. It is trivial here in the case of the time-independent <strong>st</strong> scaling, but it will be highly valuable when dealing with time-dependent scalings, where the Eulerian approach is not applicable.</p>
+<code class="sourceCode R"><span><span class="va">C10_0</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">)</span>,<span class="va">ero</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># starting 10Be concentration</span></span>
+<span><span class="va">C26_0</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">)</span>,<span class="va">ero</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span> <span class="co"># starting 26Al concentration</span></span></code></pre></div>
+<p>We then define another column in the data frame with the evolution of
+scaling parameters through time. It is trivial here in the case of the
+time-independent <strong>st</strong> scaling, but it will be highly
+valuable when dealing with time-dependent scalings, where the Eulerian
+approach is not applicable.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df_l</span><span class="op">$</span><span class="va">Ssp</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">S</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">)</span><span class="op">)</span> <span class="co"># scaling spallation</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">Smu</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">S</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">)</span><span class="op">)</span> <span class="co"># scaling muons</span></code></pre></div>
-<p>Then we calculate the un-scaled production rates at depths the depths of interest. Here again, as we use simple models of exponential decrease for production with depth, the interest of using such Lagrangian approach is not obvious. But such way of computing concentration will allow to deal with non-exponential production profiles, which might necessary in some situation for muons or low-energy neutrons.</p>
+<code class="sourceCode R"><span><span class="va">df_l</span><span class="op">$</span><span class="va">Ssp</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">S</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">)</span><span class="op">)</span> <span class="co"># scaling spallation</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">Smu</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">S</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">)</span><span class="op">)</span> <span class="co"># scaling muons</span></span></code></pre></div>
+<p>Then we calculate the un-scaled production rates at depths the depths
+of interest. Here again, as we use simple models of exponential decrease
+for production with depth, the interest of using such Lagrangian
+approach is not obvious. But such way of computing concentration will
+allow to deal with non-exponential production profiles, which might
+necessary in some situation for muons or low-energy neutrons.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># 10Be (not scaled)</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">Psp10</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pspal"</span>,<span class="st">'Be10'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lspal"</span><span class="op">]</span><span class="op">)</span> <span class="co"># spallation</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">Pmu10</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pstop"</span>,<span class="st">'Be10'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lstop"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pfast"</span>,<span class="st">'Be10'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lfast"</span><span class="op">]</span><span class="op">)</span> <span class="co"># muons</span>
-<span class="co"># 26Al (not scaled)</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">Psp26</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pspal"</span>,<span class="st">'Al26'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lspal"</span><span class="op">]</span><span class="op">)</span> <span class="co"># spallation</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">Pmu26</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pstop"</span>,<span class="st">'Al26'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lstop"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pfast"</span>,<span class="st">'Al26'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lfast"</span><span class="op">]</span><span class="op">)</span> <span class="co"># muons</span></code></pre></div>
-<p>We can now use the <code>solv_conc_lag</code> function to compute the evolution of concentration through time and depth.</p>
+<code class="sourceCode R"><span><span class="co"># 10Be (not scaled)</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">Psp10</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pspal"</span>,<span class="st">'Be10'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lspal"</span><span class="op">]</span><span class="op">)</span> <span class="co"># spallation</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">Pmu10</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pstop"</span>,<span class="st">'Be10'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lstop"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pfast"</span>,<span class="st">'Be10'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lfast"</span><span class="op">]</span><span class="op">)</span> <span class="co"># muons</span></span>
+<span><span class="co"># 26Al (not scaled)</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">Psp26</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pspal"</span>,<span class="st">'Al26'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lspal"</span><span class="op">]</span><span class="op">)</span> <span class="co"># spallation</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">Pmu26</span> <span class="op">=</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pstop"</span>,<span class="st">'Al26'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lstop"</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="va">prm</span><span class="op">[</span><span class="st">"Pfast"</span>,<span class="st">'Al26'</span><span class="op">]</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">df_l</span><span class="op">$</span><span class="va">z</span><span class="op">/</span><span class="va">Lambda</span><span class="op">[</span><span class="st">"Lfast"</span><span class="op">]</span><span class="op">)</span> <span class="co"># muons</span></span></code></pre></div>
+<p>We can now use the <code>solv_conc_lag</code> function to compute the
+evolution of concentration through time and depth.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_lag.html">solv_conc_lag</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">z</span>,<span class="va">C10_0</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Psp10</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Pmu10</span>,<span class="va">prm</span><span class="op">[</span><span class="st">"lambda"</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">Ssp</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Smu</span><span class="op">)</span>,final<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">df_l</span><span class="op">$</span><span class="va">C26</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_lag.html">solv_conc_lag</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">z</span>,<span class="va">C26_0</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Psp26</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Pmu26</span>,<span class="va">prm</span><span class="op">[</span><span class="st">"lambda"</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">Ssp</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Smu</span><span class="op">)</span>,final<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_lag.html">solv_conc_lag</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">z</span>,<span class="va">C10_0</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Psp10</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Pmu10</span>,<span class="va">prm</span><span class="op">[</span><span class="st">"lambda"</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">Ssp</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Smu</span><span class="op">)</span>,final<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">df_l</span><span class="op">$</span><span class="va">C26</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_lag.html">solv_conc_lag</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">z</span>,<span class="va">C26_0</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Psp26</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Pmu26</span>,<span class="va">prm</span><span class="op">[</span><span class="st">"lambda"</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">Ssp</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">Smu</span><span class="op">)</span>,final<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="comparison-of-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparison-of-results" class="anchor"></a>Comparison of results</h2>
-<p>We can now plot the results of the calculations and compare the two approaches. First for <span class="math inline">\(^{10}\)</span>Be.</p>
+<div class="section level3">
+<h3 id="comparison-of-results">Comparison of results<a class="anchor" aria-label="anchor" href="#comparison-of-results"></a>
+</h3>
+<p>We can now plot the results of the calculations and compare the two
+approaches. First for <span class="math inline">\(^{10}\)</span>Be.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">col_e</span> <span class="op">=</span> <span class="st">"chartreuse"</span>
-<span class="va">col_l</span> <span class="op">=</span> <span class="st">"chocolate1"</span>
-  
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">t</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,type<span class="op">=</span><span class="st">"l"</span>,col<span class="op">=</span><span class="va">col_e</span>,lwd<span class="op">=</span><span class="fl">2</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">t</span><span class="op">/</span><span class="fl">1e6</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span><span class="op">)</span>,
-     xlab<span class="op">=</span><span class="st">"Time (Ma)"</span>,ylab<span class="op">=</span><span class="st">"10Be concentration (x10e6 at/g)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,col<span class="op">=</span><span class="va">col_l</span>,lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Eulerian"</span>,<span class="st">"Lagrangian"</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">col_e</span>,<span class="va">col_l</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">col_e</span> <span class="op">=</span> <span class="st">"chartreuse"</span></span>
+<span><span class="va">col_l</span> <span class="op">=</span> <span class="st">"chocolate1"</span></span>
+<span>  </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">t</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,type<span class="op">=</span><span class="st">"l"</span>,col<span class="op">=</span><span class="va">col_e</span>,lwd<span class="op">=</span><span class="fl">2</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">t</span><span class="op">/</span><span class="fl">1e6</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"Time (Ma)"</span>,ylab<span class="op">=</span><span class="st">"10Be concentration (x10e6 at/g)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">t</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,col<span class="op">=</span><span class="va">col_l</span>,lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Eulerian"</span>,<span class="st">"Lagrangian"</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">col_e</span>,<span class="va">col_l</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="concentration_solver_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
-<p>The Lagrangian evolution starts with a low concentration corresponding to the burial at depth of the particle at the onset of the evolution, while at the same time (<span class="math inline">\(t=0\)</span>) we are looking at the surface with the Eulerian point of view, and then obviously observe much higher concentrations. The two descriptions converge toward the same concentration at the end of the evolution (i.e. when the lagrangian particle reaches the surface).</p>
-<p>We can also represent the corresponding two nuclides plot for <span class="math inline">\(^{10}\)</span>Be and <span class="math inline">\(^{26}\)</span>Al. We need first to compute the steady-state erosion and constant exposure lines.</p>
+<p>The Lagrangian evolution starts with a low concentration
+corresponding to the burial at depth of the particle at the onset of the
+evolution, while at the same time (<span class="math inline">\(t=0\)</span>) we are looking at the surface with
+the Eulerian point of view, and then obviously observe much higher
+concentrations. The two descriptions converge toward the same
+concentration at the end of the evolution (i.e. when the lagrangian
+particle reaches the surface).</p>
+<p>We can also represent the corresponding two nuclides plot for <span class="math inline">\(^{10}\)</span>Be and <span class="math inline">\(^{26}\)</span>Al. We need first to compute the
+steady-state erosion and constant exposure lines.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># steady state erosion lines</span>
-<span class="va">erosion</span> <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">/</span><span class="fl">1.e6</span><span class="op">*</span><span class="fl">100</span><span class="op">*</span><span class="va">rho</span> <span class="co">#  m/Ma -&gt; g/cm2/a</span>
-<span class="va">C10Be</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">erosion</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span>
-<span class="va">C26Al</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">erosion</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span>
-<span class="va">ss_erosion</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ero</span>,<span class="va">C10Be</span>,<span class="va">C26Al</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># plot banana line ss exposure</span>
-<span class="va">time</span> <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="fl">200e6</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># a</span>
-<span class="va">C10Be</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="va">time</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span>
-<span class="va">C26Al</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="va">time</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span>
-<span class="va">ss_exposure</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">C10Be</span>,<span class="va">C26Al</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># steady state erosion lines</span></span>
+<span><span class="va">erosion</span> <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">/</span><span class="fl">1.e6</span><span class="op">*</span><span class="fl">100</span><span class="op">*</span><span class="va">rho</span> <span class="co">#  m/Ma -&gt; g/cm2/a</span></span>
+<span><span class="va">C10Be</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">erosion</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span></span>
+<span><span class="va">C26Al</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">erosion</span>,<span class="cn">Inf</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span></span>
+<span><span class="va">ss_erosion</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">ero</span>,<span class="va">C10Be</span>,<span class="va">C26Al</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># plot banana line ss exposure</span></span>
+<span><span class="va">time</span> <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">200e6</span><span class="op">)</span>,length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># a</span></span>
+<span><span class="va">C10Be</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="va">time</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Be10'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span></span>
+<span><span class="va">C26Al</span> <span class="op">=</span> <span class="fu"><a href="../reference/solv_conc_eul.html">solv_conc_eul</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="va">time</span>,<span class="fl">0</span>,<span class="va">prm</span><span class="op">[</span>,<span class="st">'Al26'</span><span class="op">]</span>,<span class="va">S</span>,<span class="va">Lambda</span><span class="op">)</span></span>
+<span><span class="va">ss_exposure</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">C10Be</span>,<span class="va">C26Al</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#</span></span></code></pre></div>
 <p>And then plot.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span><span class="op">)</span>,log<span class="op">=</span><span class="st">"x"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">)</span>,
-     xlab<span class="op">=</span><span class="st">"10Be concentration (x10e6 at/g)"</span>,ylab<span class="op">=</span><span class="st">"26Al/10Be"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">ss_erosion</span><span class="op">$</span><span class="va">C10Be</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">ss_erosion</span><span class="op">$</span><span class="va">C26Al</span><span class="op">/</span><span class="va">ss_erosion</span><span class="op">$</span><span class="va">C10Be</span>,col<span class="op">=</span><span class="st">"black"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">ss_exposure</span><span class="op">$</span><span class="va">C10Be</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">ss_exposure</span><span class="op">$</span><span class="va">C26Al</span><span class="op">/</span><span class="va">ss_exposure</span><span class="op">$</span><span class="va">C10Be</span>,col<span class="op">=</span><span class="st">"black"</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span>,col<span class="op">=</span><span class="va">col_e</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span>,col<span class="op">=</span><span class="va">col_l</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Eulerian"</span>,<span class="st">"Lagrangian"</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">col_e</span>,<span class="va">col_l</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="cn">NA</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span><span class="op">)</span>,log<span class="op">=</span><span class="st">"x"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"10Be concentration (x10e6 at/g)"</span>,ylab<span class="op">=</span><span class="st">"26Al/10Be"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">ss_erosion</span><span class="op">$</span><span class="va">C10Be</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">ss_erosion</span><span class="op">$</span><span class="va">C26Al</span><span class="op">/</span><span class="va">ss_erosion</span><span class="op">$</span><span class="va">C10Be</span>,col<span class="op">=</span><span class="st">"black"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">ss_exposure</span><span class="op">$</span><span class="va">C10Be</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">ss_exposure</span><span class="op">$</span><span class="va">C26Al</span><span class="op">/</span><span class="va">ss_exposure</span><span class="op">$</span><span class="va">C10Be</span>,col<span class="op">=</span><span class="st">"black"</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_e</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_e</span><span class="op">$</span><span class="va">C10</span>,col<span class="op">=</span><span class="va">col_e</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span><span class="op">/</span><span class="fl">1e6</span>,<span class="va">df_l</span><span class="op">$</span><span class="va">C26</span><span class="op">/</span><span class="va">df_l</span><span class="op">$</span><span class="va">C10</span>,col<span class="op">=</span><span class="va">col_l</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Eulerian"</span>,<span class="st">"Lagrangian"</span><span class="op">)</span>,lwd<span class="op">=</span><span class="fl">2</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">col_e</span>,<span class="va">col_l</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="concentration_solver_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
-<p>Note that the steady-state erosion and constant exposure lines are only relevant for the Eulerian trajectory.</p>
+<p>Note that the steady-state erosion and constant exposure lines are
+only relevant for the Eulerian trajectory.</p>
 </div>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
-<div id="refs" class="references">
-<div id="ref-knudsen2019time">
-<p>Knudsen, Mads Faurschou, David Lundbek Egholm, and John D. Jansen. 2019. “Time-integrating cosmogenic nuclide inventories under the influence of variable erosion, exposure, and sediment mixing.” <em>Quaternary Geochronology</em> 51 (December 2018): 110–19. <a href="https://doi.org/10.1016/j.quageo.2019.02.005">https://doi.org/10.1016/j.quageo.2019.02.005</a>.</p>
-</div>
-<div id="ref-stone2000air">
-<p>Stone, John O. 2000. “Air pressure and cosmogenic isotope production.” <em>Journal of Geophysical Research: Solid Earth</em> 105 (B10): 23753–9. <a href="https://doi.org/10.1029/2000JB900181">https://doi.org/10.1029/2000JB900181</a>.</p>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-stone2000air" class="csl-entry">
+Stone, John O. 2000. <span>“Air Pressure and Cosmogenic Isotope
+Production.”</span> <em>Journal of Geophysical Research: Solid
+Earth</em> 105 (B10): 23753–59. <a href="https://doi.org/fbsd87" class="external-link">https://doi.org/fbsd87</a>.
 </div>
 </div>
 </div>
@@ -357,11 +447,13 @@ C=C_0e^{-\lambda t} + \sum_i \frac{P_i}{\frac{\rho \varepsilon}{\Lambda_i}+\lamb
 
 
       <footer><div class="copyright">
-  <p>Developed by Vincent Godard.</p>
+  <p></p>
+<p>Developed by Vincent Godard.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -369,6 +461,8 @@ C=C_0e^{-\lambda t} + \sum_i \frac{P_i}{\frac{\rho \varepsilon}{\Lambda_i}+\lamb
 
   
 
+
+  
 
   </body>
 </html>

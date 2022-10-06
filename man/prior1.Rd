@@ -9,3 +9,4 @@ prior1(ero, binf, bsup)
 \description{
 Prior distribution  P(params) for solv_ss_eros_eul when method="MCMC"
 }
+\keyword{internal}

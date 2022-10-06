@@ -12,3 +12,4 @@ r2d(a)
 \description{
 Radians to degrees conversion
 }
+\keyword{internal}

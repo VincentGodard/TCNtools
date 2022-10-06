@@ -9,3 +9,4 @@ posterior1(ero, p, S, L, Cobs, Cobs_e, binf, bsup)
 \description{
 Un-normalized posterior : numerator of Bayes formula : P(obs|params)*P(params) for solv_ss_eros_eul when method="MCMC"
 }
+\keyword{internal}

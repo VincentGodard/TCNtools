@@ -57,7 +57,7 @@ rho = 2.65 # bedrock density (g/cm3)
 N1 = "Be10" # longer half-life
 N2 = "Al26" # shorter half-life
 res = tnp_curves(prm[,N1],prm[,N2],Lambda,S,rho)
-plot(NA,xlim=c(0.75,10),ylim=c(1,7),log="x",
+plot(NA,xlim=c(0.25,10),ylim=c(0.5,7),log="x",
     xlab=paste(N1,"(x10^6 at/g)"),ylab=paste(N2,"/",N1))
 lines(res[[1]]$C1/1e6,res[[1]]$C2/res[[1]]$C1,lty=2,lwd=2,col="khaki4") # constant exposure
 lines(res[[2]]$C1/1e6,res[[2]]$C2/res[[2]]$C1,lty=1,lwd=2,col="khaki4") # steady-state erosion

@@ -9,3 +9,4 @@ likelihood1(ero, p, S, L, Cobs, Cobs_e)
 \description{
 Likelihood function : P(obs|params) for solv_ss_eros_eul when method="MCMC"
 }
+\keyword{internal}

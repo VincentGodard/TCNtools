@@ -9,3 +9,4 @@ proposal1(ero, binf, bsup)
 \description{
 Proposal function for solv_ss_eros_eul when method="MCMC"
 }
+\keyword{internal}

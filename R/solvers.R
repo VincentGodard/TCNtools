@@ -187,6 +187,7 @@ solv_ss_eros_eul <- function(Cobs,p,S,L,Cobs_e=0,method="single",n=10000){
 #' @param S
 #' @param L
 #'
+#' @keywords internal
 #'
 fun_solv_ss_eros_eul <- function(ero,Cobs,p,S,L){
   C = solv_conc_eul(0,ero,4.55e9,0,p,S,L)
@@ -194,6 +195,7 @@ fun_solv_ss_eros_eul <- function(ero,Cobs,p,S,L){
 }
 
 #' Likelihood function : P(obs|params) for solv_ss_eros_eul when method="MCMC"
+#' @keywords internal
 likelihood1 <- function(ero,p,S,L,Cobs,Cobs_e){
   C = solv_conc_euler(0,ero,4.55e9,0,p,S,L)
   chi2 = (C-Cobs)^2/Cobs_e^2
@@ -201,19 +203,23 @@ likelihood1 <- function(ero,p,S,L,Cobs,Cobs_e){
   return(res)
 }
 #' Prior distribution  P(params) for solv_ss_eros_eul when method="MCMC"
+#' @keywords internal
 prior1 <- function(ero,binf,bsup){
   return(dunif(ero, min=binf, max=bsup, log = T)) # log prior
 }
 #' Un-normalized posterior : numerator of Bayes formula : P(obs|params)*P(params) for solv_ss_eros_eul when method="MCMC"
 ##->  likelihood*prior (but we work with log)
+#' @keywords internal
 posterior1 <- function(ero,p,S,L,Cobs,Cobs_e,binf,bsup){
   return (likelihood1(ero,p,S,L,Cobs,Cobs_e) + prior1(ero,binf,bsup)) # log posterior
 }
 #' Proposal function for solv_ss_eros_eul when method="MCMC"
+#' @keywords internal
 proposal1 <- function(ero,binf,bsup){
   return(rtruncnorm(1,a=binf,b=bsup,mean=ero,sd=(bsup-binf)/20))
 }
 #' RUN MCMC function for solv_ss_eros_eul when method="MCMC"
+#' @keywords internal
 run_mcmc1 <- function(p,S,L,Cobs,Cobs_e,binf,bsup,n){
   # start chain
   chain = as.data.frame(matrix(NA,nrow=n,ncol=3))

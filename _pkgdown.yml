@@ -22,6 +22,7 @@ reference:
   -  scaling_lm
   -  solar_modulation
   -  scaling_lsd
+  -  lsdrc
 - title: "Solvers"
   desc: "Functions to compute concentrations or erosion rates"
 - contents:
@@ -33,6 +34,7 @@ reference:
 - contents:
   - tnp_ellipse
   - tnp_curves
+  - tnp_burial
 - title: "Soil mixing"
   desc: "Functions to compute concentrations and production rates in mixed soils"
 - contents:
@@ -46,15 +48,19 @@ reference:
   - mu_model1a
   - mu_model1b
 - title: "Fluxes"
-  desc: "Functions to particule fluxes"
+  desc: "Functions for particule fluxes"
 - contents:
   - sato_muons
   - sato_neutrons
   - sato_neutrons_low
   - sato_protons
+- title: "Depth profile"
+  desc: "Functions for depth profil analysis"
+- contents:
+  - depth_profile_mc
 - title: "Data"
   desc: "Datasets included in the package"
 - contents:
   - prm
   - Lambda
-
+  - tcn_depth_profiles

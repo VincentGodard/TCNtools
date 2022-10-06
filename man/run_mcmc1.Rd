@@ -9,3 +9,4 @@ run_mcmc1(p, S, L, Cobs, Cobs_e, binf, bsup, n)
 \description{
 RUN MCMC function for solv_ss_eros_eul when method="MCMC"
 }
+\keyword{internal}

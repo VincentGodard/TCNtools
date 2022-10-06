@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TCNtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -78,14 +74,14 @@
 
       
 
-      </header><script src="scaling_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="scaling_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="scaling_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Scaling</h1>
-                        <h4 class="author">Vincent Godard</h4>
+                        <h4 data-toc-skip class="author">Vincent
+Godard</h4>
             
-            <h4 class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2022-10-06</h4>
       
       
       <div class="hidden name"><code>scaling.Rmd</code></div>
@@ -94,175 +90,234 @@
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<div id="how-to-use-this-document" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-to-use-this-document" class="anchor"></a>How to use this document?</h2>
-<p>This html page is derived from an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. You can copy/paste the various lines of code into your own R script and run it in any R session.</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<div class="section level3">
+<h3 id="how-to-use-this-document">How to use this document?<a class="anchor" aria-label="anchor" href="#how-to-use-this-document"></a>
+</h3>
+<p>This html page is derived from an <a href="http://rmarkdown.rstudio.com" class="external-link">R Markdown</a> Notebook. You can
+copy/paste the various lines of code into your own R script and run it
+in any R session.</p>
 </div>
-<div id="objectives" class="section level2">
-<h2 class="hasAnchor">
-<a href="#objectives" class="anchor"></a>Objectives</h2>
-<p>Our goal is to describe the variations of these scaling factors with latitude and elevation, which are the main parameters controlling the production rates of cosmogenic nuclides at the Earth surface.</p>
-<p>The first thing we have to do is to load the <code>TCNtools</code> library (once it has been installed).</p>
+<div class="section level3">
+<h3 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
+</h3>
+<p>Our goal is to describe the variations of these scaling factors with
+latitude and elevation, which are the main parameters controlling the
+production rates of cosmogenic nuclides at the Earth surface.</p>
+<p>The first thing we have to do is to load the <code>TCNtools</code>
+library (once it has been installed).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"TCNtools"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"TCNtools"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="time-independent-scaling" class="section level1">
-<h1 class="hasAnchor">
-<a href="#time-independent-scaling" class="anchor"></a>Time-independent scaling</h1>
-<p>We are going to present the most widely used and simplest scaling scheme known as Lal-Stone and often abbreviated as <strong>st</strong>. The main equations are presented in the reference article by <span class="citation">Stone (2000)</span> .</p>
-<div id="site-characteristics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#site-characteristics" class="anchor"></a>Site characteristics</h2>
-<p>We first need to define some parameters concerning the site of interest :</p>
+<div class="section level2">
+<h2 id="time-independent-scaling">Time-independent scaling<a class="anchor" aria-label="anchor" href="#time-independent-scaling"></a>
+</h2>
+<p>We are going to present the most widely used and simplest scaling
+scheme known as Lal-Stone and often abbreviated as <strong>st</strong>.
+The main equations are presented in the reference article by <span class="citation">Stone (2000)</span> .</p>
+<div class="section level3">
+<h3 id="site-characteristics">Site characteristics<a class="anchor" aria-label="anchor" href="#site-characteristics"></a>
+</h3>
+<p>We first need to define some parameters concerning the site of
+interest :</p>
 <ul>
 <li>latitude <code>lat</code> in degrees</li>
 <li>altitude <code>z</code> in meters (can be a vector or a scalar)</li>
-<li>longitude <code>lon</code> in degrees, this is not used for <em>st</em> scaling (<span class="citation">Stone (2000)</span>), just in case we want to compute atmospheric pressure according to ERA40 (<span class="citation">Uppala et al. (2005)</span>).</li>
+<li>longitude <code>lon</code> in degrees, this is not used for
+<em>st</em> scaling (<span class="citation">Stone (2000)</span>), just
+in case we want to compute atmospheric pressure according to ERA40
+(<span class="citation">Uppala et al. (2005)</span>).</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lat</span> <span class="op">=</span> <span class="fl">30</span> <span class="co"># latitude</span>
-<span class="va">lon</span> <span class="op">=</span> <span class="fl">30</span> <span class="co"># longitude</span>
-<span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3000</span>,by<span class="op">=</span><span class="fl">100</span><span class="op">)</span> <span class="co"># vector from 0 to 3000 m by 100 m increments</span></code></pre></div>
-<p>Now we can compute the atmospheric pressure, with the function <code>atm_pressure</code> according to the two models available, and then plot for comparison. Here <code>z</code> is a vector to see the variations over a range of elevations.</p>
-<p>To get information about the usage of the function used here (for example what are the different models) type <code><a href="../reference/atm_pressure.html">?atm_pressure</a></code> in the R console.</p>
+<code class="sourceCode R"><span><span class="va">lat</span> <span class="op">=</span> <span class="fl">30</span> <span class="co"># latitude</span></span>
+<span><span class="va">lon</span> <span class="op">=</span> <span class="fl">30</span> <span class="co"># longitude</span></span>
+<span><span class="va">z</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3000</span>,by<span class="op">=</span><span class="fl">100</span><span class="op">)</span> <span class="co"># vector from 0 to 3000 m by 100 m increments</span></span></code></pre></div>
+<p>Now we can compute the atmospheric pressure, with the function
+<code>atm_pressure</code> according to the two models available, and
+then plot for comparison. Here <code>z</code> is a vector to see the
+variations over a range of elevations.</p>
+<p>To get information about the usage of the function used here (for
+example what are the different models) type <code><a href="../reference/atm_pressure.html">?atm_pressure</a></code>
+in the R console.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">P1</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">z</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> 
-<span class="va">P2</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">z</span>,lat<span class="op">=</span><span class="va">lat</span>,lon<span class="op">=</span><span class="va">lon</span>,model<span class="op">=</span><span class="st">"era40"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">P1</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,xlab<span class="op">=</span><span class="st">"Pressure (hPa)"</span>,ylab<span class="op">=</span><span class="st">"Altitude (m)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">P2</span>,<span class="va">z</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Stone 2000"</span>,<span class="st">"ERA40"</span><span class="op">)</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">P1</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">z</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> </span>
+<span><span class="va">P2</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">z</span>,lat<span class="op">=</span><span class="va">lat</span>,lon<span class="op">=</span><span class="va">lon</span>,model<span class="op">=</span><span class="st">"era40"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">P1</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,xlab<span class="op">=</span><span class="st">"Pressure (hPa)"</span>,ylab<span class="op">=</span><span class="st">"Altitude (m)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">P2</span>,<span class="va">z</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Stone 2000"</span>,<span class="st">"ERA40"</span><span class="op">)</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="scaling_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
-<div id="computation-of-scaling-factors" class="section level2">
-<h2 class="hasAnchor">
-<a href="#computation-of-scaling-factors" class="anchor"></a>Computation of scaling factors</h2>
-<p>We can now compute the scaling factors according to <span class="citation">Stone (2000)</span>. Same as above, to get some information about the function (parameters definition) type <code>?st_scaling</code> in the R console.</p>
+<div class="section level3">
+<h3 id="computation-of-scaling-factors">Computation of scaling factors<a class="anchor" aria-label="anchor" href="#computation-of-scaling-factors"></a>
+</h3>
+<p>We can now compute the scaling factors according to <span class="citation">Stone (2000)</span>. Same as above, to get some
+information about the function (parameters definition) type
+<code>?st_scaling</code> in the R console.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P1</span>,<span class="va">lat</span><span class="op">)</span> <span class="co"># here we use the pressure according to Stone 2000 model</span></code></pre></div>
-<p>The result is stored in <code>st</code> as a dataframe with as many rows as there are elements in the input pressure vector (<code>P1</code>) and two columns named <code>Nneutrons</code> and <code>Nmuons</code>, for the spallogenic and muogenic contributions, respectively.</p>
-<p>We can plot the evolution with elevation, wich illustrates the major influence of altitude of the sampling site in controlling the local production rate.</p>
+<code class="sourceCode R"><span><span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P1</span>,<span class="va">lat</span><span class="op">)</span> <span class="co"># here we use the pressure according to Stone 2000 model</span></span></code></pre></div>
+<p>The result is stored in <code>st</code> as a dataframe with as many
+rows as there are elements in the input pressure vector
+(<code>P1</code>) and two columns named <code>Nneutrons</code> and
+<code>Nmuons</code>, for the spallogenic and muogenic contributions,
+respectively.</p>
+<p>We can plot the evolution with elevation, wich illustrates the major
+influence of altitude of the sampling site in controlling the local
+production rate.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,
-     xlab<span class="op">=</span><span class="st">"Spallogenic st scaling factor (Stone 2000)"</span>,ylab<span class="op">=</span><span class="st">"Altitude (m)"</span>,
-     main<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Latitude "</span>,<span class="va">lat</span>,<span class="st">"°"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span>,<span class="va">z</span>,type<span class="op">=</span><span class="st">"l"</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"Spallogenic st scaling factor (Stone 2000)"</span>,ylab<span class="op">=</span><span class="st">"Altitude (m)"</span>,</span>
+<span>     main<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Latitude "</span>,<span class="va">lat</span>,<span class="st">"°"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="scaling_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
-<div id="global-variations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#global-variations" class="anchor"></a>Global variations</h2>
-<p>In order to get a better idea of the variations with both latitude (from 0 to 90°) and elevation (from sea level to 3000 m) we can try the following plot.</p>
+<div class="section level3">
+<h3 id="global-variations">Global variations<a class="anchor" aria-label="anchor" href="#global-variations"></a>
+</h3>
+<p>In order to get a better idea of the variations with both latitude
+(from 0 to 90°) and elevation (from sea level to 3000 m) we can try the
+following plot.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">P</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="fl">0</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> <span class="co"># compute pressure</span>
-<span class="va">lat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">90</span>,by<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="co"># latitude vector</span>
-<span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span> <span class="co"># size of vector</span>
-<span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">lat</span><span class="op">)</span> <span class="co"># compute scaling</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">lat</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span>,type<span class="op">=</span><span class="st">"l"</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">12</span><span class="op">)</span>,
-     xlab<span class="op">=</span><span class="st">"Latitude (°)"</span>,ylab<span class="op">=</span><span class="st">"Spallogenic st scaling factor (Stone 2000)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">lat</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="st">"0 km"</span>,cex<span class="op">=</span><span class="fl">0.5</span>,adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="co"># put label at the end of curve</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">z</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">500</span>,<span class="fl">3000</span>,by<span class="op">=</span><span class="fl">500</span><span class="op">)</span><span class="op">)</span><span class="op">{</span> <span class="co"># loop on elevations : same as above for a range of elevations</span>
-  <span class="va">P</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">z</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> 
-  <span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">lat</span><span class="op">)</span> 
-  <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">lat</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">lat</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">z</span><span class="op">/</span><span class="fl">1000</span>,cex<span class="op">=</span><span class="fl">0.5</span>,adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">P</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="fl">0</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> <span class="co"># compute pressure</span></span>
+<span><span class="va">lat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">90</span>,by<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="co"># latitude vector</span></span>
+<span><span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span> <span class="co"># size of vector</span></span>
+<span><span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">lat</span><span class="op">)</span> <span class="co"># compute scaling</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lat</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span>,type<span class="op">=</span><span class="st">"l"</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">12</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"Latitude (°)"</span>,ylab<span class="op">=</span><span class="st">"Spallogenic st scaling factor (Stone 2000)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">lat</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="st">"0 km"</span>,cex<span class="op">=</span><span class="fl">0.5</span>,adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="co"># put label at the end of curve</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">z</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">500</span>,<span class="fl">3000</span>,by<span class="op">=</span><span class="fl">500</span><span class="op">)</span><span class="op">)</span><span class="op">{</span> <span class="co"># loop on elevations : same as above for a range of elevations</span></span>
+<span>  <span class="va">P</span><span class="op">=</span><span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="va">z</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span> </span>
+<span>  <span class="va">st</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">lat</span><span class="op">)</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lat</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">lat</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">st</span><span class="op">$</span><span class="va">Nneutrons</span><span class="op">[</span><span class="va">n</span><span class="op">]</span>,<span class="va">z</span><span class="op">/</span><span class="fl">1000</span>,cex<span class="op">=</span><span class="fl">0.5</span>,adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="scaling_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<p>This dependance of the scaling factor on latitude is a direct consequence of the dipole nature structure of the Earth magnetic field, with a higher cosmic rays flux at high latitude.</p>
+<p>This dependance of the scaling factor on latitude is a direct
+consequence of the dipole nature structure of the Earth magnetic field,
+with a higher cosmic rays flux at high latitude.</p>
 </div>
 </div>
-<div id="time-dependent-scalings" class="section level1">
-<h1 class="hasAnchor">
-<a href="#time-dependent-scalings" class="anchor"></a>Time-dependent scalings</h1>
-<div id="definition-of-paleomagnetic-variations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#definition-of-paleomagnetic-variations" class="anchor"></a>Definition of paleomagnetic variations</h2>
-<p>Time-dependent scaling factors allow to take into account the variations through time of the Earth magnetic field, which modulates the incoming cosmic ray flux.</p>
-<div id="virtual-dipole-moment" class="section level3">
-<h3 class="hasAnchor">
-<a href="#virtual-dipole-moment" class="anchor"></a>Virtual Dipole Moment</h3>
-<p>We need to first define a time series for the Virtual Dipole Moment (VDM) variation, using the <code>get_vdm</code> function.</p>
-<p>Several paleomagnetic database can be used. The three options correspond to databases defined in <a href="https://crep.otelo.univ-lorraine.fr">Crep</a>. We plot the three of them on the same graph.</p>
+<div class="section level2">
+<h2 id="time-dependent-scalings">Time-dependent scalings<a class="anchor" aria-label="anchor" href="#time-dependent-scalings"></a>
+</h2>
+<div class="section level3">
+<h3 id="definition-of-paleomagnetic-variations">Definition of paleomagnetic variations<a class="anchor" aria-label="anchor" href="#definition-of-paleomagnetic-variations"></a>
+</h3>
+<p>Time-dependent scaling factors allow to take into account the
+variations through time of the Earth magnetic field, which modulates the
+incoming cosmic ray flux.</p>
+<div class="section level4">
+<h4 id="virtual-dipole-moment">Virtual Dipole Moment<a class="anchor" aria-label="anchor" href="#virtual-dipole-moment"></a>
+</h4>
+<p>We need to first define a time series for the Virtual Dipole Moment
+(VDM) variation, using the <code>get_vdm</code> function.</p>
+<p>Several paleomagnetic database can be used. The three options
+correspond to databases defined in <a href="https://crep.otelo.univ-lorraine.fr" class="external-link">Crep</a>. We plot the three
+of them on the same graph.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">time</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5e4</span>,length.out <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="co"># time vector from 0 to 50 ka BP, with 1000 regularly spaced elements</span>
-<span class="co">#</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">16</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">"Time (a BP)"</span>,ylab<span class="op">=</span><span class="st">"VDM (10^22 A.m^2)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co"># - Glopis</span>
-<span class="va">col1</span><span class="op">=</span><span class="st">"coral1"</span>
-<span class="va">vdm1</span><span class="op">=</span><span class="fu"><a href="../reference/get_vdm.html">get_vdm</a></span><span class="op">(</span><span class="va">time</span>,model<span class="op">=</span><span class="st">"glopis"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">vdm1</span><span class="op">/</span><span class="fl">1e22</span>,col<span class="op">=</span><span class="va">col1</span><span class="op">)</span>
-<span class="co"># 2 - Musch</span>
-<span class="va">col2</span> <span class="op">=</span> <span class="st">"chartreuse"</span>
-<span class="va">vdm2</span><span class="op">=</span><span class="fu"><a href="../reference/get_vdm.html">get_vdm</a></span><span class="op">(</span><span class="va">time</span>,model<span class="op">=</span><span class="st">"musch"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">vdm2</span><span class="op">/</span><span class="fl">1e22</span>,col<span class="op">=</span><span class="va">col2</span><span class="op">)</span>
-<span class="co"># 3 - lsd</span>
-<span class="va">col3</span> <span class="op">=</span> <span class="st">"cornflowerblue"</span>
-<span class="va">vdm3</span><span class="op">=</span><span class="fu"><a href="../reference/get_vdm.html">get_vdm</a></span><span class="op">(</span><span class="va">time</span>,model<span class="op">=</span><span class="st">"lsd"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">vdm3</span><span class="op">/</span><span class="fl">1e22</span>,col<span class="op">=</span><span class="va">col3</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"glopis"</span>,<span class="st">"musch"</span>,<span class="st">"lsd"</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">col1</span>,<span class="va">col2</span>,<span class="va">col3</span><span class="op">)</span>,lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">time</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5e4</span>,length.out <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="co"># time vector from 0 to 50 ka BP, with 1000 regularly spaced elements</span></span>
+<span><span class="co">#</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">16</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">"Time (a BP)"</span>,ylab<span class="op">=</span><span class="st">"VDM (10^22 A.m^2)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># - Glopis</span></span>
+<span><span class="va">col1</span><span class="op">=</span><span class="st">"coral1"</span></span>
+<span><span class="va">vdm1</span><span class="op">=</span><span class="fu"><a href="../reference/get_vdm.html">get_vdm</a></span><span class="op">(</span><span class="va">time</span>,model<span class="op">=</span><span class="st">"glopis"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">vdm1</span><span class="op">/</span><span class="fl">1e22</span>,col<span class="op">=</span><span class="va">col1</span><span class="op">)</span></span>
+<span><span class="co"># 2 - Musch</span></span>
+<span><span class="va">col2</span> <span class="op">=</span> <span class="st">"chartreuse"</span></span>
+<span><span class="va">vdm2</span><span class="op">=</span><span class="fu"><a href="../reference/get_vdm.html">get_vdm</a></span><span class="op">(</span><span class="va">time</span>,model<span class="op">=</span><span class="st">"musch"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">vdm2</span><span class="op">/</span><span class="fl">1e22</span>,col<span class="op">=</span><span class="va">col2</span><span class="op">)</span></span>
+<span><span class="co"># 3 - lsd</span></span>
+<span><span class="va">col3</span> <span class="op">=</span> <span class="st">"cornflowerblue"</span></span>
+<span><span class="va">vdm3</span><span class="op">=</span><span class="fu"><a href="../reference/get_vdm.html">get_vdm</a></span><span class="op">(</span><span class="va">time</span>,model<span class="op">=</span><span class="st">"lsd"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">vdm3</span><span class="op">/</span><span class="fl">1e22</span>,col<span class="op">=</span><span class="va">col3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"glopis"</span>,<span class="st">"musch"</span>,<span class="st">"lsd"</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">col1</span>,<span class="va">col2</span>,<span class="va">col3</span><span class="op">)</span>,lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="scaling_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
-<div id="cutoff-rigidity" class="section level3">
-<h3 class="hasAnchor">
-<a href="#cutoff-rigidity" class="anchor"></a>Cutoff Rigidity</h3>
-<p>Now we need to convert that into cutoff rigidity using <code>vdm2rc</code> function. Such can be done using the following expression (<span class="citation">Martin et al. (2017)</span>): <span class="math display">\[R_c = 14.3 \frac{M}{M_0}\cos^4 \lambda,\]</span> where <span class="math inline">\(M\)</span> is the moment of the Earth dipole field, <span class="math inline">\(M_0\)</span> the 2010 reference value for <span class="math inline">\(M\)</span> and <span class="math inline">\(\lambda\)</span> the latitude. This corresponds to the default <code>model=elsasser54</code> in the <code>vdm2rc</code> function arguments. A more complex formula proposed by <span class="citation">Lifton, Sato, and Dunai (2014)</span> can be used with <code>model=lifton14</code>.</p>
+<div class="section level4">
+<h4 id="cutoff-rigidity">Cutoff Rigidity<a class="anchor" aria-label="anchor" href="#cutoff-rigidity"></a>
+</h4>
+<p>Now we need to convert that into cutoff rigidity using
+<code>vdm2rc</code> function. Such can be done using the following
+expression (<span class="citation">Martin et al. (2017)</span>): <span class="math display">\[R_c = 14.3 \frac{M}{M_0}\cos^4 \lambda,\]</span>
+where <span class="math inline">\(M\)</span> is the moment of the Earth
+dipole field, <span class="math inline">\(M_0\)</span> the 2010
+reference value for <span class="math inline">\(M\)</span> and <span class="math inline">\(\lambda\)</span> the latitude. This corresponds to
+the default <code>model=elsasser54</code> in the <code>vdm2rc</code>
+function arguments. A more complex formula proposed by <span class="citation">Lifton, Sato, and Dunai (2014)</span> can be used with
+<code>model=lifton14</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lat</span> <span class="op">=</span> <span class="fl">40</span>
-<span class="va">rc1a</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm1</span>,<span class="va">lat</span><span class="op">)</span>
-<span class="va">rc1b</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm1</span>,<span class="va">lat</span>,model<span class="op">=</span><span class="st">"lifton14"</span><span class="op">)</span>
-<span class="va">rc2a</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm2</span>,<span class="va">lat</span><span class="op">)</span>
-<span class="va">rc2b</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm2</span>,<span class="va">lat</span>,model<span class="op">=</span><span class="st">"lifton14"</span><span class="op">)</span>
-<span class="va">rc3a</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm3</span>,<span class="va">lat</span><span class="op">)</span>
-<span class="va">rc3b</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm3</span>,<span class="va">lat</span>,model<span class="op">=</span><span class="st">"lifton14"</span><span class="op">)</span>
-<span class="co">#</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">rc1a</span>,<span class="va">rc2a</span>,<span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="va">rc3a</span><span class="op">)</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">"Time (a BP)"</span>,ylab<span class="op">=</span><span class="st">"Rc (GV)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc1a</span>,col<span class="op">=</span><span class="va">col1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc1b</span>,col<span class="op">=</span><span class="va">col1</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc2a</span>,col<span class="op">=</span><span class="va">col2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc2b</span>,col<span class="op">=</span><span class="va">col2</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc3a</span>,col<span class="op">=</span><span class="va">col3</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc3b</span>,col<span class="op">=</span><span class="va">col3</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"glopis"</span>,<span class="st">"musch"</span>,<span class="st">"lsd"</span>,<span class="st">"elsasser54"</span>,<span class="st">"lifton14"</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">col1</span>,<span class="va">col2</span>,<span class="va">col3</span>,<span class="st">"black"</span>,<span class="st">"black"</span><span class="op">)</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lat</span> <span class="op">=</span> <span class="fl">40</span></span>
+<span><span class="va">rc1a</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm1</span>,<span class="va">lat</span><span class="op">)</span></span>
+<span><span class="va">rc1b</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm1</span>,<span class="va">lat</span>,model<span class="op">=</span><span class="st">"lifton14"</span><span class="op">)</span></span>
+<span><span class="va">rc2a</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm2</span>,<span class="va">lat</span><span class="op">)</span></span>
+<span><span class="va">rc2b</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm2</span>,<span class="va">lat</span>,model<span class="op">=</span><span class="st">"lifton14"</span><span class="op">)</span></span>
+<span><span class="va">rc3a</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm3</span>,<span class="va">lat</span><span class="op">)</span></span>
+<span><span class="va">rc3b</span> <span class="op">=</span> <span class="fu"><a href="../reference/vdm2rc.html">vdm2rc</a></span><span class="op">(</span><span class="va">vdm3</span>,<span class="va">lat</span>,model<span class="op">=</span><span class="st">"lifton14"</span><span class="op">)</span></span>
+<span><span class="co">#</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="cn">NA</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">rc1a</span>,<span class="va">rc2a</span>,<span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">rc3a</span><span class="op">)</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">"Time (a BP)"</span>,ylab<span class="op">=</span><span class="st">"Rc (GV)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc1a</span>,col<span class="op">=</span><span class="va">col1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc1b</span>,col<span class="op">=</span><span class="va">col1</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc2a</span>,col<span class="op">=</span><span class="va">col2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc2b</span>,col<span class="op">=</span><span class="va">col2</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc3a</span>,col<span class="op">=</span><span class="va">col3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">rc3b</span>,col<span class="op">=</span><span class="va">col3</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"glopis"</span>,<span class="st">"musch"</span>,<span class="st">"lsd"</span>,<span class="st">"elsasser54"</span>,<span class="st">"lifton14"</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">col1</span>,<span class="va">col2</span>,<span class="va">col3</span>,<span class="st">"black"</span>,<span class="st">"black"</span><span class="op">)</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="scaling_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
-<div id="lalstone-modified-scaling-lm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lalstone-modified-scaling-lm" class="anchor"></a>Lal/Stone modified scaling (<em>lm</em>)</h2>
-<p>Once we have a <span class="math inline">\(R_c\)</span> time series we can compute the <em>lm</em> scaling factors using the <code>scaling_lm</code> function. For that we will only use one elevation (<em>z=0</em>), so we recompute the atmospheric pressure. We plot the corresponding time series, as well as the value of <em>st</em> scaling factor for reference.</p>
+<div class="section level3">
+<h3 id="lalstone-modified-scaling-lm">Lal/Stone modified scaling (<em>lm</em>)<a class="anchor" aria-label="anchor" href="#lalstone-modified-scaling-lm"></a>
+</h3>
+<p>Once we have a <span class="math inline">\(R_c\)</span> time series
+we can compute the <em>lm</em> scaling factors using the
+<code>scaling_lm</code> function. For that we will only use one
+elevation (<em>z=0</em>), so we recompute the atmospheric pressure. We
+plot the corresponding time series, as well as the value of <em>st</em>
+scaling factor for reference.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">P</span> <span class="op">=</span> <span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="fl">0</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span>
-<span class="va">lm</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_lm.html">scaling_lm</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">rc1a</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">lm</span>,type<span class="op">=</span><span class="st">"l"</span>,xlab<span class="op">=</span><span class="st">"Time (a BP)"</span>,ylab<span class="op">=</span><span class="st">"Spallogenic lm scaling factor"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">lat</span><span class="op">)</span><span class="op">$</span><span class="va">Nneutrons</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">P</span> <span class="op">=</span> <span class="fu"><a href="../reference/atm_pressure.html">atm_pressure</a></span><span class="op">(</span>alt<span class="op">=</span><span class="fl">0</span>,model<span class="op">=</span><span class="st">"stone2000"</span><span class="op">)</span></span>
+<span><span class="va">lm</span> <span class="op">=</span> <span class="fu"><a href="../reference/scaling_lm.html">scaling_lm</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">rc1a</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">lm</span>,type<span class="op">=</span><span class="st">"l"</span>,xlab<span class="op">=</span><span class="st">"Time (a BP)"</span>,ylab<span class="op">=</span><span class="st">"Spallogenic lm scaling factor"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fu"><a href="../reference/scaling_st.html">scaling_st</a></span><span class="op">(</span><span class="va">P</span>,<span class="va">lat</span><span class="op">)</span><span class="op">$</span><span class="va">Nneutrons</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="scaling_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
-<div id="lsd-scaling-sa-and-sf" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lsd-scaling-sa-and-sf" class="anchor"></a>LSD scaling (<em>sa</em> and <em>sf</em>)</h2>
+<div class="section level3">
+<h3 id="lsd-scaling-sa-and-sf">LSD scaling (<em>sa</em> and <em>sf</em>)<a class="anchor" aria-label="anchor" href="#lsd-scaling-sa-and-sf"></a>
+</h3>
 </div>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
-<div id="refs" class="references">
-<div id="ref-lifton2014scaling">
-<p>Lifton, Nathaniel, Tatsuhiko Sato, and Tibor J. Dunai. 2014. “Scaling in situ cosmogenic nuclide production rates using analytical approximations to atmospheric cosmic-ray fluxes.” <em>Earth and Planetary Science Letters</em> 386: 149–60. <a href="https://doi.org/10.1016/j.epsl.2013.10.052">https://doi.org/10.1016/j.epsl.2013.10.052</a>.</p>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-lifton2014scaling" class="csl-entry">
+Lifton, Nathaniel, Tatsuhiko Sato, and Tibor J. Dunai. 2014.
+<span>“Scaling in Situ Cosmogenic Nuclide Production Rates Using
+Analytical Approximations to Atmospheric Cosmic-Ray Fluxes.”</span>
+<em>Earth and Planetary Science Letters</em> 386: 149–60. <a href="https://doi.org/f5r46p" class="external-link">https://doi.org/f5r46p</a>.
 </div>
-<div id="ref-martin2017crep">
-<p>Martin, L. C. P., P.-H. Blard, G. Balco, J. Lavé, R. Delunel, N. Lifton, and V. Laurent. 2017. “The CREp program and the ICE-D production rate calibration database: A fully parameterizable and updated online tool to compute cosmic-ray exposure ages.” <em>Quaternary Geochronology</em> 38 (March): 25–49. <a href="https://doi.org/10.1016/j.quageo.2016.11.006">https://doi.org/10.1016/j.quageo.2016.11.006</a>.</p>
+<div id="ref-martin2017crep" class="csl-entry">
+Martin, L. C. P., P.-H. Blard, G. Balco, J. Lavé, R. Delunel, N. Lifton,
+and V. Laurent. 2017. <span>“The <span>CREp</span> Program and the
+<span>ICE</span>-<span>D</span> Production Rate Calibration Database:
+<span>A</span> Fully Parameterizable and Updated Online Tool to Compute
+Cosmic-Ray Exposure Ages.”</span> <em>Quaternary Geochronology</em> 38
+(March): 25–49. <a href="https://doi.org/f92pbm" class="external-link">https://doi.org/f92pbm</a>.
 </div>
-<div id="ref-stone2000air">
-<p>Stone, John O. 2000. “Air pressure and cosmogenic isotope production.” <em>Journal of Geophysical Research: Solid Earth</em> 105 (B10): 23753–9. <a href="https://doi.org/10.1029/2000JB900181">https://doi.org/10.1029/2000JB900181</a>.</p>
+<div id="ref-stone2000air" class="csl-entry">
+Stone, John O. 2000. <span>“Air Pressure and Cosmogenic Isotope
+Production.”</span> <em>Journal of Geophysical Research: Solid
+Earth</em> 105 (B10): 23753–59. <a href="https://doi.org/fbsd87" class="external-link">https://doi.org/fbsd87</a>.
 </div>
-<div id="ref-uppala2005era40">
-<p>Uppala, S. M., P. W. KÅllberg, Adrian J. Simmons, U. Andrae, V. Da Costa Bechtold, M. Fiorino, J. K. Gibson, et al. 2005. “The ERA-40 re-analysis.” <em>Quarterly Journal of the Royal Meteorological Society</em> 131 (612): 2961–3012. <a href="https://doi.org/10.1256/qj.04.176">https://doi.org/10.1256/qj.04.176</a>.</p>
+<div id="ref-uppala2005era40" class="csl-entry">
+Uppala, S. M., P. W. KÅllberg, Adrian J. Simmons, U. Andrae, V. Da Costa
+Bechtold, M. Fiorino, J. K. Gibson, et al. 2005. <span>“The
+<span>ERA</span>-40 Re-Analysis.”</span> <em>Quarterly Journal of the
+Royal Meteorological Society</em> 131 (612): 2961–3012. <a href="https://doi.org/fthgs7" class="external-link">https://doi.org/fthgs7</a>.
 </div>
 </div>
 </div>
@@ -279,11 +334,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Vincent Godard.</p>
+  <p></p>
+<p>Developed by Vincent Godard.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -291,6 +348,8 @@
 
   
 
+
+  
 
   </body>
 </html>
