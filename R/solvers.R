@@ -3,7 +3,7 @@
 #'
 #' Exponential attenuation models for neutrons and muons
 #'
-#' If `ero` contains several values, the corresponding evolution in time of concentration is computed, `t` should be of same length. The first value of `ero` is used to compute a steady state initial concentration, then the evolution of concentration is computed by ero[i] is the constant erosion rate over the time interval t[i-1] to t[i].
+#' If `ero` contains several values, the corresponding evolution in time of concentration is computed, `t` should be of same length. The first value of `ero` is used to compute a steady state initial concentration, then the evolution of concentration is computed by ero[i] is the constant erosion rate over the time interval t[i-1] to t[i]. Also in this case z should be either a unique value or the same length as t (used as calculation depth for each time step ).
 #'
 #' @param z depth coordinate of the profile (g/cm2)
 #' @param ero erosion rate (g/cm2/a)
@@ -50,13 +50,14 @@ solv_conc_eul <- function(z,ero,t,C0,p,S,L,in_ero=NULL){
     ero = as.numeric(ero)
     t = as.numeric(t)
     if (length(ero)!=length(t)){stop("If several denudation rates are provided, then corresponding time increment should be provided")}
-    if (length(z)>1){stop("Calculation only possible for one depth value")}
+    if (length(z)!=1 |  length(z)!= length(t) ){stop("z should be unique value or same length as time vector")}
+    if (length(z)==1){z = rep(z,length(t))}
     Cspal = rep(NA,length(t))
     Cstop = rep(NA,length(t))
     Cfast = rep(NA,length(t))
-    Cspal[1] = (S[1]*p[1])/((ero[1]/L[1])+p[4])*exp(-1*z/L[1])
-    Cstop[1] = (S[2]*p[2])/((ero[1]/L[2])+p[4])*exp(-1*z/L[2])
-    Cfast[1] = (S[2]*p[3])/((ero[1]/L[3])+p[4])*exp(-1*z/L[3])
+    Cspal[1] = (S[1]*p[1])/((ero[1]/L[1])+p[4])*exp(-1*z[1]/L[1])
+    Cstop[1] = (S[2]*p[2])/((ero[1]/L[2])+p[4])*exp(-1*z[1]/L[2])
+    Cfast[1] = (S[2]*p[3])/((ero[1]/L[3])+p[4])*exp(-1*z[1]/L[3])
     for (i in 2:length(t)){
       dt = t[i] - t[i-1]
       Cspal[i] = Cspal[i-1]*exp(-1*(p[4]+ero[i]/L[1])*dt) + S[1]*p[1]/(p[4]+ero[i]/L[1])*(1-exp(-1*(p[4]+ero[i]/L[1])*dt))*exp(-1*z/L[1])
