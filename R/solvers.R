@@ -1,7 +1,9 @@
 
-#' Prediction of concentration evolution over a time interval on an Eulerian grid
+#' Prediction of concentration evolution  an Eulerian grid
 #'
 #' Exponential attenuation models for neutrons and muons
+#'
+#' If `ero` contains several values, the corresponding evolution in time of concentration is computed, `t` should be of same length. The first value of `ero` is used to compute a steady state initial concentration, then the evolution of concentration is computed by ero[i] is the constant erosion rate over the time interval t[i-1] to t[i].
 #'
 #' @param z depth coordinate of the profile (g/cm2)
 #' @param ero erosion rate (g/cm2/a)
@@ -19,7 +21,7 @@
 #' L[1] -> neutrons
 #' L[2] -> stopped muons
 #' L[3] -> fast muons
-#' @param in_ero initial erosion rate yielding a steady state inherited concentration (g/cm2/a), C0 not used in this case
+#' @param in_ero denudation rate used to compute an initial steady-state concentration (g/cm2/a), C0 not used in this case
 #' @keywords
 #' @export
 #' @examples
@@ -27,6 +29,7 @@ solv_conc_eul <- function(z,ero,t,C0,p,S,L,in_ero=NULL){
   p = as.numeric(p)
   L = as.numeric(L)
   S = as.numeric(S)
+  if(length(ero)==1){
   # concentration acquired over the time increment
   Cspal = (S[1]*p[1])/((ero/L[1])+p[4])*exp(-1*z/L[1])*(1-exp(-1*(p[4]+(ero/L[1]))*t))
   Cstop = (S[2]*p[2])/((ero/L[2])+p[4])*exp(-1*z/L[2])*(1-exp(-1*(p[4]+(ero/L[2]))*t))
@@ -41,39 +44,28 @@ solv_conc_eul <- function(z,ero,t,C0,p,S,L,in_ero=NULL){
     Cfast_ss = (S[2]*p[3])/((in_ero/L[3])+p[4])*exp(-1*z/L[3])*(exp(-1*(p[4]+(ero/L[3]))*t))
     C_inherited = (Cspal_ss + Cstop_ss + Cfast_ss)
 
-
-    # Cspal_ss = (S[1]*p[1])/((in_ero/L[1])+p[4])*exp(-1*z/L[1])*exp(-1*ero*t/L[1])
-    # Cstop_ss = (S[2]*p[2])/((in_ero/L[2])+p[4])*exp(-1*z/L[2])*exp(-1*ero*t/L[2])
-    # Cfast_ss = (S[2]*p[3])/((in_ero/L[3])+p[4])*exp(-1*z/L[3])*exp(-1*ero*t/L[3])
-    # C_inherited = (Cspal_ss + Cstop_ss + Cfast_ss)*exp(-1*p[4]*t)
-
-    # Cspal_ss = (S[1]*p[1])/((in_ero/L[1])+p[4])*exp(-1*ero*t/L[1])
-    # Cstop_ss = (S[2]*p[2])/((in_ero/L[2])+p[4])*exp(-1*ero*t/L[2])
-    # Cfast_ss = (S[2]*p[3])/((in_ero/L[3])+p[4])*exp(-1*ero*t/L[3])
-    # C_inherited = (Cspal_ss + Cstop_ss + Cfast_ss)*exp(-1*p[4]*t)
   }
   return(C_produced + C_inherited)
+  }else{
+    ero = as.numeric(ero)
+    t = as.numeric(t)
+    if (length(ero)!=length(t)){stop("If several denudation rates are provided, then corresponding time increment should be provided")}
+    if (length(z)>1){stop("Calculation only possible for one depth value")}
+    Cspal = rep(NA,length(t))
+    Cstop = rep(NA,length(t))
+    Cfast = rep(NA,length(t))
+    Cspal[1] = (S[1]*p[1])/((ero[1]/L[1])+p[4])*exp(-1*z/L[1])
+    Cstop[1] = (S[2]*p[2])/((ero[1]/L[2])+p[4])*exp(-1*z/L[2])
+    Cfast[1] = (S[2]*p[3])/((ero[1]/L[3])+p[4])*exp(-1*z/L[3])
+    for (i in 2:length(t)){
+      dt = t[i] - t[i-1]
+      Cspal[i] = Cspal[i-1]*exp(-1*(p[4]+ero[i]/L[1])*dt) + S[1]*p[1]/(p[4]+ero[i]/L[1])*(1-exp(-1*(p[4]+ero[i]/L[1])*dt))*exp(-1*z/L[1])
+      Cstop[i] = Cstop[i-1]*exp(-1*(p[4]+ero[i]/L[2])*dt) + S[2]*p[2]/(p[4]+ero[i]/L[2])*(1-exp(-1*(p[4]+ero[i]/L[2])*dt))*exp(-1*z/L[2])
+      Cfast[i] = Cfast[i-1]*exp(-1*(p[4]+ero[i]/L[3])*dt) + S[2]*p[3]/(p[4]+ero[i]/L[3])*(1-exp(-1*(p[4]+ero[i]/L[3])*dt))*exp(-1*z/L[3])
+    }
+    return(Cspal+Cstop+Cfast)
+  }
 
-  # # evolution of preexisting concentration
-  # # total = (S[1]*p[1] + S[2]*p[2] + S[2]*p[3])
-  # # f1 =  (S[1]*p[1]) / total  # fraction of production attributed to spallation
-  # # f2 =  (S[2]*p[2]) / total
-  # # f3 =  (S[2]*p[3]) / total
-  # if (C0 == 0) {
-  #   Cspal_in = 0
-  #   Cstop_in = 0
-  #   Cfast_in = 0
-  # } else {
-  # total = (S[1]*p[1]*exp(-1*(p[4]+(ero/L[1]))*t) + S[2]*p[2]*exp(-1*(p[4]+(ero/L[2]))*t) + S[2]*p[3]*exp(-1*(p[4]+(ero/L[3]))*t))
-  # f1 =  (S[1]*p[1]*exp(-1*(p[4]+(ero/L[1]))*t)) / total  # fraction of production attributed to spallation
-  # f2 =  (S[2]*p[2]*exp(-1*(p[4]+(ero/L[2]))*t)) / total
-  # f3 =  (S[2]*p[3]*exp(-1*(p[4]+(ero/L[3]))*t)) / total
-  # Cspal_in = C0*f1*exp(-1*(p[4]+(ero/L[1]))*t)
-  # Cstop_in = C0*f2*exp(-1*(p[4]+(ero/L[2]))*t)
-  # Cfast_in = C0*f3*exp(-1*(p[4]+(ero/L[3]))*t)
-  # }
-  # #
-  #  C =  + Cstop_in + Cfast_in
 }
 
 

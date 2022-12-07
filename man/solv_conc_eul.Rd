@@ -2,7 +2,7 @@
 % Please edit documentation in R/solvers.R
 \name{solv_conc_eul}
 \alias{solv_conc_eul}
-\title{Prediction of concentration evolution over a time interval on an Eulerian grid}
+\title{Prediction of concentration evolution  an Eulerian grid}
 \usage{
 solv_conc_eul(z, ero, t, C0, p, S, L, in_ero = NULL)
 }
@@ -34,4 +34,7 @@ L[3] -> fast muons}
 }
 \description{
 Exponential attenuation models for neutrons and muons
+}
+\details{
+If `ero` contains several values, the corresponding evolution in time of concentration is computed, `t` should be of same length. The first value of `ero` is used to compute a steady state initial concentration, then the evolution of concentration is computed by ero[i] is the constant erosion rate over the time interval t[i-1] to t[i].
 }
