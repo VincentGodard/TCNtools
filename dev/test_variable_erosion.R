@@ -24,13 +24,15 @@ print(diff)
 # 2 comparison with lagrangian ----
 
 
-z = 100*rho
-t = seq(0,1e4,length.out=10)
-ero = seq(300,100,length.out=length(t))/1e6*100*rho
+z = 0*rho
+t = seq(0,1e6,length.out=4)
+#ero = seq(300,100,length.out=length(t))/1e6*100*rho
+ero = runif(length(t),10,20)/1e6*100*rho
+
 
 C2a = solv_conc_eul(z,ero,t,0,prm[,'Be10'],S,Lambda)
 
-df_l = data.frame(t=seq(min(t),max(t),length.out = 10000)) # data frame to store results
+df_l = data.frame(t=seq(min(t),max(t),length.out = 1e5)) # data frame to store results
 df_l$ero = approx(t,ero,df_l$t,method="constant",f=1)$y
 plot(t,ero,type="S")
 points(t,ero,cex=0.5)
@@ -47,9 +49,11 @@ df_l$Smu  = rep(as.numeric(S[2]),nrow(df_l)) # scaling muons
 # 10Be (not scaled)
 df_l$Psp10 = prm["Pspal",'Be10']*exp(-1*df_l$z/Lambda["Lspal"]) # spallation
 df_l$Pmu10 = prm["Pstop",'Be10']*exp(-1*df_l$z/Lambda["Lstop"]) + prm["Pfast",'Be10']*exp(-1*df_l$z/Lambda["Lfast"]) # muons
-df_l$C10 = solv_conc_lag(df_l$t,df_l$z,C10_0,df_l$Psp10,df_l$Pmu10,prm["lambda",'Be10'],cbind(df_l$Ssp,df_l$Smu),final=FALSE)
+df_l$C2b = solv_conc_lag(df_l$t,df_l$z,C10_0,df_l$Psp10,df_l$Pmu10,prm["lambda",'Be10'],cbind(df_l$Ssp,df_l$Smu),final=FALSE)
+df_l$C2c = solv_conc_lag(df_l$t,df_l$z,C10_0,df_l$Psp10,df_l$Pmu10,prm["lambda",'Be10'],cbind(df_l$Ssp,df_l$Smu),final=TRUE)
 
-print(((df_l$C10[nrow(df_l)] - C2a[length(C2a)]) / C2a[length(C2a)])*100)
+print(((df_l$C2b[nrow(df_l)] - C2a[length(C2a)]) / C2a[length(C2a)])*100)
+print(((df_l$C2c[nrow(df_l)] - C2a[length(C2a)]) / C2a[length(C2a)])*100)
 
 
 
