@@ -22,8 +22,6 @@ diff = C1b - C1a
 print(diff)
 
 # 2 comparison with lagrangian ----
-
-
 z = 0*rho
 t = seq(0,1e6,length.out=4)
 #ero = seq(300,100,length.out=length(t))/1e6*100*rho

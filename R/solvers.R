@@ -50,7 +50,7 @@ solv_conc_eul <- function(z,ero,t,C0,p,S,L,in_ero=NULL){
     ero = as.numeric(ero)
     t = as.numeric(t)
     if (length(ero)!=length(t)){stop("If several denudation rates are provided, then corresponding time increment should be provided")}
-    if (length(z)!=1 |  length(z)!= length(t) ){stop("z should be unique value or same length as time vector")}
+    if (!(length(z)==1  |  length(z)== length(t))){stop("z should be unique value or same length as time vector")}
     if (length(z)==1){z = rep(z,length(t))}
     Cspal = rep(NA,length(t))
     Cstop = rep(NA,length(t))
@@ -60,9 +60,9 @@ solv_conc_eul <- function(z,ero,t,C0,p,S,L,in_ero=NULL){
     Cfast[1] = (S[2]*p[3])/((ero[1]/L[3])+p[4])*exp(-1*z[1]/L[3])
     for (i in 2:length(t)){
       dt = t[i] - t[i-1]
-      Cspal[i] = Cspal[i-1]*exp(-1*(p[4]+ero[i]/L[1])*dt) + S[1]*p[1]/(p[4]+ero[i]/L[1])*(1-exp(-1*(p[4]+ero[i]/L[1])*dt))*exp(-1*z/L[1])
-      Cstop[i] = Cstop[i-1]*exp(-1*(p[4]+ero[i]/L[2])*dt) + S[2]*p[2]/(p[4]+ero[i]/L[2])*(1-exp(-1*(p[4]+ero[i]/L[2])*dt))*exp(-1*z/L[2])
-      Cfast[i] = Cfast[i-1]*exp(-1*(p[4]+ero[i]/L[3])*dt) + S[2]*p[3]/(p[4]+ero[i]/L[3])*(1-exp(-1*(p[4]+ero[i]/L[3])*dt))*exp(-1*z/L[3])
+      Cspal[i] = Cspal[i-1]*exp(-1*(p[4]+ero[i]/L[1])*dt) + S[1]*p[1]/(p[4]+ero[i]/L[1])*(1-exp(-1*(p[4]+ero[i]/L[1])*dt))*exp(-1*z[i]/L[1])
+      Cstop[i] = Cstop[i-1]*exp(-1*(p[4]+ero[i]/L[2])*dt) + S[2]*p[2]/(p[4]+ero[i]/L[2])*(1-exp(-1*(p[4]+ero[i]/L[2])*dt))*exp(-1*z[i]/L[2])
+      Cfast[i] = Cfast[i-1]*exp(-1*(p[4]+ero[i]/L[3])*dt) + S[2]*p[3]/(p[4]+ero[i]/L[3])*(1-exp(-1*(p[4]+ero[i]/L[3])*dt))*exp(-1*z[i]/L[3])
     }
     return(Cspal+Cstop+Cfast)
   }

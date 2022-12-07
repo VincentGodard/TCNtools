@@ -292,8 +292,12 @@ soil_mixing_depth<-function(C1,C1_e,C2,C2_e,p1,p2,Lambda,S,rhos,rhob){
   return(out)
 }
 
-
-
-
-
+# # H in cm
+# # E1 E2 in m/Ma
+# transient_soil<-function(time,H,ero,p,L,S,rho,rhos,final=F){
+#   Ps = depth_averaged_prod(H*rhos,p,L,S) # depth averaged production rate
+#
+#   Cb = solv_conc_eul(H*rhos,ero*100/1e6*rho,time,0,p,S,L) # evolution of concentration at the soil bedrock interface
+#
+# }
 
