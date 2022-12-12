@@ -29,7 +29,7 @@ solv_conc_eul <- function(z,ero,t,C0,p,S,L,in_ero=NULL){
   p = as.numeric(p)
   L = as.numeric(L)
   S = as.numeric(S)
-  if(length(ero)==1){
+  if(length(ero)==1 | length(t)==1){
   # concentration acquired over the time increment
   Cspal = (S[1]*p[1])/((ero/L[1])+p[4])*exp(-1*z/L[1])*(1-exp(-1*(p[4]+(ero/L[1]))*t))
   Cstop = (S[2]*p[2])/((ero/L[2])+p[4])*exp(-1*z/L[2])*(1-exp(-1*(p[4]+(ero/L[2]))*t))
@@ -49,7 +49,7 @@ solv_conc_eul <- function(z,ero,t,C0,p,S,L,in_ero=NULL){
   }else{
     ero = as.numeric(ero)
     t = as.numeric(t)
-    if (length(ero)!=length(t)){stop("If several denudation rates are provided, then corresponding time increment should be provided")}
+    if (length(ero)!=length(t)){stop("When considering variable denudation rates, the time and denudation vector should have same length")}
     if (!(length(z)==1  |  length(z)== length(t))){stop("z should be unique value or same length as time vector")}
     if (length(z)==1){z = rep(z,length(t))}
     Cspal = rep(NA,length(t))
