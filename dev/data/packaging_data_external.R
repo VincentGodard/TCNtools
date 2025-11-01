@@ -6,8 +6,8 @@ tcn_depth_profiles = read_ods("dev/data/data_external/profiles.ods",sheet="data"
 
 # reference data for eulerian calculations ----
 ## Production and decay parameters ----
-prm = matrix(c( 4.01  , 0.012 , 0.039  , log(2)/1.36e6,
-                27.93 , 0.84  , 0.081 , log(2)/0.717e6,
+prm = matrix(c( 4.01  , 0.012 , 0.039  , log(2)/1.387e6,
+                27.93 , 0.84  , 0.081 , log(2)/0.708e6,
                 12.24  , 3.31  , 0     ,log(2)/5730),
              nrow = 4,ncol=3 )
 colnames(prm) <- c("Be10","Al26","C14") # we just give names to the columns of the matrix
