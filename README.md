@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/VincentGodard/TCNtools/main?urlpath=rstudio)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/VincentGodard/TCNtools/v0.1.0?urlpath=rstudio)
 
 
 # TCNtools
@@ -8,7 +8,7 @@ A set of utilities for the analysis of Terrestrial Cosmogenic Nuclides (TCN) con
 ## Installation
 The simplest way to install the package is using `devtools` :
 
-devtools::install_git(url = "https://github.com/VincentGodard/TCNtools")
+remotes::install_github("VincentGodard/TCNtools@v0.1.0")
 
 ## Package web site
 
