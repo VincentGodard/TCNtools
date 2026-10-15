@@ -1,98 +1,166 @@
-# TCNtools — refonte v1
+# TCNtools: v1 rewrite
 
-Package R de calculs sur les nucléides cosmogéniques terrestres (TCN).
-Auteur : Vincent Godard (CEREGE, Aix-Marseille Université).
-Dépôt : https://github.com/VincentGodard/TCNtools (on reste sur GitHub).
+R package for terrestrial cosmogenic nuclide (TCN) calculations.
+Author: Vincent Godard (CEREGE, Aix-Marseille Université).
+Repository: https://github.com/VincentGodard/TCNtools (staying on GitHub).
 
-## Contexte et décisions prises
+Working language for this package (code, documentation, commit messages,
+issues, this file): English.
 
-- Refonte complète du package : tout réécrire et vérifier en partant des briques
-  élémentaires, avec documentation, tests et exemples complets pour chaque fonction.
-- L'état historique est figé au tag `v0.1.0`. TCNbook, le TP étudiants et le lien
-  Binder doivent installer cette version (`remotes::install_github("VincentGodard/TCNtools@v0.1.0")`)
-  tant que la v1 n'est pas publiée.
-- La refonte se fait sur la branche `v1`, partie d'un squelette vide.
-  L'ancien code se consulte via un worktree : `git worktree add ../TCNtools-legacy v0.1.0`
-  (ou `git show v0.1.0:R/<fichier>.R`). Ne pas recopier l'ancien code en bloc :
-  chaque fonction est réintégrée, revue et testée individuellement.
-- Une branche par couche (`couche-NN-<nom>`), fusionnée dans `v1` par pull request.
-- Bascule finale : merge `v1` → `main`, tag `v1.0.0`, release GitHub (DOI Zenodo),
-  puis passage de GitHub Pages de `main /docs` à `gh-pages`, et mise à jour de TCNbook.
+## Context and decisions
 
-## Problèmes identifiés dans v0.1.0 (à ne pas reproduire)
+- Complete rewrite of the package: everything is rewritten and checked starting
+  from the elementary building blocks, with full documentation, tests and
+  examples for every function.
+- The historical state is frozen at tag `v0.1.0`. TCNbook, the student lab and
+  the Binder link must install that version
+  (`remotes::install_github("VincentGodard/TCNtools@v0.1.0")`) until v1 is
+  released.
+- The rewrite happens on branch `v1`, started from an empty skeleton.
+  The old code is browsed through a worktree at `../TCNtools-legacy`
+  (`git worktree add ../TCNtools-legacy v0.1.0`) or with
+  `git show v0.1.0:R/<file>.R`. Do not copy old code in bulk: each function is
+  brought back, reviewed and tested individually.
+- One branch per layer (`layer-NN-<name>`, e.g. `layer-04a-scaling-st-lm`),
+  merged into `v1` through a pull request.
+- Final switch: merge `v1` into `main`, tag `v1.0.0`, GitHub release (Zenodo
+  DOI), then move GitHub Pages from `main /docs` to `gh-pages` (the pkgdown
+  workflow already deploys to `gh-pages` from `main` only), and update TCNbook.
 
-- Aucun test.
-- `exportPattern("^[[:alpha:]]+")` : tout était exporté, y compris les fonctions internes
-  (`likelihood1`, `prior1`, `proposal1`, `run_mcmc1`, `fun_solv_ss_eros_eul`, `LZ`, `E2R`, `Rv0`, `phi_v_slhl`, `d2r`, `r2d`...).
-- Noms d'arguments courts et incohérents (`p`, `S`, `L`, `prm`, `Lambda`, `h`, `w` ; `ero` vs `E` ; `rho` vs `rhob`), unités implicites.
-- `docs/` (site pkgdown construit) commité dans le dépôt ; `dev/`, `install.R`, `runtime.txt`, `index.md` absents de `.Rbuildignore`.
-- `Depends: R (>= 2.10)`, RoxygenNote obsolète.
-- `akima` dans Imports sans appel visible : vérifier ; si une interpolation 2D est nécessaire, utiliser `interp` (akima a une licence ACM non commerciale, incompatible en esprit avec GPL-3).
-- Données internes (`sysdata.rda`) construites depuis des `.mat` dans `dev/data/` : migrer vers `data-raw/` avec sources documentées.
-- TODO hérités (`dev/notes.md`) : vectorisation de `solv_conc_eul`, cas E = 0 dans `conc_soil_mixing`, facteur d'enrichissement en quartz.
+## Problems found in v0.1.0 (not to be repeated)
 
-## Conventions pour la v1
+- No tests.
+- `exportPattern("^[[:alpha:]]+")`: everything was exported, internal functions
+  included (`likelihood1`, `prior1`, `proposal1`, `run_mcmc1`,
+  `fun_solv_ss_eros_eul`, `LZ`, `E2R`, `Rv0`, `phi_v_slhl`, `d2r`, `r2d`...).
+- Short and inconsistent argument names (`p`, `S`, `L`, `prm`, `Lambda`, `h`,
+  `w`; `ero` vs `E`; `rho` vs `rhob`), implicit units.
+- `docs/` (built pkgdown site) committed to the repository; `dev/`,
+  `install.R`, `runtime.txt`, `index.md` missing from `.Rbuildignore`.
+- `Depends: R (>= 2.10)`, outdated RoxygenNote.
+- Dependencies: `akima` was in Imports but is only used in the
+  `depth_profiles` vignette (drop it; if 2D interpolation is ever needed, use
+  `interp`, since akima's ACM non-commercial licence is at odds with GPL-3).
+  `pracma` only provides `trapz`, `interp2` and `flipud`, and `ellipse` is only
+  used by `tnp_ellipse` (eigen-decomposition): both can be replaced by base R.
+- Internal data (`sysdata.rda`) built from `.mat` files in `dev/data/`: migrate
+  to `data-raw/` with documented sources (conventions in `data-raw/README.md`).
+- Inherited TODOs (`dev/notes.md`): vectorisation of `solv_conc_eul`, E = 0 case
+  in `conc_soil_mixing`, quartz enrichment factor.
 
-- Exports explicites via roxygen (`@export`) ; les fonctions internes sont marquées `@noRd` ou `@keywords internal`.
-- Unités fixées et rappelées dans chaque `@param` : profondeur massique en g/cm², temps en années,
-  concentrations en at/g, taux de dénudation en g/cm²/an (préciser si cm/an est accepté).
-- Nommage : snake_case, familles préfixées (`prod_*`, `scaling_*`, `conc_*`, `solve_*`, `tnp_*`),
-  noms d'arguments complets, même nom pour la même grandeur partout.
-- Paramètres des nucléides : un constructeur validé (ex. `tcn_nuclide("Be10")`) renvoyant une liste S3 légère
-  avec provenance (taux de production de référence, demi-vie, longueurs d'atténuation, source bibliographique).
-- Contrat de vectorisation documenté pour chaque fonction (arguments recyclés vs scalaires).
-- Validation des entrées en base R (`stopifnot` ou messages explicites) ; dépendances minimales.
-- Références via Rdpack (`inst/REFERENCES.bib`, récupéré de `inst/TCNtools.bib` du tag v0.1.0) et `\insertRef{}`.
-- Documentation et code en anglais.
+## Conventions for v1
 
-## Définition de « fait » pour une fonction
+- Explicit exports via roxygen (`@export`); internal functions are marked
+  `@noRd` or `@keywords internal`.
+- Units fixed and restated in every `@param`: mass depth in g/cm², time in
+  years, concentrations in at/g, denudation rate in g/cm²/yr (state it if
+  cm/yr is accepted).
+- Naming: snake_case, prefixed families (`prod_*`, `scaling_*`, `conc_*`,
+  `solve_*`, `tnp_*`), full argument names, same name for the same quantity
+  everywhere.
+- Nuclide parameters: a validated constructor (e.g. `tcn_nuclide("Be10")`)
+  returning a light S3 list with provenance (reference production rate,
+  half-life, attenuation lengths, bibliographic source).
+- Documented vectorisation contract for every function (recycled vs scalar
+  arguments).
+- Input validation in base R (`stopifnot` or explicit messages); minimal
+  dependencies.
+- References via Rdpack (`inst/REFERENCES.bib`, taken from `inst/TCNtools.bib`
+  at tag v0.1.0) and `\insertRef{}`.
 
-1. Documentation roxygen complète : description, unités, `@references`, `@return`.
-2. Exemple exécutable.
-3. Tests testthat (3e édition) : valeurs de référence publiées ou issues de calculateurs indépendants
-   (CRONUS-Earth / calculateur de Balco, CREp), limites analytiques, tests aller-retour pour les inversions.
-4. `devtools::check()` sans erreur ni warning.
-5. Entrée dans `NEWS.md`.
+## Definition of done for a function
 
-## Feuille de route (couches, dans l'ordre)
+1. Complete roxygen documentation: description, units, `@references`,
+   `@return`.
+2. Runnable example.
+3. testthat (3rd edition) tests: published reference values or values from
+   independent calculators (CRONUS-Earth / Balco's calculator, CREp),
+   analytical limits, round-trip tests for inversions.
+4. `devtools::check()` with no errors or warnings.
+5. Entry in `NEWS.md`.
 
-| Couche | Contenu | Validation |
+## Roadmap (layers, in order)
+
+| Layer | Content | Validation |
 |---|---|---|
-| 0. Infrastructure | DESCRIPTION, NAMESPACE roxygen, testthat 3, Rdpack, `data-raw/`, `.Rbuildignore`, `NEWS.md`, `CITATION.cff`, GitHub Actions (`check-standard`, `test-coverage`, pkgdown → gh-pages) | check passe à vide |
-| 1. Constantes et données | constantes de désintégration, longueurs d'atténuation, taux de production SLHL ; scripts `data-raw/` depuis les `.mat` | valeurs des articles cités |
-| 2. Atmosphère / géométrie | `atm_pressure` (ERA40 / Stone 2000), utilitaires d'angles (internes) | valeurs de référence publiées |
-| 3. Géomagnétisme | séries de VDM, calcul de Rc | valeurs ponctuelles vs CRONUS-Earth / CREp |
-| 4. Scaling | St, Lm, puis LSDn | grille de sites vs calculateur en ligne / CREp |
-| 5. Production en profondeur | spallation exponentielle ; muons (Balco 2017, modèles 1a/1b) | tables de Balco 2017 ; identités intégrales |
-| 6. Modèles directs de concentration | analytique (stationnaire et transitoire), puis numérique eulérien / lagrangien | limites : E = 0 → saturation, t → ∞, décroissance pure ; numérique vs analytique |
-| 7. Inversion | taux de dénudation stationnaire et âge d'exposition avec incertitudes (recherche de racine) | aller-retour direct → inverse |
-| 8. Deux nucléides | `tnp_curves`, `tnp_ellipse`, enfouissement | cohérence avec la couche 6 |
+| 0. Infrastructure | DESCRIPTION, roxygen NAMESPACE, testthat 3, Rdpack, `data-raw/`, `.Rbuildignore`, `NEWS.md`, `CITATION.cff`, GitHub Actions (`check-standard`, `test-coverage`, pkgdown → gh-pages) | check passes on an empty package |
+| 1. Constants and data | decay constants, attenuation lengths, SLHL production rates; `data-raw/` scripts from the `.mat` files | values from the cited papers |
+| 2. Atmosphere / geometry | `atm_pressure` (ERA40 / Stone 2000), angle utilities (internal) | published reference values |
+| 3. Geomagnetism | VDM series, Rc computation | point values vs CRONUS-Earth / CREp |
+| 4a. Scaling: St, Lm | `scaling_st`, `scaling_lm` | site grid vs online calculator / CREp |
+| 4b. Scaling: LSDn | `scaling_lsd`, with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
+| 5. Production at depth | exponential spallation; muons (Balco 2017, models 1a/1b) | Balco 2017 tables; integral identities |
+| 6. Forward concentration models | analytical (steady state and transient), then numerical Eulerian / Lagrangian | limits: E = 0 → saturation, t → ∞, pure decay; numerical vs analytical |
+| 7. Inversion | steady-state denudation rate and exposure age with uncertainties (root finding) | round trip forward → inverse |
+| 8. Two nuclides | `tnp_curves`, `tnp_ellipse`, burial | consistency with layer 6 |
 
-Reportés en v1.x (une issue GitHub chacune, label `v1.x`) : solveur MCMC, `depth_profile_mc`,
-famille mélange des sols, éventuellement les flux de Sato s'ils ne servent qu'en intermédiaire pour LSD.
+Deferred to v1.x (one GitHub issue each, label `v1.x`): MCMC solver,
+`depth_profile_mc`, soil mixing family.
 
-Les scripts `dev/test_*.R` du tag v0.1.0 peuvent servir de point de départ pour les tests.
+The `dev/test_*.R` scripts at tag v0.1.0 can serve as a starting point for
+tests.
 
-## Cycle de travail par couche
+### Notes per layer
+
+- **Layer 1:** reference production rates depend on the scaling scheme they
+  were calibrated with (v0.1.0 `prm` has a single set, e.g. Be10 Pspal = 4.01
+  at/g/yr, presumably for St). Open decision: either `tcn_nuclide()` carries
+  one rate per scaling scheme, or layer 1 only holds scheme-independent
+  constants (decay, attenuation lengths) and calibrated rates arrive with
+  layer 4a/4b. v0.1.0 `Lambda` holds Lspal = 160, Lstop = 1500,
+  Lfast = 4320 g/cm² (exponential muon approximation, distinct from the
+  Balco 2017 models of layer 5).
+- **Layer 4b:** the Sato fluxes (about 1250 lines in v0.1.0:
+  `sato_neutrons`, `sato_neutrons_low`, `sato_protons`, `sato_muons`) are
+  required by LSDn, so they belong here as internal functions rather than in
+  v1.x. Needs `Ref_LSD` and `XSectsReedyAll` from `data-raw/`.
+- **Layer 6:** v0.1.0 has no closed-form concentration functions (only the
+  numerical `solv_conc_eul` and `solv_conc_lag`), so the analytical `conc_*`
+  functions are new code.
+- **Example data:** the v0.1.0 exported dataset `tcn_depth_profiles` (from
+  `dev/data/data_external/profiles.ods`) can serve as example data for
+  layer 7, even with `depth_profile_mc` deferred.
+
+### Where v0.1.0 functions go
+
+| Layer | v0.1.0 material |
+|---|---|
+| 1 | `prm`, `Lambda`; `dev/data/packaging_data_internal.R` |
+| 2 | `atm_pressure` (ERA40), `angdist`, `d2r`, `r2d` |
+| 3 | `get_vdm`, `vdm2rc`, `rc_ndp`, `lsdrc`, `solar_modulation`; `GMDB`, `Pal_LSD` |
+| 4a | `scaling_st`, `scaling_lm` |
+| 4b | `scaling_lsd`, `sato_*`; `Ref_LSD`, `XSectsReedyAll` |
+| 5 | `mu_model1a`, `mu_model1b`, `LZ`, `Rv0`, `E2R`, `phi_v_slhl` |
+| 6 | `solv_conc_eul`, `solv_conc_lag` |
+| 7 | `solv_ss_eros_eul` |
+| 8 | `tnp_curves`, `tnp_ellipse`, `tnp_burial` |
+| v1.x | `likelihood1`, `prior1`, `posterior1`, `proposal1`, `run_mcmc1`, `depth_profile_mc`, `soil_mixing.R` |
+
+## Work cycle per layer
 
 ```bash
-git switch v1 && git switch -c couche-NN-<nom>
-# écrire R/, tests/testthat/, exemples, vignette si pertinent
+git switch v1 && git switch -c layer-NN-<name>
+# write R/, tests/testthat/, examples, vignette if relevant
 # devtools::document(); devtools::test(); devtools::check()
-git push -u origin couche-NN-<nom>   # puis PR vers v1
+git push -u origin layer-NN-<name>   # then PR into v1
 ```
 
-## Avancement
+## Progress
 
-- [ ] Tag `v0.1.0` posé et poussé ; TCNbook / TP / Binder pointent dessus
-- [ ] Branche `v1` créée, squelette vide, worktree legacy
-- [ ] Couche 0 — infrastructure
-- [ ] Couche 1 — constantes et données
-- [ ] Couche 2 — atmosphère / géométrie
-- [ ] Couche 3 — géomagnétisme
-- [ ] Couche 4 — scaling
-- [ ] Couche 5 — production en profondeur
-- [ ] Couche 6 — modèles directs
-- [ ] Couche 7 — inversion
-- [ ] Couche 8 — deux nucléides
-- [ ] Bascule `v1` → `main`, `v1.0.0`, DOI Zenodo, GitHub Pages, TCNbook
+- [x] Tag `v0.1.0` set and pushed; README and Binder point to it
+- [ ] TCNbook and student lab point to `v0.1.0` (not verifiable from this repo)
+- [x] Branch `v1` created, empty skeleton, legacy worktree
+- [x] Layer 0: infrastructure
+- [ ] Layer 1: constants and data
+- [ ] Layer 2: atmosphere / geometry
+- [ ] Layer 3: geomagnetism
+- [ ] Layer 4a: scaling St, Lm
+- [ ] Layer 4b: scaling LSDn
+- [ ] Layer 5: production at depth
+- [ ] Layer 6: forward models
+- [ ] Layer 7: inversion
+- [ ] Layer 8: two nuclides
+- [ ] Switch `v1` → `main`, `v1.0.0`, Zenodo DOI, GitHub Pages, TCNbook
+- [ ] Remote branch `test_holepunch` (2 commits, Binder test only: empty
+      `.binder/Dockerfile` and a README line) can be deleted;
+      `variable_erosion` is fully contained in `v0.1.0`
