@@ -58,9 +58,9 @@ issues, this file): English.
 - Naming: snake_case, prefixed families (`prod_*`, `scaling_*`, `conc_*`,
   `solve_*`, `tnp_*`), full argument names, same name for the same quantity
   everywhere.
-- Nuclide parameters: a validated constructor (e.g. `tcn_nuclide("Be10")`)
-  returning a light S3 list with provenance (reference production rate,
-  half-life, attenuation lengths, bibliographic source).
+- Parameters: a single validated constructor `tcn_params()` (design in
+  "Layer 1 design" below) passed to all downstream functions, replacing the
+  v0.1.0 `prm` / `Lambda` pair. Every value carries its provenance.
 - Documented vectorisation contract for every function (recycled vs scalar
   arguments).
 - Input validation in base R (`stopifnot` or explicit messages); minimal
@@ -95,31 +95,101 @@ issues, this file): English.
 | 8. Two nuclides | `tnp_curves`, `tnp_ellipse`, burial | consistency with layer 6 |
 
 Deferred to v1.x (one GitHub issue each, label `v1.x`): MCMC solver,
-`depth_profile_mc`, soil mixing family.
+`depth_profile_mc`, soil mixing family, chemistry-dependent nuclides
+(`tcn_composition()`, `prod_cl36_*`; see "Layer 1 design").
 
 The `dev/test_*.R` scripts at tag v0.1.0 can serve as a starting point for
 tests.
 
 ### Notes per layer
 
-- **Layer 1:** reference production rates depend on the scaling scheme they
-  were calibrated with (v0.1.0 `prm` has a single set, e.g. Be10 Pspal = 4.01
-  at/g/yr, presumably for St). Open decision: either `tcn_nuclide()` carries
-  one rate per scaling scheme, or layer 1 only holds scheme-independent
-  constants (decay, attenuation lengths) and calibrated rates arrive with
-  layer 4a/4b. v0.1.0 `Lambda` holds Lspal = 160, Lstop = 1500,
-  Lfast = 4320 g/cm² (exponential muon approximation, distinct from the
-  Balco 2017 models of layer 5).
+- **Layer 1:** see "Layer 1 design" below. Reference production rates depend
+  on the scaling scheme they were calibrated with (v0.1.0 `prm` has a single
+  set, e.g. Be10 Pspal = 4.01 at/g/yr, presumably for St). v0.1.0 `Lambda`
+  holds Lspal = 160, Lstop = 1500, Lfast = 4320 g/cm² (exponential muon
+  approximation, distinct from the Balco 2017 models of layer 5).
 - **Layer 4b:** the Sato fluxes (about 1250 lines in v0.1.0:
   `sato_neutrons`, `sato_neutrons_low`, `sato_protons`, `sato_muons`) are
   required by LSDn, so they belong here as internal functions rather than in
   v1.x. Needs `Ref_LSD` and `XSectsReedyAll` from `data-raw/`.
 - **Layer 6:** v0.1.0 has no closed-form concentration functions (only the
   numerical `solv_conc_eul` and `solv_conc_lag`), so the analytical `conc_*`
-  functions are new code.
+  functions are new code. They take a production profile from layer 5 (see
+  "Layer 1 design"), not hard-coded spallation and muon terms.
 - **Example data:** the v0.1.0 exported dataset `tcn_depth_profiles` (from
   `dev/data/data_external/profiles.ods`) can serve as example data for
   layer 7, even with `depth_profile_mc` deferred.
+
+### Layer 1 design: `tcn_params()`
+
+Decided 2026-10-15. The parameter object describes a nuclide × target ×
+scaling scheme system, not a nuclide alone (hence not `tcn_nuclide`):
+attenuation lengths depend on the material, production rates on the target
+and the calibration.
+
+```r
+tcn_params(nuclide = "Be10", target = "quartz", scaling = "LSDn", ...)
+```
+
+- One nuclide per call (scalar contract); a helper
+  `tcn_params_list(c("Be10", "Al26"), ...)` (name to confirm) returns a named
+  list. `...` takes named overrides; an overridden value gets source `"user"`.
+- Returned S3 object, class `tcn_params`, one sub-list per dependency:
+
+  | Element | Content | Depends on |
+  |---|---|---|
+  | `$nuclide` | half-life (value, sd), lambda (derived) | nuclide only |
+  | `$target` | `"quartz"` or a `tcn_composition` object | |
+  | `$scaling` | `"St"`, `"Lm"` or `"LSDn"` | |
+  | `$production` | table of production pathways (below) | nuclide × target × scaling |
+  | `$attenuation` | shared defaults (spallation 160 g/cm², ...), overridable | material, particle type |
+  | `$source` | provenance of every value (Rdpack key or `"user"`) | |
+
+- `$production` is a table of pathways, not a single number: one row per
+  pathway (spallation, stopped muons, fast muons, neutron capture) and target
+  element, with reference rate, sd, unit, source. Be10 in quartz is the
+  degenerate case (one spallation row on O + Si, plus muon rows); 36Cl adds
+  spallation rows on Ca, K, Ti, Fe and a low-energy neutron capture row, so
+  it fits without an API change.
+- Muon parameters for both representations: exponential approximation
+  (P, L for stopped and fast muons) and Balco 2017 parameters (layer 5).
+  Whether to keep the exponential approximation is still open (see below).
+- Methods: `print()` (compact table with references), `validate_tcn_params()`
+  (positivity, units, known scheme and target), `as.data.frame()`.
+- Storage: one table `data-raw/nuclide_parameters.csv` with columns
+  `nuclide, target, parameter, pathway, element, scaling, value, sd, unit,
+  reference` (`scaling = NA` for scheme-independent constants), built into
+  an internal object read by the constructor.
+
+Chemistry-dependent nuclides (36Cl; also 3He and 21Ne outside quartz),
+deferred to v1.x but anticipated now:
+
+- `target` accepts either a mineral name (fixed stoichiometry) or a
+  `tcn_composition()` object (target elements Ca, K, Ti, Fe, Cl; bulk rock
+  water, B, Gd, Sm, ...). Same parameter class for all downstream functions.
+- The constructor only stores and validates numbers. Turning a composition
+  and elemental rates into an effective production rate is done by
+  dedicated `prod_cl36_*` functions.
+
+Interface between layers 5 and 6: 36Cl neutron-capture production is not
+exponential with depth near the surface. Layer 5 therefore returns a
+**production profile** (sum of exponential terms, or a function of depth),
+and layer 6 models take that profile as input. Quartz nuclides use the
+analytical shortcuts (sums of exponentials); other profiles fall back to the
+numerical solvers.
+
+Still open before writing layer 1:
+
+1. Production rates: proposed to enter all three schemes in layer 1 (they
+   are calibrated literature values), with layers 4a/4b adding the
+   consistency test against calibration sites. Not yet confirmed.
+2. Nuclides in v1: Be10, Al26, C14 (as in v0.1.0); He3 and/or Ne21 in v1 or
+   later?
+3. Calibration set per scheme (CRONUS v3 global, CREp defaults, or
+   nuclide-specific sets).
+4. Al26 half-life: v0.1.0 `lambda` gives 0.708 Ma, Nishiizumi (2004) gives
+   0.705 Ma; check against the source before reuse.
+5. Keep the exponential muon approximation alongside Balco 2017?
 
 ### Where v0.1.0 functions go
 
