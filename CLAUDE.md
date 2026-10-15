@@ -128,7 +128,7 @@ attenuation lengths depend on the material, production rates on the target
 and the calibration.
 
 ```r
-tcn_params(nuclide = "Be10", target = "quartz", scaling = "Sa", ...)
+tcn_params(nuclide = "Be10", scaling = "Sa", ..., target = "quartz")
 ```
 
 - One nuclide per call (scalar contract); a helper
@@ -153,12 +153,14 @@ tcn_params(nuclide = "Be10", target = "quartz", scaling = "Sa", ...)
   it fits without an API change.
 - Muon parameters for both representations: exponential approximation
   (P, L for stopped and fast muons) and Balco 2017 parameters (layer 5).
-  Whether to keep the exponential approximation is still open (see below).
+  Both are kept (decision 5 below).
 - Methods: `print()` (compact table with references), `validate_tcn_params()`
   (positivity, units, known scheme and target), `as.data.frame()`.
 - Storage: one table `data-raw/nuclide_parameters.csv` with columns
   `nuclide, target, parameter, pathway, element, scaling, value, sd, unit,
-  reference` (`scaling = NA` for scheme-independent constants), built into
+  reference, checked, note` (`scaling = NA` for scheme-independent
+  constants; `checked` = value verified against its source during the
+  rewrite), built into
   an internal object read by the constructor.
 
 Chemistry-dependent nuclides (36Cl; also 3He and 21Ne outside quartz),
