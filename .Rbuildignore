@@ -6,3 +6,5 @@
 ^data-raw$
 ^CLAUDE\.md$
 ^\.github$
+^CITATION\.cff$
+^README\.Rmd$

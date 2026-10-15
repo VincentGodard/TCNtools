@@ -10,7 +10,7 @@ Description: Tools for computing production rates, concentrations and
     denudation rates or exposure ages from terrestrial cosmogenic nuclides
     under steady and transient exposure and erosion histories.
 License: GPL-3
-URL: https://github.com/VincentGodard/TCNtools
+URL: https://vincentgodard.github.io/TCNtools/, https://github.com/VincentGodard/TCNtools
 BugReports: https://github.com/VincentGodard/TCNtools/issues
 Encoding: UTF-8
 Depends: R (>= 4.1)
