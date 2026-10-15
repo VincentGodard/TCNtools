@@ -88,7 +88,7 @@ issues, this file): English.
 | 2. Atmosphere / geometry | `atm_pressure` (ERA40 / Stone 2000), angle utilities (internal) | published reference values |
 | 3. Geomagnetism | VDM series, Rc computation | point values vs CRONUS-Earth / CREp |
 | 4a. Scaling: St, Lm | `scaling_st`, `scaling_lm` | site grid vs online calculator / CREp |
-| 4b. Scaling: LSDn | `scaling_lsd`, with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
+| 4b. Scaling: Sf, Sa (LSD) | `scaling_lsd` (flux-based Sf and nuclide-specific Sa), with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
 | 5. Production at depth | exponential spallation; muons (Balco 2017, models 1a/1b) | Balco 2017 tables; integral identities |
 | 6. Forward concentration models | analytical (steady state and transient), then numerical Eulerian / Lagrangian | limits: E = 0 → saturation, t → ∞, pure decay; numerical vs analytical |
 | 7. Inversion | steady-state denudation rate and exposure age with uncertainties (root finding) | round trip forward → inverse |
@@ -110,7 +110,7 @@ tests.
   approximation, distinct from the Balco 2017 models of layer 5).
 - **Layer 4b:** the Sato fluxes (about 1250 lines in v0.1.0:
   `sato_neutrons`, `sato_neutrons_low`, `sato_protons`, `sato_muons`) are
-  required by LSDn, so they belong here as internal functions rather than in
+  required by Sf and Sa, so they belong here as internal functions rather than in
   v1.x. Needs `Ref_LSD` and `XSectsReedyAll` from `data-raw/`.
 - **Layer 6:** v0.1.0 has no closed-form concentration functions (only the
   numerical `solv_conc_eul` and `solv_conc_lag`), so the analytical `conc_*`
@@ -128,7 +128,7 @@ attenuation lengths depend on the material, production rates on the target
 and the calibration.
 
 ```r
-tcn_params(nuclide = "Be10", target = "quartz", scaling = "LSDn", ...)
+tcn_params(nuclide = "Be10", target = "quartz", scaling = "Sa", ...)
 ```
 
 - One nuclide per call (scalar contract); a helper
@@ -140,7 +140,7 @@ tcn_params(nuclide = "Be10", target = "quartz", scaling = "LSDn", ...)
   |---|---|---|
   | `$nuclide` | half-life (value, sd), lambda (derived) | nuclide only |
   | `$target` | `"quartz"` or a `tcn_composition` object | |
-  | `$scaling` | `"St"`, `"Lm"` or `"LSDn"` | |
+  | `$scaling` | `"St"`, `"Lm"`, `"Sf"` or `"Sa"` (Borchers et al. 2016 notation) | |
   | `$production` | table of production pathways (below) | nuclide × target × scaling |
   | `$attenuation` | shared defaults (spallation 160 g/cm², ...), overridable | material, particle type |
   | `$source` | provenance of every value (Rdpack key or `"user"`) | |
@@ -178,18 +178,31 @@ and layer 6 models take that profile as input. Quartz nuclides use the
 analytical shortcuts (sums of exponentials); other profiles fall back to the
 numerical solvers.
 
-Still open before writing layer 1:
+Decisions for layer 1 (2026-10-15):
 
-1. Production rates: proposed to enter all three schemes in layer 1 (they
-   are calibrated literature values), with layers 4a/4b adding the
-   consistency test against calibration sites. Not yet confirmed.
-2. Nuclides in v1: Be10, Al26, C14 (as in v0.1.0); He3 and/or Ne21 in v1 or
-   later?
-3. Calibration set per scheme (CRONUS v3 global, CREp defaults, or
-   nuclide-specific sets).
-4. Al26 half-life: v0.1.0 `lambda` gives 0.708 Ma, Nishiizumi (2004) gives
-   0.705 Ma; check against the source before reuse.
-5. Keep the exponential muon approximation alongside Balco 2017?
+1. **All production rates enter in layer 1**, for every supported scheme
+   (they are calibrated literature values). Layers 4a/4b add the
+   consistency test against calibration sites.
+2. **Nuclides in v1:** Be10, Al26, C14 and Ne21, all in quartz. Ne21 is
+   stable: no decay (`lambda = 0`, half-life `Inf`), which downstream
+   formulas must handle without dividing by lambda.
+3. **Calibration:** Borchers et al. (2016), and only the schemes St, Lm, Sf
+   and Sa. Scaling scheme names follow that paper.
+4. **Al26 half-life:** v0.1.0 `lambda` gives 0.708 Ma, Nishiizumi (2004)
+   gives 0.705 Ma. Vincent checks the source; do not enter a value before
+   that.
+5. **Muons:** the simple exponential approximation (P and L for stopped and
+   fast muons) is kept alongside Balco 2017.
+
+Still open:
+
+- **Ne21 production rate:** Borchers et al. (2016) covers 3He, 10Be, 14C,
+  26Al and 36Cl (per its Zotero tags), not 21Ne. A source is needed for the
+  21Ne rate per scheme and for its muon parameters; do not derive one
+  without saying how.
+- Check in Borchers et al. (2016) that the Sf / Sa definitions match the
+  layer 4b implementation (Sa nuclide-specific, Sf flux-based) before
+  coding it.
 
 ### Where v0.1.0 functions go
 
@@ -225,7 +238,7 @@ git push -u origin layer-NN-<name>   # then PR into v1
 - [ ] Layer 2: atmosphere / geometry
 - [ ] Layer 3: geomagnetism
 - [ ] Layer 4a: scaling St, Lm
-- [ ] Layer 4b: scaling LSDn
+- [ ] Layer 4b: scaling Sf, Sa (LSD)
 - [ ] Layer 5: production at depth
 - [ ] Layer 6: forward models
 - [ ] Layer 7: inversion
