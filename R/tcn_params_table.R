@@ -33,25 +33,26 @@
 #' All arguments are vectors of choices, combined with AND across arguments.
 #'
 #' @seealso [tcn_params()] for the parameters of one nuclide and scheme, as
-#'   used by the calculation functions.
+#'   used by the calculation functions, [tcn_params_list()] for several
+#'   nuclides.
 #'
 #' @examples
 #' # everything
-#' tab <- tcn_parameters()
+#' tab <- tcn_params_table()
 #' nrow(tab)
 #'
 #' # spallation rates of 10Be and 26Al in the St scheme
-#' tab <- tcn_parameters(c("Be10", "Al26"), scaling = "St")
+#' tab <- tcn_params_table(c("Be10", "Al26"), scaling = "St")
 #' sp <- tab$parameter == "production" & tab$pathway %in% "spallation"
 #' tab[sp, c("nuclide", "value", "sd", "reference")]
 #'
 #' # export, e.g. for a supplementary table
 #' \dontrun{
-#' write.csv(tcn_parameters(scaling = "Sa"), "tcn_parameters_Sa.csv",
+#' write.csv(tcn_params_table(scaling = "Sa"), "tcn_params_table_Sa.csv",
 #'           row.names = FALSE)
 #' }
 #' @export
-tcn_parameters <- function(nuclides = NULL, scaling = NULL, target = NULL) {
+tcn_params_table <- function(nuclides = NULL, scaling = NULL, target = NULL) {
   tab <- nuclide_parameters
   check_choices(nuclides, sort(unique(stats::na.omit(tab$nuclide))))
   check_choices(scaling, scaling_schemes)

@@ -17,5 +17,5 @@
   Phillips et al. (2016).
 * New `tcn_params_list()`: `tcn_params()` for several nuclides with one
   scaling scheme, as a named list.
-* New `tcn_parameters()`: the full table of parameters with their sources,
+* New `tcn_params_table()`: the full table of parameters with their sources,
   optionally filtered by nuclide, scaling scheme and target.

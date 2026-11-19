@@ -44,5 +44,6 @@ p <- tcn_params_list(c("Be10", "Al26"), scaling = "St",
 p$Be10$attenuation
 }
 \seealso{
-\code{\link[=tcn_params]{tcn_params()}}
+\code{\link[=tcn_params]{tcn_params()}} for one nuclide, \code{\link[=tcn_params_table]{tcn_params_table()}} for the
+table of all values and their sources.
 }

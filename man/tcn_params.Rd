@@ -112,3 +112,7 @@ Half-lives: \insertRef{chmeleff2010determination}{TCNtools},
 \insertRef{nishiizumi2004preparation}{TCNtools},
 \insertRef{kutschera2019halflife}{TCNtools}.
 }
+\seealso{
+\code{\link[=tcn_params_list]{tcn_params_list()}} for several nuclides with one scheme,
+\code{\link[=tcn_params_table]{tcn_params_table()}} for the table of all values and their sources.
+}

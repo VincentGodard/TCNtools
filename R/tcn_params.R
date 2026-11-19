@@ -77,6 +77,9 @@
 #' @section Vectorisation:
 #' All arguments are scalars: one call describes one nuclide.
 #'
+#' @seealso [tcn_params_list()] for several nuclides with one scheme,
+#'   [tcn_params_table()] for the table of all values and their sources.
+#'
 #' @references
 #' \insertAllCited{}
 #'
@@ -168,7 +171,8 @@ tcn_params <- function(nuclide, scaling, ..., target = "quartz") {
 #' @section Vectorisation:
 #' `nuclides` is a vector, `scaling` and `target` are scalars.
 #'
-#' @seealso [tcn_params()]
+#' @seealso [tcn_params()] for one nuclide, [tcn_params_table()] for the
+#'   table of all values and their sources.
 #'
 #' @examples
 #' p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
