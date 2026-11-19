@@ -86,15 +86,34 @@ issues, this file): English.
 | 0. Infrastructure | DESCRIPTION, roxygen NAMESPACE, testthat 3, Rdpack, `data-raw/`, `.Rbuildignore`, `NEWS.md`, `CITATION.cff`, GitHub Actions (`check-standard`, `test-coverage`, pkgdown → gh-pages) | check passes on an empty package |
 | 1. Constants and data | decay constants, attenuation lengths, SLHL production rates; `data-raw/` scripts from the `.mat` files | values from the cited papers |
 | 2. Atmosphere / geometry | `atm_pressure` (ERA40 / Stone 2000), angle utilities (internal) | published reference values |
-| 3. Geomagnetism | VDM series, Rc computation | point values vs CRONUS-Earth / CREp |
+| 3. Geomagnetism | VDM series, Rc computation (dipole, for Lm); the LSD-specific Rc and solar modulation move to 4b | point values vs CRONUS-Earth / CREp |
 | 4a. Scaling: St, Lm | `scaling_st`, `scaling_lm` | site grid vs online calculator / CREp |
-| 4b. Scaling: Sf, Sa (LSD) | `scaling_lsd` (flux-based Sf and nuclide-specific Sa), with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
+| 4b. Scaling: Sf, Sa (LSD), **v1.1, after layer 8** | `scaling_lsd` (flux-based Sf and nuclide-specific Sa), with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
 | 5. Production at depth | exponential spallation; muons (Balco 2017, models 1a/1b) | Balco 2017 tables; integral identities |
 | 6. Forward concentration models | analytical (steady state and transient), then numerical Eulerian / Lagrangian | limits: E = 0 → saturation, t → ∞, pure decay; numerical vs analytical |
 | 7. Inversion | steady-state denudation rate and exposure age with uncertainties (root finding) | round trip forward → inverse |
 | 8. Two nuclides | `tnp_curves`, `tnp_ellipse`, burial | consistency with layer 6 |
 
-Deferred to v1.x (one GitHub issue each, label `v1.x`): MCMC solver,
+**Strategy (decided 2026-11-19): layer 4b (LSD) is deferred.** The package
+is first built with St and Lm only, through layer 8, and released as
+v1.0.0. LSD (Sf, Sa) arrives in v1.1. Constraints so that 4b slots in later
+without reworking layers 5 to 8:
+
+- Layers 5 to 8 only see a scaling factor (possibly time-dependent, as Lm
+  already requires), never how it was computed.
+- Scaling functions and the interfaces of layers 5 and 6 take the nuclide
+  (or a `tcn_params` object) from the start, even though St and Lm ignore
+  it: Sa is nuclide-specific.
+- Muon handling in layer 5 is a choice separate from the spallation
+  scheme (LSD can scale muons from the Sato muon fluxes).
+- Layer 1 keeps the Sf and Sa rates (done and checked). Downstream
+  functions given `scaling = "Sf"` or `"Sa"` stop with an explicit message
+  ("Sf/Sa scaling not available before v1.1") until 4b exists.
+- v0.1.0 has `scaling_lsd`: TCNbook and the student lab lose it in v1.0
+  until v1.1 (they stay on v0.1.0 until then anyway).
+
+Deferred to v1.x (one GitHub issue each, label `v1.x`): layer 4b (LSD,
+target v1.1), MCMC solver,
 `depth_profile_mc`, soil mixing family, chemistry-dependent nuclides
 (`tcn_composition()`, `prod_cl36_*`; see "Layer 1 design").
 
@@ -224,9 +243,9 @@ Still open:
 |---|---|
 | 1 | `prm`, `Lambda`; `dev/data/packaging_data_internal.R` |
 | 2 | `atm_pressure` (ERA40), `angdist`, `d2r`, `r2d` |
-| 3 | `get_vdm`, `vdm2rc`, `rc_ndp`, `lsdrc`, `solar_modulation`; `GMDB`, `Pal_LSD` |
+| 3 | `get_vdm`, `vdm2rc`, `rc_ndp`; `GMDB` |
 | 4a | `scaling_st`, `scaling_lm` |
-| 4b | `scaling_lsd`, `sato_*`; `Ref_LSD`, `XSectsReedyAll` |
+| 4b (v1.1) | `scaling_lsd`, `sato_*`, `lsdrc`, `solar_modulation`; `Ref_LSD`, `XSectsReedyAll`, `Pal_LSD` |
 | 5 | `mu_model1a`, `mu_model1b`, `LZ`, `Rv0`, `E2R`, `phi_v_slhl` |
 | 6 | `solv_conc_eul`, `solv_conc_lag` |
 | 7 | `solv_ss_eros_eul` |
@@ -252,12 +271,12 @@ git push -u origin layer-NN-<name>   # then PR into v1
 - [ ] Layer 2: atmosphere / geometry
 - [ ] Layer 3: geomagnetism
 - [ ] Layer 4a: scaling St, Lm
-- [ ] Layer 4b: scaling Sf, Sa (LSD)
 - [ ] Layer 5: production at depth
 - [ ] Layer 6: forward models
 - [ ] Layer 7: inversion
 - [ ] Layer 8: two nuclides
 - [ ] Switch `v1` → `main`, `v1.0.0`, Zenodo DOI, GitHub Pages, TCNbook
+- [ ] v1.1: layer 4b, scaling Sf, Sa (LSD)
 - [ ] Remote branch `test_holepunch` (2 commits, Binder test only: empty
       `.binder/Dockerfile` and a README line) can be deleted;
       `variable_erosion` is fully contained in `v0.1.0`
