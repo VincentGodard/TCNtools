@@ -46,16 +46,38 @@ test_that("decay constant follows from the half-life", {
 })
 
 test_that("a stable nuclide has a zero decay constant", {
-  ne <- suppressWarnings(tcn_params("Ne21", scaling = "St"))
+  ne <- tcn_params("Ne21", scaling = "St")
   expect_identical(ne$nuclide$lambda[["value"]], 0)
   expect_identical(ne$nuclide$half_life[["value"]], Inf)
 })
 
-test_that("missing values give a warning naming them", {
-  expect_warning(tcn_params("Ne21", scaling = "St"), "production_spallation")
-  expect_no_warning(tcn_params("Be10", scaling = "St"))
-  expect_no_warning(tcn_params("Al26", scaling = "St"))
-  expect_no_warning(tcn_params("C14", scaling = "St"))
+test_that("every supported nuclide and scheme has complete parameters", {
+  for (n in c("Be10", "Al26", "C14", "Ne21")) {
+    for (s in c("St", "Lm", "Sf", "Sa")) {
+      expect_no_warning(tcn_params(n, scaling = s))
+    }
+  }
+})
+
+test_that("21Ne spallation rates are those of CRONUScalc", {
+  cronuscalc <- c(St = 16.63, Lm = 16.59, Sf = 16.96, Sa = 16.26)
+  for (s in names(cronuscalc)) {
+    p <- tcn_params("Ne21", scaling = s)$production
+    expect_equal(p$value[p$pathway == "spallation"], cronuscalc[[s]],
+                 label = paste("Ne21", s))
+  }
+  p <- tcn_params("Ne21", scaling = "St")$production
+  expect_equal(setNames(p$value, p$pathway)[c("muon_stop", "muon_fast")],
+               c(muon_stop = 0, muon_fast = 0))
+})
+
+test_that("21Ne St rate agrees with independent calibrations", {
+  p <- tcn_params("Ne21", scaling = "St")$production
+  st <- p$value[p$pathway == "spallation"]
+  # SPICE (Fenton et al. 2019): 17.0 +/- 1.1 at/g/yr, 2 sigma
+  expect_lte(abs(st - 17.0), 1.1)
+  # Balco v3 online calculator (make_consts_v3.m): 16.896 +/- 1.033
+  expect_lte(abs(st - 16.896), 1.033)
 })
 
 test_that("overrides replace the value and record the source", {
@@ -94,4 +116,24 @@ test_that("print and as.data.frame methods work", {
   d <- as.data.frame(p)
   expect_s3_class(d, "data.frame")
   expect_true(all(c("parameter", "value", "reference") %in% names(d)))
+})
+
+test_that("10Be and 26Al spallation uncertainties are those of Phillips et al. (2016)", {
+  sd <- rbind(
+    Be10 = c(St = 0.33, Lm = 0.32, Sf = 0.35, Sa = 0.31),
+    Al26 = c(St = 2.8, Lm = 2.7, Sf = 3.3, Sa = 3.1)
+  )
+  for (n in rownames(sd)) {
+    for (s in colnames(sd)) {
+      p <- tcn_params(n, scaling = s)$production
+      expect_equal(p$sd[p$pathway == "spallation"], sd[n, s],
+                   label = paste(n, s))
+    }
+  }
+  p <- tcn_params("C14", scaling = "St")$production
+  expect_true(is.na(p$sd[p$pathway == "spallation"]))
+})
+
+test_that("print shows uncertainties with three significant digits", {
+  expect_output(print(tcn_params("Ne21", scaling = "Sa")), "1.96")
 })

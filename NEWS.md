@@ -11,5 +11,9 @@
   every value. Spallation rates from Borchers et al. (2016), muon rates
   from Braucher et al. (2011) and Lupker et al. (2015). Half-lives: 10Be
   1.387 Ma (Chmeleff et al. 2010, Korschinek et al. 2010), 26Al 0.705 Ma
-  (Nishiizumi 2004), 14C 5700 yr (Kutschera 2019). The 21Ne production
-  rates are not yet filled in.
+  (Nishiizumi 2004), 14C 5700 yr (Kutschera 2019). 21Ne spallation rates
+  from CRONUScalc (Marrero et al. 2016, ratio of Balco and Shuster 2009),
+  with no separate muon term. Uncertainties of the 10Be and 26Al rates from
+  Phillips et al. (2016).
+* New `tcn_params_list()`: `tcn_params()` for several nuclides with one
+  scaling scheme, as a named list.

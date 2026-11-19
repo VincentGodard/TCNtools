@@ -9,7 +9,9 @@
 #' Spallation production rates are the calibrated values of
 #' \insertCite{borchers2016geological;textual}{TCNtools} (Table 7) for the
 #' chosen scaling scheme. They depend on the scheme, so a rate must only be
-#' used with the scaling factors of the same scheme.
+#' used with the scaling factors of the same scheme. Their uncertainties for
+#' 10Be and 26Al are those of \insertCite{phillips2016cronusearth;textual}{TCNtools}
+#' (Tables 3 and 6). No uncertainty is given for 14C.
 #'
 #' Muon production rates are for a simple exponential approximation of
 #' production at depth, with one term for stopped (negative) muons and one
@@ -22,9 +24,17 @@
 #' for spallation, stopped muons and fast muons, as used by
 #' \insertCite{braucher2011production;textual}{TCNtools}.
 #'
-#' Some values are not yet available (21Ne production rates): they are
-#' `NA` and the function warns. Supply them through `...` to use them in
-#' calculations.
+#' 21Ne is not calibrated by Borchers et al. (2016). Its spallation rates
+#' are those of the CRONUScalc program
+#' \insertCite{marrero2016cosmogenic}{TCNtools}, which applies the
+#' 21Ne/10Be production ratio of \insertCite{balco2009al26;textual}{TCNtools}
+#' to the Borchers et al. (2016) 10Be rates. CRONUScalc models no muon
+#' production for 21Ne, so these rates act as total rates and the 21Ne muon
+#' rates are set to zero. Independent estimates agree within a few percent
+#' (e.g. 17.0 +/- 1.1 at/g/yr for St, 2 sigma, from the SPICE calibration).
+#'
+#' If a value is missing (`NA`), the function warns. Values can be
+#' supplied or replaced through `...`.
 #'
 #' @param nuclide Character scalar. One of `"Be10"`, `"Al26"`, `"C14"`,
 #'   `"Ne21"`.
@@ -132,6 +142,56 @@ tcn_params <- function(nuclide, scaling, ..., target = "quartz") {
   validate_tcn_params(x)
 }
 
+#' Parameters for several nuclides
+#'
+#' Calls [tcn_params()] once per nuclide, with the same scaling scheme and
+#' target, and returns the results as a named list. Use it for multi-nuclide
+#' calculations (e.g. 26Al/10Be), so that every nuclide uses the same scheme.
+#'
+#' @param nuclides Character vector of distinct nuclide names, each one of
+#'   the values accepted by [tcn_params()].
+#' @param scaling Character scalar. Scaling scheme, as in [tcn_params()].
+#' @param target Character scalar. Target mineral, as in [tcn_params()].
+#' @param ... Named overrides passed to [tcn_params()] for **every**
+#'   nuclide. They are therefore mainly useful for parameters shared by all
+#'   nuclides (attenuation lengths). For a nuclide-specific override, call
+#'   [tcn_params()] for that nuclide and replace the list element.
+#'
+#' @return A named list of `tcn_params` objects, one per nuclide, in the
+#'   order of `nuclides`.
+#'
+#' @section Vectorisation:
+#' `nuclides` is a vector, `scaling` and `target` are scalars.
+#'
+#' @seealso [tcn_params()]
+#'
+#' @examples
+#' p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
+#' names(p)
+#' p$Al26$production
+#'
+#' # shared override: a different spallation attenuation length for all
+#' p <- tcn_params_list(c("Be10", "Al26"), scaling = "St",
+#'                      attenuation_spallation = 150)
+#' p$Be10$attenuation
+#' @export
+tcn_params_list <- function(nuclides, scaling, ..., target = "quartz") {
+  if (!is.character(nuclides) || length(nuclides) == 0 || anyNA(nuclides)) {
+    stop("`nuclides` must be a non-empty character vector without NA.",
+         call. = FALSE)
+  }
+  if (anyDuplicated(nuclides)) {
+    stop(sprintf("`nuclides` must not contain duplicates: %s.",
+                 paste(unique(nuclides[duplicated(nuclides)]),
+                       collapse = ", ")), call. = FALSE)
+  }
+  out <- lapply(nuclides, function(n) {
+    tcn_params(n, scaling = scaling, ..., target = target)
+  })
+  names(out) <- nuclides
+  out
+}
+
 #' @export
 print.tcn_params <- function(x, ...) {
   cat(sprintf("<tcn_params> %s in %s, scaling scheme %s\n",
@@ -140,7 +200,7 @@ print.tcn_params <- function(x, ...) {
   out <- data.frame(
     parameter = s$parameter,
     value = formatC(s$value, digits = 4, format = "g"),
-    sd = ifelse(is.na(s$sd), "", formatC(s$sd, digits = 2, format = "g")),
+    sd = ifelse(is.na(s$sd), "", formatC(s$sd, digits = 3, format = "g")),
     unit = s$unit,
     reference = short_reference(s$reference)
   )

@@ -132,8 +132,9 @@ tcn_params(nuclide = "Be10", scaling = "Sa", ..., target = "quartz")
 ```
 
 - One nuclide per call (scalar contract); a helper
-  `tcn_params_list(c("Be10", "Al26"), ...)` (name to confirm) returns a named
-  list. `...` takes named overrides; an overridden value gets source `"user"`.
+  `tcn_params_list(c("Be10", "Al26"), ...)` returns a named list (done
+  2026-11-19, `...` overrides apply to every nuclide). `...` takes named
+  overrides; an overridden value gets source `"user"`.
 - Returned S3 object, class `tcn_params`, one sub-list per dependency:
 
   | Element | Content | Depends on |
@@ -197,13 +198,16 @@ Decisions for layer 1 (2026-10-15):
    0.717 Ma), C14 5700 ± 30 yr (Kutschera 2019, replacing v0.1.0's 5730).
 5. **Muons:** the simple exponential approximation (P and L for stopped and
    fast muons) is kept alongside Balco 2017.
+6. **Ne21 production rate** (settled 2026-11-19): CRONUScalc values from
+   `physpars.m` (Marrero et al. 2016, 21Ne/10Be ratio of Balco and Shuster
+   2009 applied to the Borchers 10Be): St 16.63, Lm 16.59, Sf 16.96,
+   Sa 16.26 at/g/yr. Muon rates 0, since CRONUScalc has no 21Ne muons and
+   its rate acts as a total rate. Comparison of the four candidate sources
+   (Fenton 2019 SPICE, CRONUScalc, ratio, Balco v3 calculator) in the
+   Obsidian vault, `1-projects/declic/tcntools/ne21/ne21-parameters-synthesis.md`.
 
 Still open:
 
-- **Ne21 production rate:** Borchers et al. (2016) covers 3He, 10Be, 14C,
-  26Al and 36Cl (per its Zotero tags), not 21Ne. A source is needed for the
-  21Ne rate per scheme and for its muon parameters; do not derive one
-  without saying how.
 - Check in Borchers et al. (2016) that the Sf / Sa definitions match the
   layer 4b implementation (Sa nuclide-specific, Sf flux-based) before
   coding it.

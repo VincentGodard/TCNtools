@@ -55,7 +55,9 @@ Every value carries its source.
 Spallation production rates are the calibrated values of
 \insertCite{borchers2016geological;textual}{TCNtools} (Table 7) for the
 chosen scaling scheme. They depend on the scheme, so a rate must only be
-used with the scaling factors of the same scheme.
+used with the scaling factors of the same scheme. Their uncertainties for
+10Be and 26Al are those of \insertCite{phillips2016cronusearth;textual}{TCNtools}
+(Tables 3 and 6). No uncertainty is given for 14C.
 
 Muon production rates are for a simple exponential approximation of
 production at depth, with one term for stopped (negative) muons and one
@@ -68,9 +70,17 @@ Attenuation lengths are not nuclide specific: 160, 1500 and 4320 g/cm2
 for spallation, stopped muons and fast muons, as used by
 \insertCite{braucher2011production;textual}{TCNtools}.
 
-Some values are not yet available (21Ne production rates): they are
-\code{NA} and the function warns. Supply them through \code{...} to use them in
-calculations.
+21Ne is not calibrated by Borchers et al. (2016). Its spallation rates
+are those of the CRONUScalc program
+\insertCite{marrero2016cosmogenic}{TCNtools}, which applies the
+21Ne/10Be production ratio of \insertCite{balco2009al26;textual}{TCNtools}
+to the Borchers et al. (2016) 10Be rates. CRONUScalc models no muon
+production for 21Ne, so these rates act as total rates and the 21Ne muon
+rates are set to zero. Independent estimates agree within a few percent
+(e.g. 17.0 +/- 1.1 at/g/yr for St, 2 sigma, from the SPICE calibration).
+
+If a value is missing (\code{NA}), the function warns. Values can be
+supplied or replaced through \code{...}.
 }
 \section{Vectorisation}{
 
