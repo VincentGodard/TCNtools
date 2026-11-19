@@ -16,6 +16,7 @@
   21Ne fast-muon rate from Balco et al. (2019). Uncertainties of the 10Be and 26Al rates from
   Phillips et al. (2016).
 * New `tcn_params_list()`: `tcn_params()` for several nuclides with one
-  scaling scheme, as a named list.
+  scaling scheme, as a named list. Overrides are limited to parameters
+  shared by all nuclides (attenuation lengths).
 * New `tcn_params_table()`: the full table of parameters with their sources,
   optionally filtered by nuclide, scaling scheme and target.

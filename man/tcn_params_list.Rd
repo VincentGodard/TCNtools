@@ -12,10 +12,13 @@ the values accepted by \code{\link[=tcn_params]{tcn_params()}}.}
 
 \item{scaling}{Character scalar. Scaling scheme, as in \code{\link[=tcn_params]{tcn_params()}}.}
 
-\item{...}{Named overrides passed to \code{\link[=tcn_params]{tcn_params()}} for \strong{every}
-nuclide. They are therefore mainly useful for parameters shared by all
-nuclides (attenuation lengths). For a nuclide-specific override, call
-\code{\link[=tcn_params]{tcn_params()}} for that nuclide and replace the list element.}
+\item{...}{Named overrides passed to \code{\link[=tcn_params]{tcn_params()}} for every nuclide.
+Only parameters shared by all nuclides are accepted (the attenuation
+lengths \code{attenuation_spallation}, \code{attenuation_muon_stop},
+\code{attenuation_muon_fast}): a nuclide-specific value such as
+\code{production_spallation} or \code{half_life} would otherwise be applied to
+every nuclide. For a nuclide-specific override, call \code{\link[=tcn_params]{tcn_params()}} for
+that nuclide and replace the list element (see examples).}
 
 \item{target}{Character scalar. Target mineral, as in \code{\link[=tcn_params]{tcn_params()}}.}
 }
@@ -42,6 +45,10 @@ p$Al26$production
 p <- tcn_params_list(c("Be10", "Al26"), scaling = "St",
                      attenuation_spallation = 150)
 p$Be10$attenuation
+
+# nuclide-specific override: replace the list element
+p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
+p$Be10 <- tcn_params("Be10", scaling = "St", production_spallation = 4.2)
 }
 \seealso{
 \code{\link[=tcn_params]{tcn_params()}} for one nuclide, \code{\link[=tcn_params_table]{tcn_params_table()}} for the

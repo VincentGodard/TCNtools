@@ -13,7 +13,7 @@ test_that("all elements share the scaling scheme and target", {
   expect_true(all(vapply(p, function(x) x$target, character(1)) == "quartz"))
 })
 
-test_that("overrides apply to every nuclide", {
+test_that("shared overrides apply to every nuclide", {
   p <- tcn_params_list(c("Be10", "Al26"), scaling = "St",
                        attenuation_spallation = 150)
   for (x in p) {
@@ -37,4 +37,29 @@ test_that("invalid input is rejected", {
   expect_error(tcn_params_list(c("Be10", "Xx99"), scaling = "St"), "nuclide")
   expect_error(tcn_params_list(c("Be10", "Al26"), scaling = c("St", "Sa")),
                "scaling")
+})
+
+test_that("nuclide-specific overrides are rejected", {
+  expect_error(
+    tcn_params_list(c("Be10", "Al26"), scaling = "St",
+                    production_spallation = 4.2),
+    "production_spallation"
+  )
+  expect_error(
+    tcn_params_list(c("Be10", "Al26"), scaling = "St", half_life = 1e6),
+    "shared by all nuclides"
+  )
+  expect_error(
+    tcn_params_list(c("Be10", "Al26"), scaling = "St",
+                    attenuation_spallation = 150, production_muon_fast = 0.1),
+    "production_muon_fast"
+  )
+})
+
+test_that("the replacement pattern for a nuclide-specific value works", {
+  p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
+  p$Be10 <- tcn_params("Be10", scaling = "St", production_spallation = 4.2)
+  sp <- function(x) x$production$value[x$production$pathway == "spallation"]
+  expect_equal(sp(p$Be10), 4.2)
+  expect_equal(sp(p$Al26), 27.93)
 })

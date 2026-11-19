@@ -160,10 +160,13 @@ tcn_params <- function(nuclide, scaling, ..., target = "quartz") {
 #'   the values accepted by [tcn_params()].
 #' @param scaling Character scalar. Scaling scheme, as in [tcn_params()].
 #' @param target Character scalar. Target mineral, as in [tcn_params()].
-#' @param ... Named overrides passed to [tcn_params()] for **every**
-#'   nuclide. They are therefore mainly useful for parameters shared by all
-#'   nuclides (attenuation lengths). For a nuclide-specific override, call
-#'   [tcn_params()] for that nuclide and replace the list element.
+#' @param ... Named overrides passed to [tcn_params()] for every nuclide.
+#'   Only parameters shared by all nuclides are accepted (the attenuation
+#'   lengths `attenuation_spallation`, `attenuation_muon_stop`,
+#'   `attenuation_muon_fast`): a nuclide-specific value such as
+#'   `production_spallation` or `half_life` would otherwise be applied to
+#'   every nuclide. For a nuclide-specific override, call [tcn_params()] for
+#'   that nuclide and replace the list element (see examples).
 #'
 #' @return A named list of `tcn_params` objects, one per nuclide, in the
 #'   order of `nuclides`.
@@ -183,6 +186,10 @@ tcn_params <- function(nuclide, scaling, ..., target = "quartz") {
 #' p <- tcn_params_list(c("Be10", "Al26"), scaling = "St",
 #'                      attenuation_spallation = 150)
 #' p$Be10$attenuation
+#'
+#' # nuclide-specific override: replace the list element
+#' p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
+#' p$Be10 <- tcn_params("Be10", scaling = "St", production_spallation = 4.2)
 #' @export
 tcn_params_list <- function(nuclides, scaling, ..., target = "quartz") {
   if (!is.character(nuclides) || length(nuclides) == 0 || anyNA(nuclides)) {
@@ -193,6 +200,18 @@ tcn_params_list <- function(nuclides, scaling, ..., target = "quartz") {
     stop(sprintf("`nuclides` must not contain duplicates: %s.",
                  paste(unique(nuclides[duplicated(nuclides)]),
                        collapse = ", ")), call. = FALSE)
+  }
+  overrides <- names(list(...))
+  tab <- nuclide_parameters
+  shared <- unique(paste(tab$parameter, tab$pathway, sep = "_")[is.na(tab$nuclide)])
+  specific <- setdiff(overrides[nzchar(overrides)], shared)
+  if (length(specific) > 0) {
+    stop(sprintf(paste(
+      "`...` only accepts parameters shared by all nuclides (%s), not: %s.",
+      "For a nuclide-specific value, use tcn_params() for that nuclide and",
+      "replace the list element."),
+      paste(shared, collapse = ", "), paste(specific, collapse = ", ")),
+      call. = FALSE)
   }
   out <- lapply(nuclides, function(n) {
     tcn_params(n, scaling = scaling, ..., target = target)
