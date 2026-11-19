@@ -74,10 +74,15 @@ for spallation, stopped muons and fast muons, as used by
 are those of the CRONUScalc program
 \insertCite{marrero2016cosmogenic}{TCNtools}, which applies the
 21Ne/10Be production ratio of \insertCite{balco2009al26;textual}{TCNtools}
-to the Borchers et al. (2016) 10Be rates. CRONUScalc models no muon
-production for 21Ne, so these rates act as total rates and the 21Ne muon
-rates are set to zero. Independent estimates agree within a few percent
-(e.g. 17.0 +/- 1.1 at/g/yr for St, 2 sigma, from the SPICE calibration).
+to the Borchers et al. (2016) 10Be rates. Independent estimates agree
+within a few percent (e.g. 17.0 +/- 1.1 at/g/yr for St, 2 sigma, from the
+SPICE calibration). The 21Ne fast-muon rate (0.203 at/g/yr at sea level,
+no stopped-muon production) is that of
+\insertCite{balco2019cosmogenic;textual}{TCNtools}, needed for long
+exposure or exhumation histories where production at depth matters.
+CRONUScalc models no 21Ne muons, so its spallation rate already includes
+them: adding the muon term overestimates surface production by about
+1.2\%, well within the uncertainty of the rate.
 
 If a value is missing (\code{NA}), the function warns. Values can be
 supplied or replaced through \code{...}.

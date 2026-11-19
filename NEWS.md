@@ -13,7 +13,7 @@
   1.387 Ma (Chmeleff et al. 2010, Korschinek et al. 2010), 26Al 0.705 Ma
   (Nishiizumi 2004), 14C 5700 yr (Kutschera 2019). 21Ne spallation rates
   from CRONUScalc (Marrero et al. 2016, ratio of Balco and Shuster 2009),
-  with no separate muon term. Uncertainties of the 10Be and 26Al rates from
+  21Ne fast-muon rate from Balco et al. (2019). Uncertainties of the 10Be and 26Al rates from
   Phillips et al. (2016).
 * New `tcn_params_list()`: `tcn_params()` for several nuclides with one
   scaling scheme, as a named list.

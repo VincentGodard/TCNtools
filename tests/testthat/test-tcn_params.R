@@ -59,7 +59,7 @@ test_that("every supported nuclide and scheme has complete parameters", {
   }
 })
 
-test_that("21Ne spallation rates are those of CRONUScalc", {
+test_that("21Ne rates: CRONUScalc spallation, Balco et al. (2019) muons", {
   cronuscalc <- c(St = 16.63, Lm = 16.59, Sf = 16.96, Sa = 16.26)
   for (s in names(cronuscalc)) {
     p <- tcn_params("Ne21", scaling = s)$production
@@ -68,7 +68,7 @@ test_that("21Ne spallation rates are those of CRONUScalc", {
   }
   p <- tcn_params("Ne21", scaling = "St")$production
   expect_equal(setNames(p$value, p$pathway)[c("muon_stop", "muon_fast")],
-               c(muon_stop = 0, muon_fast = 0))
+               c(muon_stop = 0, muon_fast = 0.203))
 })
 
 test_that("21Ne St rate agrees with independent calibrations", {

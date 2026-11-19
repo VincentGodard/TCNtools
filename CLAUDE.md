@@ -201,8 +201,12 @@ Decisions for layer 1 (2026-10-15):
 6. **Ne21 production rate** (settled 2026-11-19): CRONUScalc values from
    `physpars.m` (Marrero et al. 2016, 21Ne/10Be ratio of Balco and Shuster
    2009 applied to the Borchers 10Be): St 16.63, Lm 16.59, Sf 16.96,
-   Sa 16.26 at/g/yr. Muon rates 0, since CRONUScalc has no 21Ne muons and
-   its rate acts as a total rate. Comparison of the four candidate sources
+   Sa 16.26 at/g/yr. Muons (decided 2026-11-19, needed for long
+   exhumation histories): fast 0.203 at/g/yr, stopped 0 (Balco et al. 2019),
+   shared L_fast = 4320 g/cm2. Added on top of the CRONUScalc rate, which
+   already includes muons: accepted surface overestimate of about 1.2%,
+   documented (option 1, rather than subtracting it from the rates).
+   Comparison of the four candidate sources
    (Fenton 2019 SPICE, CRONUScalc, ratio, Balco v3 calculator) in the
    Obsidian vault, `1-projects/declic/tcntools/ne21/ne21-parameters-synthesis.md`.
 
