@@ -1,7 +1,7 @@
 nuclide,target,parameter,pathway,element,scaling,value,sd,unit,reference,checked,note
 Be10,quartz,half_life,,,,1.387e6,0.012e6,yr,chmeleff2010determination;korschinek2010new,TRUE,"Value and uncertainty as used in braucher2011production; same value in borchers2016geological"
-Al26,quartz,half_life,,,,,,yr,,FALSE,"To be checked by VG: Nishiizumi (2004) gives 0.705 Ma (printed as 7.05 Myr in the extracted text of borchers2016geological); v0.1.0 lambda corresponds to 0.708 Ma"
-C14,quartz,half_life,,,,5730,40,yr,godwin1962halflife,FALSE,"Value from v0.1.0 (lambda = log(2)/5730); not yet checked against the paper"
+Al26,quartz,half_life,,,,0.705e6,0.017e6,yr,nishiizumi2004preparation,TRUE,"Value used by the CRONUS-Earth calculators and borchers2016geological; nuclear data compilations give 0.717 +/- 0.024 Ma (NUBASE2020), within uncertainties. Checked 2026-11-14"
+C14,quartz,half_life,,,,5700,30,yr,kutschera2019halflife,TRUE,"Physical half-life (DDEP / NNDC value). Replaces 5730 +/- 40 (godwin1962halflife) used in v0.1.0. Checked 2026-11-14"
 Ne21,quartz,half_life,,,,Inf,0,yr,,TRUE,"Stable nuclide"
 Be10,quartz,production,spallation,,St,4.01,,at/g/yr,borchers2016geological,TRUE,"Table 7; no uncertainty given"
 Be10,quartz,production,spallation,,Lm,4.00,,at/g/yr,borchers2016geological,TRUE,"Table 7; no uncertainty given"

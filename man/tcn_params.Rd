@@ -68,9 +68,9 @@ Attenuation lengths are not nuclide specific: 160, 1500 and 4320 g/cm2
 for spallation, stopped muons and fast muons, as used by
 \insertCite{braucher2011production;textual}{TCNtools}.
 
-Some values are not yet available (26Al half-life, 21Ne production
-rates): they are \code{NA} and the function warns. Supply them through \code{...}
-to use them in calculations.
+Some values are not yet available (21Ne production rates): they are
+\code{NA} and the function warns. Supply them through \code{...} to use them in
+calculations.
 }
 \section{Vectorisation}{
 
@@ -94,5 +94,6 @@ as.data.frame(tcn_params("C14", scaling = "Sa"))
 
 Half-lives: \insertRef{chmeleff2010determination}{TCNtools},
 \insertRef{korschinek2010new}{TCNtools},
-\insertRef{godwin1962halflife}{TCNtools}.
+\insertRef{nishiizumi2004preparation}{TCNtools},
+\insertRef{kutschera2019halflife}{TCNtools}.
 }

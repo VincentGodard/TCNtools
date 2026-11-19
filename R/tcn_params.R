@@ -22,9 +22,9 @@
 #' for spallation, stopped muons and fast muons, as used by
 #' \insertCite{braucher2011production;textual}{TCNtools}.
 #'
-#' Some values are not yet available (26Al half-life, 21Ne production
-#' rates): they are `NA` and the function warns. Supply them through `...`
-#' to use them in calculations.
+#' Some values are not yet available (21Ne production rates): they are
+#' `NA` and the function warns. Supply them through `...` to use them in
+#' calculations.
 #'
 #' @param nuclide Character scalar. One of `"Be10"`, `"Al26"`, `"C14"`,
 #'   `"Ne21"`.
@@ -67,7 +67,8 @@
 #'
 #' Half-lives: \insertRef{chmeleff2010determination}{TCNtools},
 #' \insertRef{korschinek2010new}{TCNtools},
-#' \insertRef{godwin1962halflife}{TCNtools}.
+#' \insertRef{nishiizumi2004preparation}{TCNtools},
+#' \insertRef{kutschera2019halflife}{TCNtools}.
 #'
 #' @examples
 #' be <- tcn_params("Be10", scaling = "St")

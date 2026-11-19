@@ -39,7 +39,10 @@ test_that("decay constant follows from the half-life", {
   expect_equal(be$nuclide$lambda[["value"]], log(2) / 1.387e6)
   expect_equal(be$nuclide$lambda[["sd"]], log(2) * 0.012e6 / 1.387e6^2)
   c14 <- tcn_params("C14", scaling = "St")
-  expect_equal(c14$nuclide$lambda[["value"]], log(2) / 5730)
+  expect_equal(c14$nuclide$lambda[["value"]], log(2) / 5700)
+  al <- tcn_params("Al26", scaling = "St")
+  expect_equal(al$nuclide$half_life[["value"]], 0.705e6)
+  expect_equal(al$nuclide$lambda[["value"]], log(2) / 0.705e6)
 })
 
 test_that("a stable nuclide has a zero decay constant", {
@@ -49,10 +52,10 @@ test_that("a stable nuclide has a zero decay constant", {
 })
 
 test_that("missing values give a warning naming them", {
-  expect_warning(tcn_params("Al26", scaling = "St"), "half_life")
   expect_warning(tcn_params("Ne21", scaling = "St"), "production_spallation")
   expect_no_warning(tcn_params("Be10", scaling = "St"))
-  expect_no_warning(tcn_params("Al26", scaling = "St", half_life = 0.705e6))
+  expect_no_warning(tcn_params("Al26", scaling = "St"))
+  expect_no_warning(tcn_params("C14", scaling = "St"))
 })
 
 test_that("overrides replace the value and record the source", {

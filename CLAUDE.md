@@ -190,9 +190,11 @@ Decisions for layer 1 (2026-10-15):
    formulas must handle without dividing by lambda.
 3. **Calibration:** Borchers et al. (2016), and only the schemes St, Lm, Sf
    and Sa. Scaling scheme names follow that paper.
-4. **Al26 half-life:** v0.1.0 `lambda` gives 0.708 Ma, Nishiizumi (2004)
-   gives 0.705 Ma. Vincent checks the source; do not enter a value before
-   that.
+4. **Half-lives** (settled 2026-11-19, from the literature check of
+   2026-11-14 recorded in the M2 course, `2_cosmogenic_nuclides_systematics.tex`):
+   Be10 1.387 ± 0.012 Ma (Chmeleff 2010, Korschinek 2010), Al26
+   0.705 ± 0.017 Ma (Nishiizumi 2004, CRONUS value; nuclear compilations give
+   0.717 Ma), C14 5700 ± 30 yr (Kutschera 2019, replacing v0.1.0's 5730).
 5. **Muons:** the simple exponential approximation (P and L for stopped and
    fast muons) is kept alongside Balco 2017.
 

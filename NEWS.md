@@ -9,5 +9,7 @@
 * New `tcn_params()`: parameters for one nuclide (10Be, 26Al, 14C, 21Ne),
   target (quartz) and scaling scheme (St, Lm, Sf, Sa), with the source of
   every value. Spallation rates from Borchers et al. (2016), muon rates
-  from Braucher et al. (2011) and Lupker et al. (2015). The 26Al half-life
-  and the 21Ne production rates are not yet filled in.
+  from Braucher et al. (2011) and Lupker et al. (2015). Half-lives: 10Be
+  1.387 Ma (Chmeleff et al. 2010, Korschinek et al. 2010), 26Al 0.705 Ma
+  (Nishiizumi 2004), 14C 5700 yr (Kutschera 2019). The 21Ne production
+  rates are not yet filled in.
