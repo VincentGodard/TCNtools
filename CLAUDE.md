@@ -134,8 +134,9 @@ tcn_params(nuclide = "Be10", scaling = "Sa", ..., target = "quartz")
 - One nuclide per call (scalar contract); a helper
   `tcn_params_list(c("Be10", "Al26"), ...)` returns a named list (done
   2026-11-19; `...` only accepts parameters shared by all nuclides,
-  i.e. attenuation lengths, and errors on nuclide-specific ones). `...` takes named
-  overrides; an overridden value gets source `"user"`.
+  i.e. attenuation lengths, and errors on nuclide-specific ones, showing
+  the replacement code). `...` takes named overrides; an overridden value
+  gets source `"user"`.
 - Returned S3 object, class `tcn_params`, one sub-list per dependency:
 
   | Element | Content | Depends on |

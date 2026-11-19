@@ -46,9 +46,14 @@ p <- tcn_params_list(c("Be10", "Al26"), scaling = "St",
                      attenuation_spallation = 150)
 p$Be10$attenuation
 
-# nuclide-specific override: replace the list element
+# nuclide-specific override (e.g. a local 10Be production rate):
+# `...` does not accept it, since it would apply to every nuclide.
+# Build the list, then rebuild that nuclide and replace it in the list.
 p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
-p$Be10 <- tcn_params("Be10", scaling = "St", production_spallation = 4.2)
+p$Be10 <- tcn_params("Be10", scaling = "St",
+                     production_spallation = c(4.2, 0.2))
+p$Be10$production   # 4.2, reference "user"
+p$Al26$production   # unchanged
 }
 \seealso{
 \code{\link[=tcn_params]{tcn_params()}} for one nuclide, \code{\link[=tcn_params_table]{tcn_params_table()}} for the

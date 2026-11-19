@@ -187,9 +187,14 @@ tcn_params <- function(nuclide, scaling, ..., target = "quartz") {
 #'                      attenuation_spallation = 150)
 #' p$Be10$attenuation
 #'
-#' # nuclide-specific override: replace the list element
+#' # nuclide-specific override (e.g. a local 10Be production rate):
+#' # `...` does not accept it, since it would apply to every nuclide.
+#' # Build the list, then rebuild that nuclide and replace it in the list.
 #' p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
-#' p$Be10 <- tcn_params("Be10", scaling = "St", production_spallation = 4.2)
+#' p$Be10 <- tcn_params("Be10", scaling = "St",
+#'                      production_spallation = c(4.2, 0.2))
+#' p$Be10$production   # 4.2, reference "user"
+#' p$Al26$production   # unchanged
 #' @export
 tcn_params_list <- function(nuclides, scaling, ..., target = "quartz") {
   if (!is.character(nuclides) || length(nuclides) == 0 || anyNA(nuclides)) {
@@ -206,11 +211,15 @@ tcn_params_list <- function(nuclides, scaling, ..., target = "quartz") {
   shared <- unique(paste(tab$parameter, tab$pathway, sep = "_")[is.na(tab$nuclide)])
   specific <- setdiff(overrides[nzchar(overrides)], shared)
   if (length(specific) > 0) {
-    stop(sprintf(paste(
-      "`...` only accepts parameters shared by all nuclides (%s), not: %s.",
-      "For a nuclide-specific value, use tcn_params() for that nuclide and",
-      "replace the list element."),
-      paste(shared, collapse = ", "), paste(specific, collapse = ", ")),
+    stop(sprintf(paste0(
+      "`...` only accepts parameters shared by all nuclides (%s), not: %s.\n",
+      "To change it for one nuclide, rebuild that nuclide and replace it ",
+      "in the list, e.g.\n",
+      "  p <- tcn_params_list(%s, scaling = \"%s\")\n",
+      "  p$%s <- tcn_params(\"%s\", scaling = \"%s\", %s = ...)"),
+      paste(shared, collapse = ", "), paste(specific, collapse = ", "),
+      deparse(nuclides), scaling,
+      nuclides[1], nuclides[1], scaling, specific[1]),
       call. = FALSE)
   }
   out <- lapply(nuclides, function(n) {

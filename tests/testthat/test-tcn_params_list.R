@@ -56,6 +56,15 @@ test_that("nuclide-specific overrides are rejected", {
   )
 })
 
+test_that("the error message shows the replacement code for the call", {
+  expect_error(
+    tcn_params_list(c("Be10", "Al26"), scaling = "Sa",
+                    production_spallation = 4.2),
+    'p$Be10 <- tcn_params("Be10", scaling = "Sa", production_spallation = ...)',
+    fixed = TRUE
+  )
+})
+
 test_that("the replacement pattern for a nuclide-specific value works", {
   p <- tcn_params_list(c("Be10", "Al26"), scaling = "St")
   p$Be10 <- tcn_params("Be10", scaling = "St", production_spallation = 4.2)
