@@ -280,7 +280,7 @@ git push -u origin layer-NN-<name>   # then PR into v1
 - [x] Branch `v1` created, empty skeleton, legacy worktree
 - [x] Layer 0: infrastructure
 - [x] Layer 1: constants and data
-- [ ] Layer 2: atmosphere / geometry
+- [x] Layer 2: atmosphere / geometry
 - [ ] Layer 3: geomagnetism
 - [ ] Layer 4a: scaling St, Lm
 - [ ] Layer 5: production at depth
