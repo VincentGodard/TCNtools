@@ -11,6 +11,7 @@ Tools for computing production rates, concentrations and denudation rates or exp
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://vincentgodard.github.io/TCNtools/}
   \item \url{https://github.com/VincentGodard/TCNtools}
   \item Report bugs at \url{https://github.com/VincentGodard/TCNtools/issues}
 }

@@ -86,15 +86,34 @@ issues, this file): English.
 | 0. Infrastructure | DESCRIPTION, roxygen NAMESPACE, testthat 3, Rdpack, `data-raw/`, `.Rbuildignore`, `NEWS.md`, `CITATION.cff`, GitHub Actions (`check-standard`, `test-coverage`, pkgdown → gh-pages) | check passes on an empty package |
 | 1. Constants and data | decay constants, attenuation lengths, SLHL production rates; `data-raw/` scripts from the `.mat` files | values from the cited papers |
 | 2. Atmosphere / geometry | `atm_pressure` (ERA40 / Stone 2000), angle utilities (internal) | published reference values |
-| 3. Geomagnetism | VDM series, Rc computation | point values vs CRONUS-Earth / CREp |
+| 3. Geomagnetism | VDM series, Rc computation (dipole, for Lm); the LSD-specific Rc and solar modulation move to 4b | point values vs CRONUS-Earth / CREp |
 | 4a. Scaling: St, Lm | `scaling_st`, `scaling_lm` | site grid vs online calculator / CREp |
-| 4b. Scaling: Sf, Sa (LSD) | `scaling_lsd` (flux-based Sf and nuclide-specific Sa), with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
+| 4b. Scaling: Sf, Sa (LSD), **v1.1, after layer 8** | `scaling_lsd` (flux-based Sf and nuclide-specific Sa), with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
 | 5. Production at depth | exponential spallation; muons (Balco 2017, models 1a/1b) | Balco 2017 tables; integral identities |
 | 6. Forward concentration models | analytical (steady state and transient), then numerical Eulerian / Lagrangian | limits: E = 0 → saturation, t → ∞, pure decay; numerical vs analytical |
 | 7. Inversion | steady-state denudation rate and exposure age with uncertainties (root finding) | round trip forward → inverse |
 | 8. Two nuclides | `tnp_curves`, `tnp_ellipse`, burial | consistency with layer 6 |
 
-Deferred to v1.x (one GitHub issue each, label `v1.x`): MCMC solver,
+**Strategy (decided 2026-11-19): layer 4b (LSD) is deferred.** The package
+is first built with St and Lm only, through layer 8, and released as
+v1.0.0. LSD (Sf, Sa) arrives in v1.1. Constraints so that 4b slots in later
+without reworking layers 5 to 8:
+
+- Layers 5 to 8 only see a scaling factor (possibly time-dependent, as Lm
+  already requires), never how it was computed.
+- Scaling functions and the interfaces of layers 5 and 6 take the nuclide
+  (or a `tcn_params` object) from the start, even though St and Lm ignore
+  it: Sa is nuclide-specific.
+- Muon handling in layer 5 is a choice separate from the spallation
+  scheme (LSD can scale muons from the Sato muon fluxes).
+- Layer 1 keeps the Sf and Sa rates (done and checked). Downstream
+  functions given `scaling = "Sf"` or `"Sa"` stop with an explicit message
+  ("Sf/Sa scaling not available before v1.1") until 4b exists.
+- v0.1.0 has `scaling_lsd`: TCNbook and the student lab lose it in v1.0
+  until v1.1 (they stay on v0.1.0 until then anyway).
+
+Deferred to v1.x (one GitHub issue each, label `v1.x`): layer 4b (LSD,
+target v1.1), MCMC solver,
 `depth_profile_mc`, soil mixing family, chemistry-dependent nuclides
 (`tcn_composition()`, `prod_cl36_*`; see "Layer 1 design").
 
@@ -128,12 +147,15 @@ attenuation lengths depend on the material, production rates on the target
 and the calibration.
 
 ```r
-tcn_params(nuclide = "Be10", target = "quartz", scaling = "Sa", ...)
+tcn_params(nuclide = "Be10", scaling = "Sa", ..., target = "quartz")
 ```
 
 - One nuclide per call (scalar contract); a helper
-  `tcn_params_list(c("Be10", "Al26"), ...)` (name to confirm) returns a named
-  list. `...` takes named overrides; an overridden value gets source `"user"`.
+  `tcn_params_list(c("Be10", "Al26"), ...)` returns a named list (done
+  2026-11-19; `...` only accepts parameters shared by all nuclides,
+  i.e. attenuation lengths, and errors on nuclide-specific ones, showing
+  the replacement code). `...` takes named overrides; an overridden value
+  gets source `"user"`.
 - Returned S3 object, class `tcn_params`, one sub-list per dependency:
 
   | Element | Content | Depends on |
@@ -153,12 +175,14 @@ tcn_params(nuclide = "Be10", target = "quartz", scaling = "Sa", ...)
   it fits without an API change.
 - Muon parameters for both representations: exponential approximation
   (P, L for stopped and fast muons) and Balco 2017 parameters (layer 5).
-  Whether to keep the exponential approximation is still open (see below).
+  Both are kept (decision 5 below).
 - Methods: `print()` (compact table with references), `validate_tcn_params()`
   (positivity, units, known scheme and target), `as.data.frame()`.
 - Storage: one table `data-raw/nuclide_parameters.csv` with columns
   `nuclide, target, parameter, pathway, element, scaling, value, sd, unit,
-  reference` (`scaling = NA` for scheme-independent constants), built into
+  reference, checked, note` (`scaling = NA` for scheme-independent
+  constants; `checked` = value verified against its source during the
+  rewrite), built into
   an internal object read by the constructor.
 
 Chemistry-dependent nuclides (36Cl; also 3He and 21Ne outside quartz),
@@ -188,18 +212,27 @@ Decisions for layer 1 (2026-10-15):
    formulas must handle without dividing by lambda.
 3. **Calibration:** Borchers et al. (2016), and only the schemes St, Lm, Sf
    and Sa. Scaling scheme names follow that paper.
-4. **Al26 half-life:** v0.1.0 `lambda` gives 0.708 Ma, Nishiizumi (2004)
-   gives 0.705 Ma. Vincent checks the source; do not enter a value before
-   that.
+4. **Half-lives** (settled 2026-11-19, from the literature check of
+   2026-11-14 recorded in the M2 course, `2_cosmogenic_nuclides_systematics.tex`):
+   Be10 1.387 ± 0.012 Ma (Chmeleff 2010, Korschinek 2010), Al26
+   0.705 ± 0.017 Ma (Nishiizumi 2004, CRONUS value; nuclear compilations give
+   0.717 Ma), C14 5700 ± 30 yr (Kutschera 2019, replacing v0.1.0's 5730).
 5. **Muons:** the simple exponential approximation (P and L for stopped and
    fast muons) is kept alongside Balco 2017.
+6. **Ne21 production rate** (settled 2026-11-19): CRONUScalc values from
+   `physpars.m` (Marrero et al. 2016, 21Ne/10Be ratio of Balco and Shuster
+   2009 applied to the Borchers 10Be): St 16.63, Lm 16.59, Sf 16.96,
+   Sa 16.26 at/g/yr. Muons (decided 2026-11-19, needed for long
+   exhumation histories): fast 0.203 at/g/yr, stopped 0 (Balco et al. 2019),
+   shared L_fast = 4320 g/cm2. Added on top of the CRONUScalc rate, which
+   already includes muons: accepted surface overestimate of about 1.2%,
+   documented (option 1, rather than subtracting it from the rates).
+   Comparison of the four candidate sources
+   (Fenton 2019 SPICE, CRONUScalc, ratio, Balco v3 calculator) in the
+   Obsidian vault, `1-projects/declic/tcntools/ne21/ne21-parameters-synthesis.md`.
 
 Still open:
 
-- **Ne21 production rate:** Borchers et al. (2016) covers 3He, 10Be, 14C,
-  26Al and 36Cl (per its Zotero tags), not 21Ne. A source is needed for the
-  21Ne rate per scheme and for its muon parameters; do not derive one
-  without saying how.
 - Check in Borchers et al. (2016) that the Sf / Sa definitions match the
   layer 4b implementation (Sa nuclide-specific, Sf flux-based) before
   coding it.
@@ -210,9 +243,9 @@ Still open:
 |---|---|
 | 1 | `prm`, `Lambda`; `dev/data/packaging_data_internal.R` |
 | 2 | `atm_pressure` (ERA40), `angdist`, `d2r`, `r2d` |
-| 3 | `get_vdm`, `vdm2rc`, `rc_ndp`, `lsdrc`, `solar_modulation`; `GMDB`, `Pal_LSD` |
+| 3 | `get_vdm`, `vdm2rc`, `rc_ndp`; `GMDB` |
 | 4a | `scaling_st`, `scaling_lm` |
-| 4b | `scaling_lsd`, `sato_*`; `Ref_LSD`, `XSectsReedyAll` |
+| 4b (v1.1) | `scaling_lsd`, `sato_*`, `lsdrc`, `solar_modulation`; `Ref_LSD`, `XSectsReedyAll`, `Pal_LSD` |
 | 5 | `mu_model1a`, `mu_model1b`, `LZ`, `Rv0`, `E2R`, `phi_v_slhl` |
 | 6 | `solv_conc_eul`, `solv_conc_lag` |
 | 7 | `solv_ss_eros_eul` |
@@ -238,12 +271,12 @@ git push -u origin layer-NN-<name>   # then PR into v1
 - [ ] Layer 2: atmosphere / geometry
 - [ ] Layer 3: geomagnetism
 - [ ] Layer 4a: scaling St, Lm
-- [ ] Layer 4b: scaling Sf, Sa (LSD)
 - [ ] Layer 5: production at depth
 - [ ] Layer 6: forward models
 - [ ] Layer 7: inversion
 - [ ] Layer 8: two nuclides
 - [ ] Switch `v1` → `main`, `v1.0.0`, Zenodo DOI, GitHub Pages, TCNbook
+- [ ] v1.1: layer 4b, scaling Sf, Sa (LSD)
 - [ ] Remote branch `test_holepunch` (2 commits, Binder test only: empty
       `.binder/Dockerfile` and a README line) can be deleted;
       `variable_erosion` is fully contained in `v0.1.0`
