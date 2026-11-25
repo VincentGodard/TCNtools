@@ -127,6 +127,18 @@ tests.
   set, e.g. Be10 Pspal = 4.01 at/g/yr, presumably for St). v0.1.0 `Lambda`
   holds Lspal = 160, Lstop = 1500, Lfast = 4320 g/cm² (exponential muon
   approximation, distinct from the Balco 2017 models of layer 5).
+- **Layer 2** (2026-11-25): `atm_pressure(elevation, latitude, longitude,
+  model)`, `model` without default (`"era40"` or `"stone2000"`), vectorised
+  over sites. The ERA-40 grid is `common/production/ERA40.mat` of the
+  CRONUScalc repository (bitbucket.org/cronusearth/cronus-calc, commit
+  cdbc8f2), byte-identical to the v0.1.0 file, stored as
+  `data-raw/era40/era40_grid.csv`. `atm_pressure("era40")` reproduces
+  `ERA40atm.m` (Balco 2007, adapted to ERA-40 by Lifton in March 2011).
+  Balco et al. (2008) used NCEP-NCAR fields, not ERA-40. The CIRA-86
+  lapse-rate polynomial is only published in that code. Rebuilding the
+  grid from the NCAR monthly means (d120000, d120001) was judged too heavy.
+  `angdist` dropped (unused), `d2r`/`r2d` became internal
+  `deg2rad`/`rad2deg`.
 - **Layer 4b:** the Sato fluxes (about 1250 lines in v0.1.0:
   `sato_neutrons`, `sato_neutrons_low`, `sato_protons`, `sato_muons`) are
   required by Sf and Sa, so they belong here as internal functions rather than in

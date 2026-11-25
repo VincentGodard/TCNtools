@@ -20,3 +20,10 @@
   shared by all nuclides (attenuation lengths).
 * New `tcn_params_table()`: the full table of parameters with their sources,
   optionally filtered by nuclide, scaling scheme and target.
+* New `atm_pressure()`: mean atmospheric pressure from site elevation, with
+  the standard atmosphere of Stone (2000) (`model = "stone2000"`) or the
+  ERA-40 climatology used by CRONUS-Earth and CREp (`model = "era40"`,
+  Uppala et al. 2005, Marrero et al. 2016), now vectorised over sites. The
+  model has no default. Unlike v0.1.0, the ERA-40 grid is credited to its
+  actual source rather than to Balco et al. (2008), which used NCEP-NCAR
+  fields.
