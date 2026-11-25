@@ -1,0 +1,63 @@
+# Internal helpers shared across the package.
+
+#' Degrees to radians
+#' @param x Angle (degrees).
+#' @return Angle (radians).
+#' @noRd
+deg2rad <- function(x) x * pi / 180
+
+#' Radians to degrees
+#' @param x Angle (radians).
+#' @return Angle (degrees).
+#' @noRd
+rad2deg <- function(x) x * 180 / pi
+
+#' Check that an argument is a non-empty vector of finite numbers
+#' @param x Value to check.
+#' @param name Argument name used in the error message.
+#' @return `x`, invisibly.
+#' @noRd
+check_finite_numeric <- function(x, name) {
+  if (!is.numeric(x) || length(x) == 0L || any(!is.finite(x))) {
+    stop("`", name, "` must be a non-empty numeric vector of finite values.",
+         call. = FALSE)
+  }
+  invisible(x)
+}
+
+#' Common length of recycled arguments
+#'
+#' Each argument must have length 1 or the length of the longest one.
+#'
+#' @param ... Named vectors.
+#' @return The common length.
+#' @noRd
+recycled_length <- function(...) {
+  lengths <- lengths(list(...))
+  n <- max(lengths)
+  bad <- lengths != 1L & lengths != n
+  if (any(bad)) {
+    stop("Arguments ", paste0("`", names(lengths)[bad], "`", collapse = ", "),
+         " must have length 1 or ", n, ".", call. = FALSE)
+  }
+  n
+}
+
+#' Bilinear interpolation on a regular grid
+#'
+#' @param x,y Increasing grid coordinates (rows and columns of `z`).
+#' @param z Matrix of values, `z[i, j]` at `(x[i], y[j])`.
+#' @param xout,yout Points to interpolate at, within the grid.
+#' @return Interpolated values, one per point.
+#' @noRd
+interp_bilinear <- function(x, y, z, xout, yout) {
+  i <- findInterval(xout, x, rightmost.closed = TRUE)
+  j <- findInterval(yout, y, rightmost.closed = TRUE)
+  if (any(i == 0L | i == length(x) | j == 0L | j == length(y))) {
+    stop("Interpolation point outside the grid.", call. = FALSE)
+  }
+  u <- (xout - x[i]) / (x[i + 1L] - x[i])
+  v <- (yout - y[j]) / (y[j + 1L] - y[j])
+  (1 - u) * (1 - v) * z[cbind(i, j)] + u * (1 - v) * z[cbind(i + 1L, j)] +
+    (1 - u) * v * z[cbind(i, j + 1L)] + u * v * z[cbind(i + 1L, j + 1L)]
+}

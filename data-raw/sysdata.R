@@ -38,4 +38,7 @@ local({
   }
 })
 
-usethis::use_data(nuclide_parameters, internal = TRUE, overwrite = TRUE)
+# ERA-40 climatology (layer 2) ----------------------------------------------
+source("data-raw/era40.R")
+
+usethis::use_data(nuclide_parameters, era40, internal = TRUE, overwrite = TRUE)
