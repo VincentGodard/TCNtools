@@ -73,7 +73,7 @@ for spallation, stopped muons and fast muons, as used by
 21Ne is not calibrated by Borchers et al. (2016). Its spallation rates
 are those of the CRONUScalc program
 \insertCite{marrero2016cosmogenic}{TCNtools}, which applies the
-21Ne/10Be production ratio of \insertCite{balco2009al26;textual}{TCNtools}
+21Ne/10Be production ratio of \insertCite{balco200926al10be21ne;textual}{TCNtools}
 to the Borchers et al. (2016) 10Be rates. Independent estimates agree
 within a few percent (e.g. 17.0 +/- 1.1 at/g/yr for St, 2 sigma, from the
 SPICE calibration). The 21Ne fast-muon rate (0.203 at/g/yr at sea level,
