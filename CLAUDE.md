@@ -267,7 +267,7 @@ git push -u origin layer-NN-<name>   # then PR into v1
 - [ ] TCNbook and student lab point to `v0.1.0` (not verifiable from this repo)
 - [x] Branch `v1` created, empty skeleton, legacy worktree
 - [x] Layer 0: infrastructure
-- [ ] Layer 1: constants and data
+- [x] Layer 1: constants and data
 - [ ] Layer 2: atmosphere / geometry
 - [ ] Layer 3: geomagnetism
 - [ ] Layer 4a: scaling St, Lm
