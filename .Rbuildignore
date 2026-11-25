@@ -8,3 +8,4 @@
 ^\.github$
 ^CITATION\.cff$
 ^README\.Rmd$
+^notes$
