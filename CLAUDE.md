@@ -296,7 +296,7 @@ git push -u origin layer-NN-<name>   # then PR into v1
 - [x] Layer 0: infrastructure
 - [x] Layer 1: constants and data
 - [x] Layer 2: atmosphere / geometry
-- [ ] Layer 3: geomagnetism
+- [x] Layer 3: geomagnetism
 - [ ] Layer 4a: scaling St, Lm
 - [ ] Layer 5: production at depth
 - [ ] Layer 6: forward models
