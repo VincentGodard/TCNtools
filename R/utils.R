@@ -12,6 +12,32 @@ deg2rad <- function(x) x * pi / 180
 #' @noRd
 rad2deg <- function(x) x * 180 / pi
 
+#' Angular distance between points on a sphere
+#'
+#' Great-circle angle between two points given by latitude and longitude,
+#' from the dot product of the two unit vectors, as in `angdist.m` of
+#' CRONUScalc (Balco, 2001). The cosine is clamped to \[-1, 1\] so that
+#' rounding cannot produce `NaN` for identical or antipodal points (a
+#' deliberate departure from `angdist.m`). Used to compute the geomagnetic
+#' latitude of a site, `90 - angdist(site, paleopole)`.
+#'
+#' Arguments are recycled (length 1 or a common length).
+#'
+#' @param lat1,lon1 Latitude and longitude of the first point(s) (degrees).
+#' @param lat2,lon2 Latitude and longitude of the second point(s) (degrees).
+#' @return Angular distance (degrees, between 0 and 180).
+#' @noRd
+angdist <- function(lat1, lon1, lat2, lon2) {
+  lat1 <- deg2rad(lat1)
+  lon1 <- deg2rad(lon1)
+  lat2 <- deg2rad(lat2)
+  lon2 <- deg2rad(lon2)
+  cos_theta <- cos(lat1) * cos(lat2) *
+    (cos(lon1) * cos(lon2) + sin(lon1) * sin(lon2)) +
+    sin(lat1) * sin(lat2)
+  rad2deg(acos(pmin(pmax(cos_theta, -1), 1)))
+}
+
 #' Check that an argument is a non-empty vector of finite numbers
 #' @param x Value to check.
 #' @param name Argument name used in the error message.

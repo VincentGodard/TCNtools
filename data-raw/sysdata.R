@@ -41,4 +41,8 @@ local({
 # ERA-40 climatology (layer 2) ----------------------------------------------
 source("data-raw/era40.R")
 
-usethis::use_data(nuclide_parameters, era40, internal = TRUE, overwrite = TRUE)
+# Geomagnetic history of the Lm scheme (layer 3) -----------------------------
+source("data-raw/geomagnetic.R")
+
+usethis::use_data(nuclide_parameters, era40, geomag, internal = TRUE,
+                  overwrite = TRUE)

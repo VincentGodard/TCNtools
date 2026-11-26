@@ -3,6 +3,8 @@
 S3method(as.data.frame,tcn_params)
 S3method(print,tcn_params)
 export(atm_pressure)
+export(cutoff_rigidity)
+export(geomag_history)
 export(tcn_params)
 export(tcn_params_list)
 export(tcn_params_table)
