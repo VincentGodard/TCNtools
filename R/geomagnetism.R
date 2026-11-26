@@ -7,7 +7,7 @@
 #' \insertCite{borchers2016geological;textual}{TCNtools} returned by
 #' [tcn_params()] were calibrated.
 #'
-#' The history is the framework of
+#' One model is available for now, `"lifton2014"`: the framework of
 #' \insertCite{lifton2014scaling;textual}{TCNtools}, taken from the file
 #' `pmag_consts.mat` of CRONUScalc:
 #' \itemize{
@@ -32,9 +32,17 @@
 #' CRONUScalc only evaluates the history at the nodes, so the two agree
 #' there.
 #'
+#' The production rates of [tcn_params()] were calibrated with the
+#' `"lifton2014"` history. Another geomagnetic record is only consistent
+#' with production rates recalibrated with it. A record of one's own can be
+#' used directly in [cutoff_rigidity()], which takes the moment ratio and
+#' the pole position as plain vectors.
+#'
 #' @param time Numeric vector. Time before 2010 CE (years, >= 0). All
 #'   times in the package are counted from 2010, the reference year of the
 #'   dipole moment \eqn{M_0}.
+#' @param model Character scalar. Geomagnetic record, `"lifton2014"` only
+#'   for now. No default: the model must be chosen explicitly.
 #' @param scaling Character scalar. Scaling scheme, `"Lm"` only for now.
 #'   No default. `"St"` does not depend on the geomagnetic field, and the
 #'   `"Sf"` and `"Sa"` schemes (with their own history of the cutoff
@@ -42,7 +50,7 @@
 #'
 #' @section Vectorisation:
 #' `time` is a vector of any length, the result has one row per element.
-#' `scaling` is a scalar.
+#' `model` and `scaling` are scalars.
 #'
 #' @return Data frame with one row per element of `time` and columns
 #'   \describe{
@@ -62,15 +70,21 @@
 #'
 #' @examples
 #' # Last 20 kyr
-#' h <- geomag_history(seq(0, 20000, by = 2000), scaling = "Lm")
+#' h <- geomag_history(seq(0, 20000, by = 2000), model = "lifton2014",
+#'                    scaling = "Lm")
 #' h
 #'
 #' # Dipole moment over the last 2 Myr
 #' t <- seq(0, 2e6, by = 1000)
-#' plot(t / 1000, geomag_history(t, scaling = "Lm")$moment_ratio,
+#' plot(t / 1000, geomag_history(t, model = "lifton2014",
+#'                                    scaling = "Lm")$moment_ratio,
 #'      type = "l", xlab = "Time before 2010 (ka)", ylab = "M / M0")
 #' @export
-geomag_history <- function(time, scaling) {
+geomag_history <- function(time, model, scaling) {
+  if (missing(model)) {
+    stop("`model` must be given: \"lifton2014\".", call. = FALSE)
+  }
+  check_choice(model, "lifton2014")
   check_geomag_scaling(scaling)
   check_finite_numeric(time, "time")
   if (any(time < 0)) {
@@ -150,7 +164,8 @@ geomag_history <- function(time, scaling) {
 #' cutoff_rigidity(c(0, 30, 60, 90), 0, moment_ratio = 1, scaling = "Lm")
 #'
 #' # One site through the last 10 kyr
-#' h <- geomag_history(seq(0, 10000, by = 1000), scaling = "Lm")
+#' h <- geomag_history(seq(0, 10000, by = 1000), model = "lifton2014",
+#'                    scaling = "Lm")
 #' cutoff_rigidity(45.2, 5.7, h$moment_ratio, h$pole_latitude,
 #'                 h$pole_longitude, scaling = "Lm")
 #' @export

@@ -4,12 +4,15 @@
 \alias{geomag_history}
 \title{Geomagnetic field history}
 \usage{
-geomag_history(time, scaling)
+geomag_history(time, model, scaling)
 }
 \arguments{
 \item{time}{Numeric vector. Time before 2010 CE (years, >= 0). All
 times in the package are counted from 2010, the reference year of the
 dipole moment \eqn{M_0}.}
+
+\item{model}{Character scalar. Geomagnetic record, \code{"lifton2014"} only
+for now. No default: the model must be chosen explicitly.}
 
 \item{scaling}{Character scalar. Scaling scheme, \code{"Lm"} only for now.
 No default. \code{"St"} does not depend on the geomagnetic field, and the
@@ -37,7 +40,7 @@ which the production rates of
 \code{\link[=tcn_params]{tcn_params()}} were calibrated.
 }
 \details{
-The history is the framework of
+One model is available for now, \code{"lifton2014"}: the framework of
 \insertCite{lifton2014scaling;textual}{TCNtools}, taken from the file
 \code{pmag_consts.mat} of CRONUScalc:
 \itemize{
@@ -61,21 +64,29 @@ and the pole along the great circle (linear interpolation of the unit
 vectors, then normalisation). Beyond 10 Ma the last values are kept.
 CRONUScalc only evaluates the history at the nodes, so the two agree
 there.
+
+The production rates of \code{\link[=tcn_params]{tcn_params()}} were calibrated with the
+\code{"lifton2014"} history. Another geomagnetic record is only consistent
+with production rates recalibrated with it. A record of one's own can be
+used directly in \code{\link[=cutoff_rigidity]{cutoff_rigidity()}}, which takes the moment ratio and
+the pole position as plain vectors.
 }
 \section{Vectorisation}{
 
 \code{time} is a vector of any length, the result has one row per element.
-\code{scaling} is a scalar.
+\code{model} and \code{scaling} are scalars.
 }
 
 \examples{
 # Last 20 kyr
-h <- geomag_history(seq(0, 20000, by = 2000), scaling = "Lm")
+h <- geomag_history(seq(0, 20000, by = 2000), model = "lifton2014",
+                   scaling = "Lm")
 h
 
 # Dipole moment over the last 2 Myr
 t <- seq(0, 2e6, by = 1000)
-plot(t / 1000, geomag_history(t, scaling = "Lm")$moment_ratio,
+plot(t / 1000, geomag_history(t, model = "lifton2014",
+                                   scaling = "Lm")$moment_ratio,
      type = "l", xlab = "Time before 2010 (ka)", ylab = "M / M0")
 }
 \references{

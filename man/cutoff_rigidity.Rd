@@ -66,7 +66,8 @@ lengths give an error. \code{scaling} is a scalar.
 cutoff_rigidity(c(0, 30, 60, 90), 0, moment_ratio = 1, scaling = "Lm")
 
 # One site through the last 10 kyr
-h <- geomag_history(seq(0, 10000, by = 1000), scaling = "Lm")
+h <- geomag_history(seq(0, 10000, by = 1000), model = "lifton2014",
+                   scaling = "Lm")
 cutoff_rigidity(45.2, 5.7, h$moment_ratio, h$pole_latitude,
                 h$pole_longitude, scaling = "Lm")
 }
