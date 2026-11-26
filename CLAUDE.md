@@ -67,6 +67,13 @@ issues, this file): English.
   dependencies.
 - References via Rdpack (`inst/REFERENCES.bib`, taken from `inst/TCNtools.bib`
   at tag v0.1.0) and `\insertRef{}`.
+- Nuclide names in documentation prose: `\nuclide{10}{Be}` (Rd macro in
+  `man/macros/nuclides.Rd`: superscript mass number in HTML and PDF, plain
+  `10Be` in text help). Not inside code (examples, comments in examples),
+  and not for argument values (`"Be10"`). In `NEWS.md`: `<sup>10</sup>Be`.
+- Equations: `\eqn{}`/`\deqn{}` with a plain-text alternative; the site
+  renders them with KaTeX (`math-rendering: katex` in `_pkgdown.yml`), so
+  stick to KaTeX-supported LaTeX.
 
 ## Definition of done for a function
 
@@ -285,6 +292,8 @@ Still open:
 git switch v1 && git switch -c layer-NN-<name>
 # write R/, tests/testthat/, examples, vignette if relevant
 # devtools::document(); devtools::test(); devtools::check()
+# add the new exported functions to the reference index in _pkgdown.yml,
+# then pkgdown/build-site.sh (builds docs/, ignored by git)
 git push -u origin layer-NN-<name>   # then PR into v1
 ```
 

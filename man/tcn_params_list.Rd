@@ -29,7 +29,7 @@ order of \code{nuclides}.
 \description{
 Calls \code{\link[=tcn_params]{tcn_params()}} once per nuclide, with the same scaling scheme and
 target, and returns the results as a named list. Use it for multi-nuclide
-calculations (e.g. 26Al/10Be), so that every nuclide uses the same scheme.
+calculations (e.g. \nuclide{26}{Al}/\nuclide{10}{Be}), so that every nuclide uses the same scheme.
 }
 \section{Vectorisation}{
 

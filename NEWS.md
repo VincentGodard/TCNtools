@@ -6,14 +6,16 @@
   exports, testthat 3rd edition, Rdpack references, GitHub Actions CI.
 * Added `CITATION.cff`, a pkgdown workflow (deploys to `gh-pages` from
   `main` only) and `data-raw/` conventions for building package data.
-* New `tcn_params()`: parameters for one nuclide (10Be, 26Al, 14C, 21Ne),
+* pkgdown site: reference index grouped by topic (no articles yet), built
+  locally with `pkgdown/build-site.sh`.
+* New `tcn_params()`: parameters for one nuclide (<sup>10</sup>Be, <sup>26</sup>Al, <sup>14</sup>C, <sup>21</sup>Ne),
   target (quartz) and scaling scheme (St, Lm, Sf, Sa), with the source of
   every value. Spallation rates from Borchers et al. (2016), muon rates
-  from Braucher et al. (2011) and Lupker et al. (2015). Half-lives: 10Be
-  1.387 Ma (Chmeleff et al. 2010, Korschinek et al. 2010), 26Al 0.705 Ma
-  (Nishiizumi 2004), 14C 5700 yr (Kutschera 2019). 21Ne spallation rates
+  from Braucher et al. (2011) and Lupker et al. (2015). Half-lives: <sup>10</sup>Be
+  1.387 Ma (Chmeleff et al. 2010, Korschinek et al. 2010), <sup>26</sup>Al 0.705 Ma
+  (Nishiizumi 2004), <sup>14</sup>C 5700 yr (Kutschera 2019). <sup>21</sup>Ne spallation rates
   from CRONUScalc (Marrero et al. 2016, ratio of Balco and Shuster 2009),
-  21Ne fast-muon rate from Balco et al. (2019). Uncertainties of the 10Be and 26Al rates from
+  <sup>21</sup>Ne fast-muon rate from Balco et al. (2019). Uncertainties of the <sup>10</sup>Be and <sup>26</sup>Al rates from
   Phillips et al. (2016).
 * New `tcn_params_list()`: `tcn_params()` for several nuclides with one
   scaling scheme, as a named list. Overrides are limited to parameters

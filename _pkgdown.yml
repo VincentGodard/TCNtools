@@ -1,4 +1,25 @@
 url: https://vincentgodard.github.io/TCNtools/
 template:
   bootstrap: 5
+  math-rendering: katex
 
+navbar:
+  structure:
+    left: [reference, news]
+    right: [search, github]
+
+reference:
+- title: Parameters
+  desc: Nuclide, target and scaling scheme parameters, with their sources.
+  contents:
+  - tcn_params
+  - tcn_params_list
+  - tcn_params_table
+- title: Atmosphere
+  contents:
+  - atm_pressure
+- title: Geomagnetism
+  desc: Geomagnetic field history and cutoff rigidity (Lm scaling scheme).
+  contents:
+  - geomag_history
+  - cutoff_rigidity
