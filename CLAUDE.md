@@ -86,7 +86,7 @@ issues, this file): English.
 | 0. Infrastructure | DESCRIPTION, roxygen NAMESPACE, testthat 3, Rdpack, `data-raw/`, `.Rbuildignore`, `NEWS.md`, `CITATION.cff`, GitHub Actions (`check-standard`, `test-coverage`, pkgdown → gh-pages) | check passes on an empty package |
 | 1. Constants and data | decay constants, attenuation lengths, SLHL production rates; `data-raw/` scripts from the `.mat` files | values from the cited papers |
 | 2. Atmosphere / geometry | `atm_pressure` (ERA40 / Stone 2000), angle utilities (internal) | published reference values |
-| 3. Geomagnetism | VDM series, Rc computation (dipole, for Lm); the LSD-specific Rc and solar modulation move to 4b | point values vs CRONUS-Earth / CREp |
+| 3. Geomagnetism | Geomagnetic history (moment ratio, paleopoles before 7 ka) and Rc for Lm; the LSD-specific Rc and solar modulation move to 4b | point values vs CRONUS-Earth / CREp |
 | 4a. Scaling: St, Lm | `scaling_st`, `scaling_lm` | site grid vs online calculator / CREp |
 | 4b. Scaling: Sf, Sa (LSD), **v1.1, after layer 8** | `scaling_lsd` (flux-based Sf and nuclide-specific Sa), with the Sato et al. neutron, proton and muon fluxes and the Reedy cross-sections as internal building blocks | site grid vs online calculator / CREp; reference fluxes (`Ref_LSD`) |
 | 5. Production at depth | exponential spallation; muons (Balco 2017, models 1a/1b) | Balco 2017 tables; integral identities |
@@ -137,8 +137,23 @@ tests.
   Balco et al. (2008) used NCEP-NCAR fields, not ERA-40. The CIRA-86
   lapse-rate polynomial is only published in that code. Rebuilding the
   grid from the NCAR monthly means (d120000, d120001) was judged too heavy.
-  `angdist` dropped (unused), `d2r`/`r2d` became internal
-  `deg2rad`/`rad2deg`.
+  `angdist` dropped (wrongly, it came back in layer 3), `d2r`/`r2d`
+  became internal `deg2rad`/`rad2deg`.
+- **Layer 3** (2026-11-26): follows the Lm part of CRONUScalc `get_tdsf.m`
+  (used for Borchers 2016). Data: `pmag_consts.mat` (commit cdbc8f2)
+  converted by `data-raw/geomagnetic/geomag_from_mat.py`, internal `geomag`
+  (2459 nodes, 0 to 10 Ma, pole set to 90/0 from 7060 yr). Time origin of
+  the whole package: years before 2010 (M0 = 2010 DGRF).
+  `geomag_history(time, model, scaling)`: `model` without default
+  (`"lifton2014"` only), moment ratio interpolated linearly, pole along the
+  great circle, constant beyond 10 Ma; the 0.7048 used beyond 2 Ma has no
+  documented origin. `cutoff_rigidity(latitude, longitude, moment_ratio,
+  pole_latitude = 90, pole_longitude = 0, scaling)`: Dunai (2001) eq. 1,
+  geomagnetic latitude from internal `angdist`. `scaling` without default
+  in both: `"Lm"` only, `"St"` rejected, `"Sf"`/`"Sa"` give the v1.1
+  message. Tests compare with `get_tdsf.m` `Rc_Lm` run under Octave
+  (fixture and script in `tests/testthat/fixtures/`). CREp records (GMDB),
+  `vdm2rc` and `get_vdm`: issue #4 (v1.x); `rc_ndp` goes to 4b.
 - **Layer 4b:** the Sato fluxes (about 1250 lines in v0.1.0:
   `sato_neutrons`, `sato_neutrons_low`, `sato_protons`, `sato_muons`) are
   required by Sf and Sa, so they belong here as internal functions rather than in

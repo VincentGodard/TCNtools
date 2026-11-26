@@ -27,3 +27,12 @@
   model has no default. Unlike v0.1.0, the ERA-40 grid is credited to its
   actual source rather than to Balco et al. (2008), which used NCEP-NCAR
   fields.
+* New `geomag_history()`: dipole moment and geomagnetic pole position
+  through time (years before 2010), from the record used by CRONUScalc for
+  the Lm scaling scheme (Lifton et al. 2014 framework: DGRF, CALS3k.3,
+  CALS7k.2, GLOPIS-75, PADM2M). `model` (`"lifton2014"`) and `scaling`
+  (`"Lm"`) have no default.
+* New `cutoff_rigidity()`: cutoff rigidity of a dipole field (Dunai 2001,
+  equation 1) with the geomagnetic latitude from the pole position. Checked
+  against `get_tdsf.m` of CRONUScalc. The CREp geomagnetic records and
+  v0.1.0 `get_vdm()` / `vdm2rc()` are not part of v1.0.
