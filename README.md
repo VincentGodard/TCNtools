@@ -13,3 +13,7 @@ remotes::install_github("VincentGodard/TCNtools@v0.1.0")
 ## Package web site
 
 The package web site, including some tutorials, can be found [here](https://vincentgodard.github.io/TCNtools/).
+
+## Development
+
+Version 1 is being rewritten on the `v1` branch. Its reference site is built locally with `pkgdown/build-site.sh`, which writes to `docs/` (see the comments in the script).

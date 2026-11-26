@@ -6,6 +6,8 @@
   exports, testthat 3rd edition, Rdpack references, GitHub Actions CI.
 * Added `CITATION.cff`, a pkgdown workflow (deploys to `gh-pages` from
   `main` only) and `data-raw/` conventions for building package data.
+* pkgdown site: reference index grouped by topic (no articles yet), built
+  locally with `pkgdown/build-site.sh`.
 * New `tcn_params()`: parameters for one nuclide (10Be, 26Al, 14C, 21Ne),
   target (quartz) and scaling scheme (St, Lm, Sf, Sa), with the source of
   every value. Spallation rates from Borchers et al. (2016), muon rates

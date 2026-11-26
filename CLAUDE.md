@@ -285,6 +285,8 @@ Still open:
 git switch v1 && git switch -c layer-NN-<name>
 # write R/, tests/testthat/, examples, vignette if relevant
 # devtools::document(); devtools::test(); devtools::check()
+# add the new exported functions to the reference index in _pkgdown.yml,
+# then pkgdown/build-site.sh (builds docs/, ignored by git)
 git push -u origin layer-NN-<name>   # then PR into v1
 ```
 
