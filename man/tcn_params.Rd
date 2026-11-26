@@ -56,31 +56,31 @@ Spallation production rates are the calibrated values of
 \insertCite{borchers2016geological;textual}{TCNtools} (Table 7) for the
 chosen scaling scheme. They depend on the scheme, so a rate must only be
 used with the scaling factors of the same scheme. Their uncertainties for
-10Be and 26Al are those of \insertCite{phillips2016cronusearth;textual}{TCNtools}
-(Tables 3 and 6). No uncertainty is given for 14C.
+\nuclide{10}{Be} and \nuclide{26}{Al} are those of \insertCite{phillips2016cronusearth;textual}{TCNtools}
+(Tables 3 and 6). No uncertainty is given for \nuclide{14}{C}.
 
 Muon production rates are for a simple exponential approximation of
 production at depth, with one term for stopped (negative) muons and one
 for fast muons. They do not depend on the spallation scaling scheme.
-10Be and 26Al values are from \insertCite{braucher2011production;textual}{TCNtools}
-(Table 6, sea level), 14C values from
+\nuclide{10}{Be} and \nuclide{26}{Al} values are from \insertCite{braucher2011production;textual}{TCNtools}
+(Table 6, sea level), \nuclide{14}{C} values from
 \insertCite{lupker2015depthdependence;textual}{TCNtools} (SLHL).
 
 Attenuation lengths are not nuclide specific: 160, 1500 and 4320 g/cm2
 for spallation, stopped muons and fast muons, as used by
 \insertCite{braucher2011production;textual}{TCNtools}.
 
-21Ne is not calibrated by Borchers et al. (2016). Its spallation rates
+\nuclide{21}{Ne} is not calibrated by Borchers et al. (2016). Its spallation rates
 are those of the CRONUScalc program
 \insertCite{marrero2016cosmogenic}{TCNtools}, which applies the
-21Ne/10Be production ratio of \insertCite{balco200926al10be21ne;textual}{TCNtools}
-to the Borchers et al. (2016) 10Be rates. Independent estimates agree
+\nuclide{21}{Ne}/\nuclide{10}{Be} production ratio of \insertCite{balco200926al10be21ne;textual}{TCNtools}
+to the Borchers et al. (2016) \nuclide{10}{Be} rates. Independent estimates agree
 within a few percent (e.g. 17.0 +/- 1.1 at/g/yr for St, 2 sigma, from the
-SPICE calibration). The 21Ne fast-muon rate (0.203 at/g/yr at sea level,
+SPICE calibration). The \nuclide{21}{Ne} fast-muon rate (0.203 at/g/yr at sea level,
 no stopped-muon production) is that of
 \insertCite{balco2019cosmogenic;textual}{TCNtools}, needed for long
 exposure or exhumation histories where production at depth matters.
-CRONUScalc models no 21Ne muons, so its spallation rate already includes
+CRONUScalc models no \nuclide{21}{Ne} muons, so its spallation rate already includes
 them: adding the muon term overestimates surface production by about
 1.2\%, well within the uncertainty of the rate.
 

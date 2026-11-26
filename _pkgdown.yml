@@ -1,6 +1,7 @@
 url: https://vincentgodard.github.io/TCNtools/
 template:
   bootstrap: 5
+  math-rendering: katex
 
 navbar:
   structure:
